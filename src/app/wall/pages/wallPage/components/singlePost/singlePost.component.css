@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+.fillSvgInvalid {
+  fill: grey
+}
+.fillSvgValid {
+  fill: #1f2937
+}
+.show {
+  display:block
+}

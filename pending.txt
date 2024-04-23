@@ -1,0 +1,14 @@
+
+
+arreglar tamaño imagen post...
+me gusta en commentarios 
+
+view more comments (@defer)
+notifications de likes y comments
+
+fecha time ago en "posted 2 hours ago"
+add hashtag
+edit post
+
+like muy lento, dislike bien
+cerrar modales en click fuera

@@ -1,0 +1,43 @@
+<div class="flex items-center justify-between mb-4"
+  (mouseover)="this.currentUser.id === this.sComment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  (ontouchstart)="this.currentUser.id === this.sComment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+
+  >
+  <div class="flex items-center mt-2  space-x-2">
+    <img [src]="user?.avatar" alt="User Avatar" class="w-6 h-6 rounded-full">
+    <div>
+      <p class="text-gray-800 font-semibold">{{user?.userName}}</p>
+      <p class="text-gray-500 text-sm">{{sComment()!.message}}</p>
+    </div>
+  </div>
+
+  <div class="relative ml-3">
+
+    <div hidden class="text-gray-500 cursor-pointer" [ngClass]="{'show' : this.displayCommentMenu()}">
+      <button class="hover:bg-gray-50 rounded-full p-1" (click)="toogleProfileMenu($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="7" r="1" />
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="12" cy="17" r="1" />
+        </svg>
+      </button>
+      <div [ngClass]="{'hidden' : !showMenu()}"
+        class="absolute  z-10 w-48  rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+
+        <a (click)="deleteComment()" class="block px-4 py-2 text-xs text-gray-700 cursor-pointer" role="menuitem"
+          tabindex="-1">Delete</a>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+
+
+</div>

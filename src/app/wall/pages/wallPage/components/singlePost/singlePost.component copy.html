@@ -1,0 +1,147 @@
+<li class="flex items-center my-2"
+  (mouseover)="this.currentUser.id === this.singlePost().user.id ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  (ontouchstart)="this.currentUser.id === this.singlePost().user.id ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  >
+  <div class="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center space-x-2">
+        <img [src]="singlePost().user.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
+        <div>
+          <p class="text-gray-800 font-semibold">{{singlePost().user.userName}}</p>
+          <p class="text-gray-500 text-sm">Posted 2 hours ago</p>
+        </div>
+      </div>
+      <div hidden class="text-gray-500 cursor-pointer" [ngClass]="{'show' : this.displayCommentMenu()}">
+
+        <button class="hover:bg-gray-50 rounded-full p-1" (click)="toogleProfileMenu()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="7" r="1" />
+            <circle cx="12" cy="12" r="1" />
+            <circle cx="12" cy="17" r="1" />
+          </svg>
+        </button>
+
+        <div [ngClass]="{'hidden' : !showMenu()}"
+          class="absolute z-10 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+
+          <a class="block px-4 py-2 text-xs text-gray-700 cursor-pointer " role="menuitem" tabindex="-1">
+            Edit
+          </a>
+          <a (click)="onDeletePost()" class="block px-4 py-2 text-xs text-gray-700 cursor-pointer " role="menuitem"
+            tabindex="-1">
+            Delete
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mb-4">
+      <p class="text-gray-800">
+        {{singlePost().message}}
+        <a href="" class="text-blue-600">#CuteKitten</a>
+        <a href="" class="text-blue-600">#AdventureCat</a>
+      </p>
+    </div>
+
+    @if (singlePost().imageUrl) {
+    <div class="mb-4">
+      <img [src]="singlePost().imageUrl" alt="Post Image" class=" h-auto  object-cover rounded-md">
+    </div>
+    }
+
+
+    <div class="flex items-center justify-between  text-gray-500">
+      <div class="flex items-center space-x-2">
+        <button (click)="hasLiked() ? onUpdateLikes('dislike'): onUpdateLikes('addLike')"
+          class="flex justify-center items-center gap-2 pl-2 hover:bg-gray-50 rounded-full p-1">
+          @if (hasLiked()) {
+          <svg class="w-5 h-5 fill-grey-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C6.11 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-4.11 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+          }@else {
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"
+            height="18px" width="18px" version="1.1" id="Capa_1" viewBox="0 0 491.701 491.701" xml:space="preserve">
+            <g>
+              <path
+                d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1   c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3   l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4   C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3   s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4   c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3   C444.801,187.101,434.001,213.101,414.401,232.701z" />
+            </g>
+          </svg>
+          }
+        </button>
+
+        <button (mouseover)="this.showTooltip.set(true)" (ontouchstart)="this.showTooltip.set(true)"
+          (mouseout)="this.showTooltip.set(false)" (ontouchend)="this.showTooltip.set(false)">
+          {{singlePost().likes.length}} Likes
+        </button>
+      </div>
+
+
+      <button class="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+        <svg width="22px" height="22px" viewBox="0 0 24 24" class="w-5 h-5 fill-current"
+          xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22ZM8 13.25C7.58579 13.25 7.25 13.5858 7.25 14C7.25 14.4142 7.58579 14.75 8 14.75H13.5C13.9142 14.75 14.25 14.4142 14.25 14C14.25 13.5858 13.9142 13.25 13.5 13.25H8ZM7.25 10.5C7.25 10.0858 7.58579 9.75 8 9.75H16C16.4142 9.75 16.75 10.0858 16.75 10.5C16.75 10.9142 16.4142 11.25 16 11.25H8C7.58579 11.25 7.25 10.9142 7.25 10.5Z">
+            </path>
+          </g>
+        </svg>
+        <span>{{singlePost().comments.length}} Comments</span>
+      </button>
+    </div>
+
+
+    <div [ngClass]="{'show' : this.showTooltip() && this.singlePost().likes.length} "
+      class=" absolute hidden z-10 w-auto rounded-lg bg-gray-900 font-medium shadow-sm px-1 py-1" role="menu"
+      aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+      @for (item of this.singlePost().likes; track $index) {
+      <p class="block px-2 text-xs text-white">{{item.userName}}</p>
+      }
+    </div>
+
+
+
+    <div class="grid  grid-cols-[82%_9%_9%] md:grid-cols-[86%_7%_7%] relative w-full mt-5 mb-5">
+      <form [formGroup]="newCommentForm" (ngSubmit)="onAddComment()">
+        <input formControlName="text" #txtComment
+          class="text-left text-base bg-transparent text-gray-600 focus:outline-none w-full"
+          placeholder="Write something...">
+
+        <button type="submit" class="flex absolute inset-y-0 right-0 items-center pr-0 ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 -0.5 25 25">
+            <path
+              d="M19.1168 12.1484C19.474 12.3581 19.9336 12.2384 20.1432 11.8811C20.3528 11.5238 20.2331 11.0643 19.8758 10.8547L19.1168 12.1484ZM6.94331 4.13656L6.55624 4.77902L6.56378 4.78344L6.94331 4.13656ZM5.92408 4.1598L5.50816 3.5357L5.50816 3.5357L5.92408 4.1598ZM5.51031 5.09156L4.76841 5.20151C4.77575 5.25101 4.78802 5.29965 4.80505 5.34671L5.51031 5.09156ZM7.12405 11.7567C7.26496 12.1462 7.69495 12.3477 8.08446 12.2068C8.47397 12.0659 8.67549 11.6359 8.53458 11.2464L7.12405 11.7567ZM19.8758 12.1484C20.2331 11.9388 20.3528 11.4793 20.1432 11.122C19.9336 10.7648 19.474 10.6451 19.1168 10.8547L19.8758 12.1484ZM6.94331 18.8666L6.56375 18.2196L6.55627 18.2241L6.94331 18.8666ZM5.92408 18.8433L5.50815 19.4674H5.50815L5.92408 18.8433ZM5.51031 17.9116L4.80505 17.6564C4.78802 17.7035 4.77575 17.7521 4.76841 17.8016L5.51031 17.9116ZM8.53458 11.7567C8.67549 11.3672 8.47397 10.9372 8.08446 10.7963C7.69495 10.6554 7.26496 10.8569 7.12405 11.2464L8.53458 11.7567ZM19.4963 12.2516C19.9105 12.2516 20.2463 11.9158 20.2463 11.5016C20.2463 11.0873 19.9105 10.7516 19.4963 10.7516V12.2516ZM7.82931 10.7516C7.4151 10.7516 7.07931 11.0873 7.07931 11.5016C7.07931 11.9158 7.4151 12.2516 7.82931 12.2516V10.7516ZM19.8758 10.8547L7.32284 3.48968L6.56378 4.78344L19.1168 12.1484L19.8758 10.8547ZM7.33035 3.49414C6.76609 3.15419 6.05633 3.17038 5.50816 3.5357L6.34 4.78391C6.40506 4.74055 6.4893 4.73863 6.55627 4.77898L7.33035 3.49414ZM5.50816 3.5357C4.95998 3.90102 4.67184 4.54987 4.76841 5.20151L6.25221 4.98161C6.24075 4.90427 6.27494 4.82727 6.34 4.78391L5.50816 3.5357ZM4.80505 5.34671L7.12405 11.7567L8.53458 11.2464L6.21558 4.83641L4.80505 5.34671ZM19.1168 10.8547L6.56378 18.2197L7.32284 19.5134L19.8758 12.1484L19.1168 10.8547ZM6.55627 18.2241C6.4893 18.2645 6.40506 18.2626 6.34 18.2192L5.50815 19.4674C6.05633 19.8327 6.76609 19.8489 7.33035 19.509L6.55627 18.2241ZM6.34 18.2192C6.27494 18.1759 6.24075 18.0988 6.25221 18.0215L4.76841 17.8016C4.67184 18.4532 4.95998 19.1021 5.50815 19.4674L6.34 18.2192ZM6.21558 18.1667L8.53458 11.7567L7.12405 11.2464L4.80505 17.6564L6.21558 18.1667ZM19.4963 10.7516H7.82931V12.2516H19.4963V10.7516Z"
+              [ngClass]="fillColor()" />
+          </svg>
+        </button>
+      </form>
+      <app-emoji class="pl-1" (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
+    </div>
+    @if (this.singlePost().comments!.length > 0) {
+    <hr class="mt-2 mb-2">
+
+    <p class="text-gray-800 font-semibold">Comments</p>
+
+    <hr class="mt-2 mb-2">
+    }
+
+    <div class="mt-4">
+
+      @if (this.singlePost().comments) {
+      @for (comment of this.singlePost().comments; track $index) {
+      <single-post-comment (onDeleteComment)="deleteComment(this.comment.id)" [comment]="comment"></single-post-comment>
+      }
+      }
+
+
+    </div>
+  </div>
+</li>

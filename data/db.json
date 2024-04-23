@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "id": "69bf",
+      "userName": "Paco Gonzalez",
+      "email": "user2@email.com",
+      "password": "123456",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0.png?alt=media&token=128c7080-cade-4307-b347-d43035e84d1e",
+      "last_login": "2024-04-21T22:08:42.318Z"
+    },
+    {
+      "id": "747c",
+      "userName": "Peter Parker",
+      "email": "user1@email.com",
+      "password": "123456",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F1.png?alt=media&token=de7b8ee7-9e71-43b7-976b-281938f2d33d",
+      "last_login": "2024-04-22T08:31:55.473Z"
+    },
+    {
+      "id": "6471",
+      "userName": "Mary Butterfly",
+      "email": "user3@email.com",
+      "password": "123456",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0.png?alt=media&token=73f65325-4ef5-4252-9a9f-b685f37cfafb",
+      "last_login": "2024-04-21T17:26:15.795Z"
+    },
+    {
+      "id": "8e48",
+      "userName": "User 4",
+      "email": "user4@email.com",
+      "password": "123456",
+      "avatar": "../../../../assets/images/default-avatar.jpg",
+      "last_login": "2024-04-21T17:31:19.274Z"
+    }
+  ],
+  "posts": [
+    {
+      "id": "4c5a",
+      "userId": "747c",
+      "date": "2024-04-22T08:32:02.608Z",
+      "likes": [],
+      "comments": [],
+      "message": "",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F0.png?alt=media&token=0548c37c-811f-497d-a714-8dc75adcce1a"
+    },
+    {
+      "id": "0712",
+      "userId": "747c",
+      "date": "2024-04-22T08:33:36.970Z",
+      "likes": [],
+      "comments": [],
+      "message": "hey!"
+    },
+    {
+      "id": "76a1",
+      "userId": "747c",
+      "date": "2024-04-22T08:33:51.020Z",
+      "likes": [],
+      "comments": [],
+      "message": "Are you ok=?",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F3.png?alt=media&token=80036b4c-e414-4d51-9a8b-603837f565f5"
+    }
+  ]
+}

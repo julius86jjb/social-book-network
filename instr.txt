@@ -1,0 +1,15 @@
+1. Crear proyecto social-network-wall -> css
+2. TalwindCSS
+3. Crear componente topbar components/topbar
+4. Crear componente "pages/login"
+	- ruta
+	- html
+--------
+5.crear register page
+6. formularios reactivos en auth y validacones necesarias mostrando errores
+7. json-server
+8. login + register submites a data.json
+9.
+
+
+
