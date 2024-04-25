@@ -1,19 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, InputSignal, OnInit, ViewChild, WritableSignal, effect, inject, input, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, ElementRef, Input,
+  OnInit,
+  ViewChild, WritableSignal, effect, inject, input, signal
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 
+import { Observable, delay, of, switchMap, tap } from 'rxjs';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
-
-import { Comment, UserId, Post } from '../../../../interfaces/post.interface';
+import { UserId, Post } from '../../../../interfaces/post.interface';
 import { User } from '../../../../../auth/interfaces/user.interface';
 import { AuthService } from '../../../../../auth/services/auth.service';
 import { EmojiComponent } from '../../../../components/emoji/emoji.component';
 import { PostService } from '../../../../services/post.service';
-import { UserNamePipe } from '../../../../pipes/userName.pipe';
-import { UserAvatarPipe } from '../../../../pipes/userAvatar.pipe';
 import { CommentComponent } from './components/comment/comment.component';
-import { Observable, of } from 'rxjs';
+import { UserNamePipe } from '../../../../pipes/userName.pipe';
 
 @Component({
   selector: 'wall-single-post',
@@ -23,9 +26,8 @@ import { Observable, of } from 'rxjs';
     PickerComponent,
     EmojiComponent,
     ReactiveFormsModule,
-    UserNamePipe,
-    UserAvatarPipe,
-    CommentComponent
+    CommentComponent,
+    UserNamePipe
   ],
   host: {
     "(window:click)": "onClickOutside()"
@@ -37,50 +39,65 @@ import { Observable, of } from 'rxjs';
 })
 
 
-export class SinglePostComponent {
+export class SinglePostComponent implements OnInit {
+
+  destroyRef = inject(DestroyRef)
 
   @ViewChild('txtComment') public inputComment: ElementRef<HTMLInputElement> = {} as ElementRef;
 
-  public authService = inject(AuthService)
-  public postService = inject(PostService)
-  public singlePost = signal(this.post)
-  public user: Observable<User | undefined> = of(undefined);
+  public authService = inject(AuthService);
+  public postService = inject(PostService);
 
-  _post!: Post;
 
-  @Input()
-  public get post(): Post {
-    return this._post;
-  }
-  public set post(post: Post) {
+  public post = input.required<Post>()
+  // public user: Observable<User | undefined> = of(undefined);
+  // user = signal<User | null>(null);
 
-    this._post = post;
-    this.singlePost.set(post);
-    this.user = this.authService.getUserById(this.post.userId)
-
-  }
-
-  public showTooltip: WritableSignal<boolean> = signal<boolean>(false);
+  public showTooltip = signal<boolean>(false);
   public showMenu = signal<boolean>(false);
   public displayCommentMenu = signal<boolean>(false);
-  public loading = signal<boolean>(false);
 
   public newCommentForm: FormGroup = new FormGroup({
     text: new FormControl<string>('', Validators.required)
   });
 
-  public afterChangeAvatar = effect(() => {
-    if (!this.authService.user()) return;
+  dataSeriesId = input.required<string>();
 
-    if (this.authService.user()!.id === this.post.userId) {
-      this.user = of(this.authService.user()!);
-      this.cd.markForCheck();
-    }
-  })
+
+  public user = toSignal(
+    toObservable(this.dataSeriesId).pipe(switchMap((id) => this.getUser(id))),
+    {initialValue: null}
+  )
+
+  private getUser(id: string) {
+    console.log('hello');
+
+    return this.authService.getUserById(id).pipe(delay(1000));
+  }
+
+  // public afterChangeAvatar = effect(() => {
+  //   if (!this.authService.user()) return;
+
+  //   if (this.authService.user()!.id === this.post().userId) {
+  //     this.user = of(this.authService.user()!);
+  //     this.cd.markForCheck();
+  //   }
+  // })
+
+  ngOnInit() {
+    // this.user = this.authService.getUserById(this.post().userId)
+    console.log(this.user());
+  }
 
   constructor(
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
+    console.log(this.user());
+
+    // effect(() => {
+    //   this.authService.getUserById(this.post().userId)
+    //     .subscribe((u) => this.user.set(u));
+    // });
   }
 
   get currentUser() {
@@ -101,20 +118,27 @@ export class SinglePostComponent {
   onDeletePost() {
 
     this.showMenu.set(false);
-    this.postService.delete(this.singlePost())
+    this.postService.delete(this.post()).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    )
       .subscribe();
   }
 
 
   onUpdateLikes(action: 'addLike' | 'dislike') {
 
-    this.postService.updateLikes(this.singlePost(), action)
+    this.postService.updateLikes(this.post(), action).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    )
       .subscribe();
   }
 
   onAddComment() {
 
-    this.postService.addComment(this.singlePost(), this.newCommentForm.controls['text'].value)
+    this.postService.addComment(this.post(), this.newCommentForm.controls['text'].value)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe();
     this.newCommentForm.patchValue({
       text: this.newCommentForm.controls['text'].reset()
@@ -122,13 +146,15 @@ export class SinglePostComponent {
   }
 
   deleteComment(idComment: string) {
-    this.postService.deleteComment(this.singlePost(), idComment)
+    this.postService.deleteComment(this.post(), idComment).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    )
       .subscribe();
   }
 
 
 
-  public fillColor(): string {
+  fillColor(): string {
 
     switch (this.newCommentForm.valid) {
       case true:
@@ -140,12 +166,12 @@ export class SinglePostComponent {
 
 
   hasLiked(): boolean {
-    const likes: UserId[] = this.post!.likes
+    const likes: UserId[] = this.post().likes
     return likes.some((userId: UserId) => userId === this.currentUser.id);
   }
 
 
-  public addEmojiToInput(event: any): void {
+  addEmojiToInput(event: any): void {
     console.log('hi');
 
     const emoji = event.emoji.native

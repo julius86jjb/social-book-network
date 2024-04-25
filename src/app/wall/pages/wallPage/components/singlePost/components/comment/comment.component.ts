@@ -6,6 +6,7 @@ import { UserAvatarPipe } from '../../../../../../pipes/userAvatar.pipe';
 import { PostService } from '../../../../../../services/post.service';
 import { AuthService } from '../../../../../../../auth/services/auth.service';
 import { User } from '../../../../../../../auth/interfaces/user.interface';
+import { Observable, of } from 'rxjs';
 
 
 export interface commentWithAvatar {
@@ -31,7 +32,7 @@ export interface commentWithAvatar {
     "(window:click)": "onClickOutside()"
   },
 })
-export class CommentComponent implements OnInit{
+export class CommentComponent {
 
 
   private postService = inject(PostService)
@@ -44,48 +45,30 @@ export class CommentComponent implements OnInit{
   public displayCommentMenu = signal<boolean>(false);
 
   public sComment = signal(this.comment)
-  public user: User | undefined = undefined;
+  public user: Observable<User | undefined> = of(undefined);
 
   public showMenu = signal<boolean>(false);
-  public avatarUrl: string = '';
 
-  _comment!: Comment;
 
   @Input()
-  public get comment(): Comment {
-    return this._comment;
-  }
   public set comment(comment: Comment) {
-    this._comment! = comment;
     this.sComment.set(comment);
-    this.authService.getUserById(this.comment.user)
-    .subscribe(user => {
-      this.user = user;
-    })
+    this.user = this.authService.getUserById(this.sComment().user)
   }
 
   public afterChangeAvatar = effect(() => {
     if (!this.authService.user) return;
 
-    if (this.authService.user()!.id === this.comment.user) {
-      this.user = this.authService.user()!;
-      console.log('effect:',this.user.avatar);
-      this.cd.detectChanges();
+    if (this.authService.user()!.id === this.sComment().user) {
+      this.user = of(this.authService.user()!);
+      this.cd.markForCheck();
     }
   })
 
   constructor(
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
-
-    this.authService.getUserById(this.comment.user)
-      .subscribe(user => {
-        this.user = user;
-        this.cd.detectChanges();
-      })
-  }
 
 
   get currentUser() {

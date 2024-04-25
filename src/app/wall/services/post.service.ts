@@ -23,17 +23,25 @@ export class PostService {
 
   public posts = signal<Post[]>([])
   public havePosts = signal<boolean>(true);
+  public loading = signal<boolean>(false);
 
 
   get currentUser() {
     return this.authService.user()!
   }
 
+  constructor() { }
+
   getPosts(): Observable<Post[]> {
+
     return this.http.get<Post[]>(`${this.baseUrl}?_embed=user`)
       .pipe(
         tap((posts: Post[]) => this.posts.set(posts.reverse())),
+        tap((posts: Post[]) => posts.length === 0
+          ? this.havePosts.set(false)
+          : this.havePosts.set(true)),
         catchError(this.handleError)
+
       )
   }
 
@@ -44,19 +52,27 @@ export class PostService {
         postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()!.id as UserId] }
         break;
       case 'dislike':
-        postToUpdate.likes = postToUpdate.likes.filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
+        postToUpdate.likes = postToUpdate.likes
+          .filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
         break;
     }
     return this.update(postToUpdate)
   }
 
   addComment(postToUpdate: Post, textComment?: string) {
-    postToUpdate = { ...postToUpdate, comments: [...postToUpdate.comments, { id: uuidv4(), user: this.authService.user()!.id as UserId, message: textComment! }] }
+    postToUpdate = {
+      ...postToUpdate,
+      comments: [
+        ...postToUpdate.comments,
+        { id: uuidv4(), user: this.authService.user()!.id as UserId, message: textComment! }
+      ]
+    }
     return this.update(postToUpdate)
   }
 
   deleteComment(postToUpdate: Post, commentId: string) {
-    postToUpdate.comments = postToUpdate.comments.filter((comment: Comment) => comment.id !== commentId)
+    postToUpdate.comments = postToUpdate.comments
+      .filter((comment: Comment) => comment.id !== commentId)
     return this.update(postToUpdate)
   }
 
@@ -65,7 +81,7 @@ export class PostService {
     if (!post.id) throw Error('Post is required');
     return this.http.patch<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
       tap((postUpdated: Post) => this.posts.update((posts: Post[]) =>
-        posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)  ))
+        posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)))
     )
   }
 
@@ -75,7 +91,7 @@ export class PostService {
     if (!post.id) throw Error('Post is required');
     return this.http.delete<Post>(`${this.baseUrl}/${post.id}`).pipe(
       tap((deletedPost: Post) => this.posts.update((posts: Post[] | undefined) => posts!
-          .filter((post: Post) => post.id !== deletedPost.id))),
+        .filter((post: Post) => post.id !== deletedPost.id))),
       tap(() => (this.posts()?.length === 0) ? this.havePosts.set(false) : this.havePosts.set(true))
     )
   }

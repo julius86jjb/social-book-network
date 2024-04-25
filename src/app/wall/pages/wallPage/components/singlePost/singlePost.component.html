@@ -1,16 +1,16 @@
-@if (this.postService.havePosts() && !this.loading()) {
+@if (this.postService.havePosts()) {
 <li class="flex items-center my-2"
-  (mouseover)="this.currentUser.id === this.singlePost().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseover)="this.currentUser.id === this.post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
   (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-  (ontouchstart)="this.currentUser.id === this.singlePost().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  (ontouchstart)="this.currentUser.id === this.post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
   (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
   <div class="bg-white p-8 rounded-lg shadow-md w-full">
 
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-2">
-        <img [src]="(user | async)?.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
+        <img [src]="user()!.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
         <div>
-          <p class="text-gray-800 font-semibold">{{(user | async)?.userName}} </p>
+          <p class="text-gray-800 font-semibold">{{user()!.userName}} </p>
           <p class="text-gray-500 text-sm">Posted 2 hours ago</p>
         </div>
       </div>
@@ -43,15 +43,15 @@
 
     <div class="mb-4">
       <p class="text-gray-800">
-        {{singlePost().message}}
+        {{post().message}}
         <a href="" class="text-blue-600">#CuteKitten</a>
         <a href="" class="text-blue-600">#AdventureCat</a>
       </p>
     </div>
 
-    @if (singlePost().imageUrl) {
-    <div class="mb-4">
-      <img [src]="singlePost().imageUrl" alt="Post Image" class="w-full h-auto  object-cover rounded-md">
+    @if (post().imageUrl) {
+    <div class="mb-4 flex items-center justify-center">
+      <img [src]="post().imageUrl" alt="Post Image" class=" h-auto  object-cover rounded-md">
     </div>
     }
 
@@ -79,7 +79,7 @@
         <button class="cursor-default" (mouseover)="this.showTooltip.set(true)"
           (ontouchstart)="this.showTooltip.set(true)" (mouseout)="this.showTooltip.set(false)"
           (ontouchend)="this.showTooltip.set(false)">
-          {{singlePost().likes.length}} Likes
+          {{post().likes.length}} Likes
         </button>
       </div>
 
@@ -95,15 +95,15 @@
             </path>
           </g>
         </svg>
-        <span>{{singlePost().comments.length}} Comments</span>
+        <span>{{post().comments.length}} Comments</span>
       </button>
     </div>
 
 
-    <div [ngClass]="{'show' : this.showTooltip() && this.singlePost().likes.length} "
+    <div [ngClass]="{'show' : this.showTooltip() && this.post().likes.length} "
       class=" absolute hidden z-10 w-auto rounded-lg bg-gray-900 font-medium shadow-sm px-1 py-1" role="menu"
       aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-      @for (item of this.singlePost().likes; track $index) {
+      @for (item of this.post().likes; track $index) {
       <!-- <p class="block px-2 text-xs text-white">Paco</p> -->
       <p class="block px-2 text-xs text-white">{{item | userName | async}}</p>
       }
@@ -127,7 +127,7 @@
       </form>
       <app-emoji class="pl-1" (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
     </div>
-    @if (this.singlePost().comments!.length > 0) {
+    @if (this.post().comments!.length > 0) {
     <hr class="mt-2 mb-2">
 
     <p class="text-gray-800 font-semibold">Comments</p>
@@ -137,8 +137,8 @@
 
     <div class="mt-4">
 
-      @if (this.singlePost().comments) {
-      @for (comment of this.singlePost().comments; track $index) {
+      @if (this.post().comments) {
+      @for (comment of this.post().comments; track $index) {
       <single-post-comment (onDeleteComment)="deleteComment(this.comment.id)" [comment]="comment"></single-post-comment>
       }
       }
@@ -147,12 +147,4 @@
     </div>
   </div>
 </li>
-}
-@if (this.loading()) {
-
-<div class="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
-  <div class="flex justify-center items-center mt-[50vh]">
-    <div class="fas fa-circle-notch fa-spin fa-5x text-violet-600"></div>
-  </div>
-</div>
 }

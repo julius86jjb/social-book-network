@@ -6,9 +6,9 @@
 
   >
   <div class="flex items-center mt-2  space-x-2">
-    <img [src]="user?.avatar" alt="User Avatar" class="w-6 h-6 rounded-full">
+    <img [src]="(user | async)?.avatar" alt="User Avatar" class="w-6 h-6 rounded-full">
     <div>
-      <p class="text-gray-800 font-semibold">{{user?.userName}}</p>
+      <p class="text-gray-800 font-semibold">{{(user | async)?.userName}}</p>
       <p class="text-gray-500 text-sm">{{sComment()!.message}}</p>
     </div>
   </div>

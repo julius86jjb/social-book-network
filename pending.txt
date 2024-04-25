@@ -12,3 +12,4 @@ edit post
 
 like muy lento, dislike bien
 cerrar modales en click fuera
+cambiar sweet por snack
