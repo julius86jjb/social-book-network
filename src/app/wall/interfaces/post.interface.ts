@@ -16,6 +16,7 @@ export interface Comment {
   id: string;
   user: UserId;
   message: string;
+  likes: UserId[];
 }
 
 

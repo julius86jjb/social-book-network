@@ -45,58 +45,6 @@ export class PostService {
       )
   }
 
-
-  updateLikes(postToUpdate: Post, action: string) {
-    switch (action) {
-      case 'addLike':
-        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()!.id as UserId] }
-        break;
-      case 'dislike':
-        postToUpdate.likes = postToUpdate.likes
-          .filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
-        break;
-    }
-    return this.update(postToUpdate)
-  }
-
-  addComment(postToUpdate: Post, textComment?: string) {
-    postToUpdate = {
-      ...postToUpdate,
-      comments: [
-        ...postToUpdate.comments,
-        { id: uuidv4(), user: this.authService.user()!.id as UserId, message: textComment! }
-      ]
-    }
-    return this.update(postToUpdate)
-  }
-
-  deleteComment(postToUpdate: Post, commentId: string) {
-    postToUpdate.comments = postToUpdate.comments
-      .filter((comment: Comment) => comment.id !== commentId)
-    return this.update(postToUpdate)
-  }
-
-  update(post: Post) {
-
-    if (!post.id) throw Error('Post is required');
-    return this.http.patch<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
-      tap((postUpdated: Post) => this.posts.update((posts: Post[]) =>
-        posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)))
-    )
-  }
-
-
-
-  delete(post: Post) {
-    if (!post.id) throw Error('Post is required');
-    return this.http.delete<Post>(`${this.baseUrl}/${post.id}`).pipe(
-      tap((deletedPost: Post) => this.posts.update((posts: Post[] | undefined) => posts!
-        .filter((post: Post) => post.id !== deletedPost.id))),
-      tap(() => (this.posts()?.length === 0) ? this.havePosts.set(false) : this.havePosts.set(true))
-    )
-  }
-
-
   savePost(post: Post) {
     this.http.post<Post>(`${this.baseUrl}`, post).subscribe((post) => {
       if (this.posts()) {
@@ -139,11 +87,96 @@ export class PostService {
     }
   }
 
+  update(post: Post) {
+
+    if (!post.id) throw Error('Post is required');
+    return this.http.patch<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
+      tap((postUpdated: Post) => this.posts.update((posts: Post[]) =>
+        posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)))
+    )
+  }
+
+
+
+  delete(post: Post) {
+    if (!post.id) throw Error('Post is required');
+    return this.http.delete<Post>(`${this.baseUrl}/${post.id}`).pipe(
+      tap((deletedPost: Post) => this.posts.update((posts: Post[] | undefined) => posts!
+        .filter((post: Post) => post.id !== deletedPost.id))),
+      tap(() => (this.posts()?.length === 0) ? this.havePosts.set(false) : this.havePosts.set(true))
+    )
+  }
+
+
+
+
   getPostById(postId: string): Observable<Post> {
     return this.http.get<Post>(`${this.baseUrl}/posts/${postId}`)
   }
 
 
+  updateLikes(postToUpdate: Post, action: string) {
+    switch (action) {
+      case 'addLike':
+        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()!.id as UserId] }
+        break;
+      case 'dislike':
+        postToUpdate.likes = postToUpdate.likes
+          .filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
+        break;
+    }
+    return this.update(postToUpdate)
+  }
+
+  updateCommentLikes(post: Post, comment: Comment, action: string) {
+
+
+
+    switch (action) {
+      case 'addLike':
+        post.comments.find(_comment => comment.id === _comment.id)?.likes
+          .push(this.currentUser.id)
+        break;
+      case 'dislike':
+        console.log('entra');
+
+        const newLikes = comment.likes.filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
+        console.log(comment.likes);
+
+        console.log(newLikes);
+
+
+        post.comments = post.comments.map((_comment) => {
+          if (comment.id === _comment.id) {
+            console.log('hey!');
+
+            return {
+              ..._comment,
+              likes: newLikes
+            }
+          } else return _comment
+        })
+        break;
+    }
+    return this.update(post)
+  }
+
+  addComment(postToUpdate: Post, textComment?: string) {
+    postToUpdate = {
+      ...postToUpdate,
+      comments: [
+        ...postToUpdate.comments,
+        { id: uuidv4(), user: this.authService.user()!.id as UserId, message: textComment!, likes: [] }
+      ]
+    }
+    return this.update(postToUpdate)
+  }
+
+  deleteComment(postToUpdate: Post, commentId: string) {
+    postToUpdate.comments = postToUpdate.comments
+      .filter((comment: Comment) => comment.id !== commentId)
+    return this.update(postToUpdate)
+  }
 
 
   private handleError(err: HttpErrorResponse): Observable<never> {

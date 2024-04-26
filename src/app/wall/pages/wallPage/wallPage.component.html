@@ -7,7 +7,7 @@
       @if (this.postService.havePosts()) {
       @for (post of posts(); track $index) {
 
-      <wall-single-post [post]="post" [dataSeriesId]="id()"/>
+      <wall-single-post [post]="post"/>
 
       }
       }@else {

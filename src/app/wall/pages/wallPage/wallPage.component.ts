@@ -39,7 +39,6 @@ export default class WallPageComponent implements OnInit {
   destroyRef = inject(DestroyRef)
 
   public posts = this.postService.posts;
-  id = signal('1');
 
   ngOnInit(): void {
     this.postService.loading.set(true)

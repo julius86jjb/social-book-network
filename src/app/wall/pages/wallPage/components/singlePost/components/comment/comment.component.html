@@ -1,24 +1,56 @@
 <div class="flex items-center justify-between mb-4"
-  (mouseover)="this.currentUser.id === this.sComment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseover)="this.currentUser.id === this.comment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
   (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-  (ontouchstart)="this.currentUser.id === this.sComment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
-  (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-
-  >
+  (ontouchstart)="this.currentUser.id === this.comment()!.user ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
   <div class="flex items-center mt-2  space-x-2">
-    <img [src]="(user | async)?.avatar" alt="User Avatar" class="w-6 h-6 rounded-full">
+    <button (click)="hasLiked() ? onUpdateCommentLikes('dislike'): onUpdateCommentLikes('addLike')"
+      class="flex justify-center items-center gap-2  hover:bg-gray-50 rounded-full">
+      @if (hasLiked()) {
+      <svg class="w-3 h-3 fill-grey-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path
+          d="M12 21.35l-1.45-1.32C6.11 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-4.11 6.86-8.55 11.54L12 21.35z" />
+      </svg>
+      }@else {
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="12px"
+        width="12px" version="1.1" id="Capa_1" viewBox="0 0 491.701 491.701" xml:space="preserve">
+        <g>
+          <path
+            d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1   c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3   l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4   C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3   s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4   c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3   C444.801,187.101,434.001,213.101,414.401,232.701z" />
+        </g>
+      </svg>
+      }
+    </button>
+    <img [src]="user()?.avatar" alt="User Avatar" class="w-6 h-6 rounded-full">
     <div>
-      <p class="text-gray-800 font-semibold">{{(user | async)?.userName}}</p>
-      <p class="text-gray-500 text-sm">{{sComment()!.message}}</p>
+      <p class="text-gray-800 font-semibold">{{user()?.userName}}
+        <span class="text-gray-500 text-sm font-normal ml-1">{{comment()!.message}}</span>
+      </p>
+      <p class="text-gray-500 text-xs font-semibold mt-1">
+        <button class="cursor-default" (mouseover)="this.showTooltip.set(true)"
+          (ontouchstart)="this.showTooltip.set(true)" (mouseout)="this.showTooltip.set(false)"
+          (ontouchend)="this.showTooltip.set(false)">
+          {{comment()!.likes.length}} likes
+        </button>
+      </p>
+      <div [ngClass]="{'show' : this.showTooltip() && this.comment().likes.length} "
+        class=" absolute hidden z-10 w-auto rounded-lg bg-gray-900 font-medium shadow-sm px-1 py-1 opacity-70" role="menu"
+        aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+        @for (item of comment().likes; track $index) {
+        <p class="block px-2 text-xs text-white">{{item | userName | async}}</p>
+        }
+      </div>
+
     </div>
   </div>
 
   <div class="relative ml-3">
 
-    <div hidden class="text-gray-500 cursor-pointer" [ngClass]="{'show' : this.displayCommentMenu()}">
-      <button class="hover:bg-gray-50 rounded-full p-1" (click)="toogleProfileMenu($event)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div class="text-gray-500 cursor-pointer">
+      <button class="hover:bg-gray-50 rounded-full " (click)="toogleProfileMenu($event)">
+        <svg [ngClass]="{'show' : this.displayCommentMenu()}" hidden xmlns="http://www.w3.org/2000/svg" width="24"
+          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
           <circle cx="12" cy="7" r="1" />
           <circle cx="12" cy="12" r="1" />
           <circle cx="12" cy="17" r="1" />
@@ -32,12 +64,5 @@
           tabindex="-1">Delete</a>
       </div>
     </div>
-
-
-
-
   </div>
-
-
-
 </div>

@@ -1,3 +1,5 @@
+
+
 @if (this.postService.havePosts()) {
 <li class="flex items-center my-2"
   (mouseover)="this.currentUser.id === this.post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
@@ -8,9 +10,9 @@
 
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-2">
-        <img [src]="user()!.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
+        <img [src]="user()?.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
         <div>
-          <p class="text-gray-800 font-semibold">{{user()!.userName}} </p>
+          <p class="text-gray-800 font-semibold">{{user()?.userName}} </p>
           <p class="text-gray-500 text-sm">Posted 2 hours ago</p>
         </div>
       </div>
@@ -57,9 +59,9 @@
 
 
     <div class="flex items-center justify-between  text-gray-500">
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-1">
         <button (click)="hasLiked() ? onUpdateLikes('dislike'): onUpdateLikes('addLike')"
-          class="flex justify-center items-center gap-2 pl-2 hover:bg-gray-50 rounded-full p-1">
+          class="flex justify-center items-center gap-1 hover:bg-gray-50 rounded-full ">
           @if (hasLiked()) {
           <svg class="w-5 h-5 fill-grey-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
@@ -79,12 +81,17 @@
         <button class="cursor-default" (mouseover)="this.showTooltip.set(true)"
           (ontouchstart)="this.showTooltip.set(true)" (mouseout)="this.showTooltip.set(false)"
           (ontouchend)="this.showTooltip.set(false)">
-          {{post().likes.length}} Likes
+          @if (post().likes.length > 0)  {
+            <span appUnderline>{{post().likes.length}}</span>
+          }@else {
+            <span>0</span>
+          }
         </button>
       </div>
 
 
-      <button class="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+      <button  class="flex justify-center items-center gap-1  hover:bg-gray-50 rounded-full ">
+        <span>{{post().comments.length}}</span>
         <svg width="22px" height="22px" viewBox="0 0 24 24" class="w-5 h-5 fill-current"
           xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -95,13 +102,13 @@
             </path>
           </g>
         </svg>
-        <span>{{post().comments.length}} Comments</span>
+
       </button>
     </div>
 
 
     <div [ngClass]="{'show' : this.showTooltip() && this.post().likes.length} "
-      class=" absolute hidden z-10 w-auto rounded-lg bg-gray-900 font-medium shadow-sm px-1 py-1" role="menu"
+      class=" absolute hidden z-10 w-auto rounded-lg bg-gray-900 font-medium shadow-sm px-1 py-1 opacity-70" role="menu"
       aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
       @for (item of this.post().likes; track $index) {
       <!-- <p class="block px-2 text-xs text-white">Paco</p> -->
@@ -139,7 +146,7 @@
 
       @if (this.post().comments) {
       @for (comment of this.post().comments; track $index) {
-      <single-post-comment (onDeleteComment)="deleteComment(this.comment.id)" [comment]="comment"></single-post-comment>
+      <single-post-comment (onDeleteComment)="deleteComment(comment.id)" (onUpdateLikesComment)="updateCommentLikes($event, comment)" [comment]="comment"></single-post-comment>
       }
       }
 
