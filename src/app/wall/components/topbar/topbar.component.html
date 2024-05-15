@@ -1,18 +1,57 @@
 <nav class="bg-gray-800">
-  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <div class=" px-2 sm:px-6 lg:px-12">
     <div class="relative flex h-16 items-center justify-between">
 
-      <div class="flex items-center justify-center sm:items-stretch sm:justify-start">
+      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+        <!-- Mobile menu button-->
+        <button (click)="toggleMenu($event)" type="button"
+          class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          aria-controls="mobile-menu" aria-expanded="false">
+          <span class="absolute -inset-0.5"></span>
+          <span class="sr-only">Open main menu</span>
+          <!--
+            Icon when menu is closed.
+
+            Menu open: "hidden", Menu closed: "block"
+          -->
+          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <!--
+            Icon when menu is open.
+
+            Menu open: "block", Menu closed: "hidden"
+          -->
+          <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+
+
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
           <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
             alt="Your Company">
-          <span class="text-white text-center sm:text-sm ml-3 md:text-xl font-bold">SOCIAL BOOK NETWORK</span>
+          <span class="hidden md:block text-white text-center ml-3 md:text-xl font-bold ">SOCIAL BOOK NETWORK</span>
         </div>
-        <div class="hidden sm:ml-6 sm:block">
-        </div>
+
       </div>
 
       <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <div class="hidden sm:ml-6 sm:block">
+          <div class="flex space-x-4">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <a [routerLink]="['wall']" routerLinkActive="bg-gray-900 text-white"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              aria-current="page">Wall</a>
+            <a [routerLink]="['users']" routerLinkActive="bg-gray-900 text-white"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Users</a>
+          </div>
+        </div>
         <button type="button"
           class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
           <span class="absolute -inset-1.5"></span>
@@ -38,23 +77,37 @@
 
 
 
-          <div [ngClass]="{'hidden' : !showMenu}"
+          <div [ngClass]="{'hidden' : !showProfileMenu}"
             class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
             <!-- Active: "bg-gray-100", Not Active: "" -->
-            <p class="block px-4 pt-2 pb-0 text-sm text-gray-900 font-bold" role="menuitem" tabindex="-1">{{user?.userName}}
+            <p class="block px-4 pt-2 pb-0 text-sm text-gray-900 font-bold" role="menuitem" tabindex="-1">
+              {{user?.userName}}
             </p>
-            <p class="italic block px-4 text-sm text-gray-400 dark:text-gray-400" role="menuitem" tabindex="-1">{{user?.email}}</p>
+            <p class="italic block px-4 text-sm text-gray-400 dark:text-gray-400" role="menuitem" tabindex="-1">
+              {{user?.email}}</p>
             <hr class="mt-2 mb-2">
-            <a (click)="onOpenModal()" class="font-mono block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-slate-100"
-              role="menuitem" tabindex="-1"><i class="fas fa-user-circle ml-1 mr-1"></i> Change avatar</a>
-            <a (click)="onLogout()" class="font-mono block px-4 py-2 text-sm text-gray-700 cursor-pointer  hover:bg-slate-100"
-              role="menuitem" tabindex="-1"><i class="fas fa-sign-out-alt ml-1 mr-1"></i> Logout</a>
+            <a (click)="onOpenModal()"
+              class="font-mono block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-slate-100" role="menuitem"
+              tabindex="-1"><i class="fas fa-user-circle ml-1 mr-1"></i> Profile</a>
+            <a (click)="onLogout()"
+              class="font-mono block px-4 py-2 text-sm text-gray-700 cursor-pointer  hover:bg-slate-100" role="menuitem"
+              tabindex="-1"><i class="fas fa-sign-out-alt ml-1 mr-1"></i> Logout</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Mobile menu, show/hide based on menu state. -->
+  <div [ngClass]="{'hidden' : !showMenu}" id="mobile-menu">
+    <div class="space-y-1 px-2 pb-3 pt-2">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a [routerLink]="['wall']" routerLinkActive="bg-gray-900 text-white"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md block px-3 py-2 text-base font-medium">Wall</a>
+      <a [routerLink]="['users']" routerLinkActive="bg-gray-900 text-white"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md block px-3 py-2 text-base font-medium">Users</a>
+    </div>
+  </div>
 
 </nav>

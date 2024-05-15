@@ -1,0 +1,10 @@
+<div class="mb-6 flex items-center justify-center">
+  <img [src]="url()" (load)="onLoad()" [ngStyle]="{display:   hasLoaded() ? '' : 'none'}"
+    class="w-full h-auto  object-cover rounded-md transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;">
+  @if (!hasLoaded()) {
+  <img src="assets/loader.svg" alt="no-img" class="h-9 w-9 mt-3 ">
+  }
+
+</div>

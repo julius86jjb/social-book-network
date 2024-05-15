@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild, inject, signal, AfterViewInit, AfterViewChecked, OnInit, AfterContentInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import Swal, { SweetAlertResult } from 'sweetalert2'
@@ -8,11 +8,12 @@ import Swal, { SweetAlertResult } from 'sweetalert2'
 import { AuthService } from '../../../auth/services/auth.service';
 import { ModalUploadService, ModalType } from '../../services/modalUpload.service';
 import { PostService } from '../../services/post.service';
-import { Comment, Post, UserId } from '../../interfaces/post.interface';
+import { Comment, Post } from '../../interfaces/post.interface';
 import { ValidatorService } from '../../../shared/services/validator.service';
-import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-import { User } from '../../../auth/interfaces/user.interface';
 import { EmojiComponent } from '../emoji/emoji.component';
+import { User } from '../../../auth/interfaces/user.interface';
+import { finalize } from 'rxjs';
+import { EmailValidator } from '../../../shared/validators/email-validator.service';
 
 @Component({
   selector: 'wall-modal-upload',
@@ -21,40 +22,32 @@ import { EmojiComponent } from '../emoji/emoji.component';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    EmojiComponent
+    EmojiComponent,
   ],
   templateUrl: './modalUpload.component.html',
   styleUrl: './modalUpload.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalUploadComponent {
-
-  @Input() public typeModal: ModalType = ModalType.newpost;
   @ViewChild('modalDiv') public modalDiv: ElementRef<HTMLDivElement> = {} as ElementRef;
-  @ViewChild('txtMessage') public textMessage: ElementRef<HTMLInputElement> = {} as ElementRef;
-  @Output() changeAvatar = new EventEmitter();
+  @ViewChild('txtMessage') public textMessage: ElementRef<HTMLInputElement> = {} as ElementRef
 
   private renderer = inject(Renderer2);
   public modalUploadService = inject(ModalUploadService);
   public authService = inject(AuthService);
   public postService = inject(PostService);
   public validatorService = inject(ValidatorService);
-  public fb = inject(FormBuilder);
+  private emailValidator = inject(EmailValidator)
 
   public imgToUpload = signal<FileList | null>(null)
   public imgTemp = signal<any>(null);
   public loading = signal(false);
+  public postEdit = this.modalUploadService.post
 
   public isEmojiPickerVisible: boolean = false;
   public comment: string = '';
 
-  public addEmoji(event: { emoji: { native: any; }; }) {
-    this.comment = `${this.comment}${event.emoji.native}`;
-    this.isEmojiPickerVisible = false;
-  }
-
-
-  public newPostForm: FormGroup = new FormGroup({
+  public postForm: FormGroup = new FormGroup({
     text: new FormControl<string>(''),
     file: new FormControl<File | null>(null),
   }, {
@@ -63,16 +56,25 @@ export class ModalUploadComponent {
     ]
   });
 
+  public profileForm: FormGroup = new FormGroup({
+    userName: new FormControl<string>(this.currentUser.userName, [Validators.required]),
+    email: new FormControl<string>(this.currentUser.email,[Validators.required], [this.emailValidator.validate.bind(this.emailValidator)]),
+    file: new FormControl<File | null>(null),
+
+  });
 
 
+  get currentUser() {
+    return this.authService.user()!
+  }
 
   get post(): Post {
-    const message = this.newPostForm.controls['text'].value
+    const message = this.postForm.controls['text'].value
 
     const post = {
-      userId: this.authService.user()!.id as UserId,
+      user: this.authService.user() as User,
       date: new Date(),
-      likes: [] as UserId[],
+      likes: [] as User[],
       comments: [] as Comment[],
       message: message,
     } as Post
@@ -80,15 +82,14 @@ export class ModalUploadComponent {
     return post
   }
 
-
-
   closeModal() {
+
     this.imgTemp.set(null);
     this.renderer.addClass(this.modalDiv.nativeElement, 'fadeOut');
     setTimeout(() => {
       this.modalUploadService.closeModal();
     }, 500);
-    this.newPostForm.patchValue({
+    this.postForm.patchValue({
       file: null,
       text: ''
     });
@@ -104,7 +105,7 @@ export class ModalUploadComponent {
 
       if (!file) {
         if (post) {
-          this.newPostForm.patchValue({
+          this.postForm.patchValue({
             file: null
           })
         }
@@ -118,79 +119,121 @@ export class ModalUploadComponent {
       reader.onloadend = () => {
         this.imgTemp.set(reader.result);
         if (post) {
-          this.newPostForm.patchValue({
+          this.postForm.patchValue({
             file: reader.result
           })
         }
       }
-
     }
-
   }
 
+  onUpdateProfile(): void {
 
-   onChangeAvatar(): void {
-
-    if (!this.imgToUpload()) return;
+    if (!this.imgToUpload()) {
+      this.updateUser()
+      return;
+    }
     const file: File | null = this.imgToUpload()!.item(0)
     this.imgToUpload.set(null);
 
-    if(file && file.size > 1000000) {
+    if (file && file.size > 1000000) {
       this.swalError('Max file size: 1MB')
       return;
     }
 
     if (file) {
-
       this.loading.set(true);
       this.authService.changeAvatar(file)!.subscribe({
-
         error: (message: string) => {
           this.closeModal();
-          this.swalError('Unable to change Avatar. Try again!')
+          this.swalError('Unable to update profile. Try again!')
         },
         complete: () => {
-          this.loading.set(false);
-          this.closeModal();
-          this.swalSuccess('New avatar saved!');
+          this.updateUser()
         },
       })
 
     }
   }
 
+  updateUser() {
+    const { userName, email } = this.profileForm.value
+    const { id, password, last_login, avatar } = this.currentUser
+    const user = { id, userName, email, password, avatar, last_login } as User
+    this.authService.updateCurrentUser(user)
+      .subscribe(() => {
+        this.swalSuccess('Profile Saved!');
+        this.loading.set(false);
+        this.closeModal();
+      })
+  }
+
 
   onCreatePost() {
 
-    if (this.newPostForm.invalid) {
-      this.newPostForm.markAllAsTouched();
-      Swal.fire('At least one field is required', 'Please write a message or select an image.', 'error')
-      return;
+    const file = this.checkFormAndFile()
+    if (file === undefined) return;
+
+
+    this.postService.createPost(this.post, file)
+      .pipe(
+        finalize(() => {
+          this.closeModal();
+          this.loading.set(false);
+        }))
+      .subscribe({
+        error: () => {
+          this.swalError('Unable to create post. Try again!');
+        },
+        complete: () => {
+          this.swalSuccess('New post published!');
+        },
+      })
+  }
+
+
+  onEditPost() {
+
+    const file = this.checkFormAndFile()
+    if (file === undefined) return;
+
+    const postEdited = {
+      ...this.modalUploadService.post()!,
+      message: this.postForm.controls['text'].value
+
     }
 
-    const file: File | null = this.imgToUpload()?.item(0) ?? null
-
-    if(file && file.size > 1000000) {
-      this.swalError('Max file size: 1MB')
-      return;
-    }
-
-    this.imgToUpload.set(null)
-    this.loading.set(true);
-    this.postService.createPost(this.post, file).subscribe({
+    this.postService.editPost(postEdited, file).subscribe({
       error: () => {
         this.closeModal();
-        this.swalError('Unable to create post. Try again!')
+        this.swalError('Unable to edit post. Try again!'),
+          this.loading.set(false);
       },
       complete: () => {
         this.closeModal();
-        this.swalSuccess('New post published!');
+        this.swalSuccess('Post succefully updated!');
         this.loading.set(false);
 
       },
     })
   }
 
+  checkFormAndFile(): File | null | undefined {
+    if (this.postForm.invalid) {
+      Swal.fire('At least one field is required', 'Please write a message or select an image.', 'error')
+      return;
+    }
+
+    const file: File | null = this.imgToUpload()?.item(0) ?? null
+
+    if (file && file.size > 1000000) {
+      this.swalError('Max file size: 1MB')
+      return;
+    }
+    this.imgToUpload.set(null)
+    this.loading.set(true);
+    return file
+  }
 
   swalSuccess(message: string): Promise<SweetAlertResult> {
     return Swal.fire({
@@ -215,9 +258,22 @@ export class ModalUploadComponent {
   public addEmojiToInput(event: any): void {
     const emoji = event.emoji.native
     this.textMessage.nativeElement.value += emoji;
-    this.newPostForm.patchValue({
-      text: this.newPostForm.controls['text'].value + ' ' + emoji
+    this.postForm.patchValue({
+      text: this.postForm.controls['text'].value + ' ' + emoji
     })
+  }
+
+  public addEmoji(event: { emoji: { native: any; }; }) {
+    this.comment = `${this.comment}${event.emoji.native}`;
+    this.isEmojiPickerVisible = false;
+  }
+
+  isNotValidField(field: string): boolean | null {
+    return this.validatorService.isNotValidField(this.profileForm, field);
+  }
+
+  getFieldError(field: string): string | null{
+    return this.validatorService.getFieldError(this.profileForm, field);
   }
 
 }

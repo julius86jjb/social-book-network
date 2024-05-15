@@ -1,0 +1,25 @@
+<form [formGroup]="postTypeForm">
+  <div class="relative inline-flex self-center w-1/2">
+    <svg class="text-white bg-[#1f2937] absolute top-0 right-0 m-2 pointer-events-none p-2 rounded"
+      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+      viewBox="0 0 38 22" version="1.1">
+      <!-- <title>F09B337F-81F6-41AC-8924-EC55BA135736</title> -->
+      <g id="ZahnhelferDE—Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ZahnhelferDE–Icon&amp;Asset-Download" transform="translate(-539.000000, -199.000000)" fill="#ffffff"
+          fill-rule="nonzero">
+          <g id="Icon-/-ArrowRight-Copy-2" transform="translate(538.000000, 183.521208)">
+            <polygon id="Path-Copy"
+              transform="translate(20.000000, 18.384776) rotate(135.000000) translate(-20.000000, -18.384776) "
+              points="33 5.38477631 33 31.3847763 29 31.3847763 28.999 9.38379168 7 9.38477631 7 5.38477631" />
+          </g>
+        </g>
+      </g>
+    </svg>
+    <select formControlName="postsType"
+      class="text-md font-semibold rounded-sm shadow-sm text-[#1f2937] h-10 w-full pl-5 pr-10 bg-white hover:border-gray-500 focus:outline-none appearance-none">
+      <option value="following">Following</option>
+      <option value="my-posts">My Posts</option>
+      <option value="all">All</option>
+    </select>
+  </div>
+</form>

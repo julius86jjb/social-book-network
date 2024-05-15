@@ -52,17 +52,17 @@ export class LoginPageComponent {
     const { email, password } = this.myForm.value;
     return this.authService.login(email!, password!)
       .subscribe({
-        next: (user: User | null) => {
+        next: (user: User | undefined) => {
           if (!user){
             Swal.fire('Error', 'Wrong Credentials', 'error');
             return;
           }
-          this.authService.updateUser({
+          this.authService.updateCurrentUser({
             ...user,
             last_login: new Date()
           }).subscribe();
 
-          this.router.navigateByUrl('/wall')
+          this.router.navigateByUrl('/dashboard')
         },
         error: () => Swal.fire('Error', 'Internal Server Error', 'error')
       })

@@ -1,52 +1,44 @@
-<div class="min-h-screen flex flex-col">
-  <wall-topbar-topbar></wall-topbar-topbar>
+<div class="bg-gray-100  flex flex-grow  justify-center">
+  <ul class="w-full md:max-w-md ">
+    <wall-new-post-form />
+    <app-select-posts (postsTypeChange)="this.onChangeCategory($event)"/>
+    @if (this.postService.posts().length > 0) {
+    @for (post of this.posts(); track $index) {
+    @defer (on viewport) {
+    <wall-single-post [post]="post" [index]="$index" (loaded)="getPosts($event)" />
+    } @placeholder {
+    <li class="flex items-center my-2">
+      <div class="bg-white p-8 rounded-lg shadow-md w-full">
+        <img src="assets/loader.svg" alt="no-img" class="h-9 w-9 mt-3 ">
+      </div>
+    </li>
+    }
 
-  <div class="bg-gray-100  flex flex-grow  justify-center">
-    <ul class="w-full md:max-w-md ">
-      <wall-new-post-form />
-      @if (this.postService.havePosts()) {
-      @for (post of posts(); track $index) {
 
-      <wall-single-post [post]="post"/>
-
-      }
-      }@else {
-      <li class="flex items-center my-2">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full">
-          <div class=" grid grid-cols-[62%_38%]  bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4" role="alert">
-            <div>
-              <p class="font-bold">No post published!</p>
-              <p>Be the first to share a post.</p>
-            </div>
-            <div class="flex items-center justify-center">
-              <button (click)="onOpenModal()" type="button"
-                class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
+    }
+    }@else {
+    <li class="flex items-center my-2">
+      <div class="bg-white p-8 rounded-lg shadow-md w-full">
+        <div class=" grid grid-cols-[62%_38%]  bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4"
+          role="alert">
+          <div>
+            <p class="font-bold">No post published!</p>
+            <p>Be the first to share a post.</p>
+          </div>
+          <div class="flex items-center justify-center">
+            <button (click)="onOpenModal()" type="button"
+              class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
                 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2
                  dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-600 dark:focus:ring-indigo-900">
-                New Post +
-              </button>
-            </div>
-
+              New Post +
+            </button>
           </div>
+
         </div>
-      </li>
-      }
+      </div>
+    </li>
+    }
 
-    </ul>
+  </ul>
 
-  </div>
-
-
-  <wall-modal-upload #modalDiv [typeModal]="this.modalService.modalType()"></wall-modal-upload>
 </div>
-
-
-
-@if (this.postService.loading()) {
-
-<div class="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
-  <div class="flex justify-center items-center mt-[50vh]">
-    <div class="fas fa-circle-notch fa-spin fa-5x text-violet-600"></div>
-  </div>
-</div>
-}

@@ -28,7 +28,7 @@ export class NewPostFormComponent{
   private authService = inject(AuthService);
 
   onOpenModal() {
-    this.modalUploadService.openModal(ModalType.newpost);
+    this.modalUploadService.openModal(ModalType.newPost);
   }
 
   get user() {

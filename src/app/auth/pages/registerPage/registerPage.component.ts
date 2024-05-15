@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user.interface';
 import { ValidatorService } from '../../../shared/services/validator.service';
+import { EmailValidator } from '../../../shared/validators/email-validator.service';
 
 @Component({
   selector: 'app-register-page',
@@ -29,8 +30,8 @@ export class RegisterPageComponent {
   private validatorService = inject(ValidatorService);
 
   public myForm = this.fb.group({
-    userName: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
-    email: ['', [Validators.required, Validators.email]],
+    userName: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], [new EmailValidator()]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   })
 
@@ -39,7 +40,7 @@ export class RegisterPageComponent {
     return this.validatorService.isNotValidField(this.myForm, field);
   }
 
-  getFieldError(field: string): string | null{
+  getFieldError(field: string): string | null {
     return this.validatorService.getFieldError(this.myForm, field);
   }
 
@@ -49,15 +50,17 @@ export class RegisterPageComponent {
       return;
     };
 
-    const {userName, email, password} = this.myForm.value as User;
+    const { userName, email, password } = this.myForm.value;
 
     const user = {
       userName,
       email,
       password,
+      followers: [],
+      following: [],
       // last_login: new Date().getTime(),
       avatar: '../../../../assets/images/default-avatar.jpg'
-    } as User
+    }
 
     this.authService.register(user)
       .subscribe(user => {
@@ -72,6 +75,6 @@ export class RegisterPageComponent {
       })
   }
 
- }
+}
 
 

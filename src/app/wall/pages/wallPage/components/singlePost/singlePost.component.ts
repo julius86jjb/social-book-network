@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input,
+  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, EventEmitter, Input,
+  InputSignal,
   OnInit,
+  Output,
   ViewChild, effect, inject, input, signal
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,7 +11,7 @@ import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-i
 
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
-import { UserId, Post, Comment } from '../../../../interfaces/post.interface';
+import { Post, Comment } from '../../../../interfaces/post.interface';
 import { User } from '../../../../../auth/interfaces/user.interface';
 import { AuthService } from '../../../../../auth/services/auth.service';
 import { EmojiComponent } from '../../../../components/emoji/emoji.component';
@@ -17,6 +19,9 @@ import { PostService } from '../../../../services/post.service';
 import { CommentComponent } from './components/comment/comment.component';
 import { UserNamePipe } from '../../../../pipes/userName.pipe';
 import { UnderlineDirective } from '../../../../../shared/directives/underline.directive';
+import { TimeAgoPipe } from '../../../../../shared/pipes/timeAgo.pipe';
+import { LazyImageComponent } from '../../../../../shared/components/lazyImage/lazyImage.component';
+import { ModalType, ModalUploadService } from '../../../../services/modalUpload.service';
 
 @Component({
   selector: 'wall-single-post',
@@ -28,7 +33,9 @@ import { UnderlineDirective } from '../../../../../shared/directives/underline.d
     ReactiveFormsModule,
     CommentComponent,
     UserNamePipe,
-    UnderlineDirective
+    UnderlineDirective,
+    TimeAgoPipe,
+    LazyImageComponent
   ],
   host: {
     "(window:click)": "onClickOutside()"
@@ -40,50 +47,63 @@ import { UnderlineDirective } from '../../../../../shared/directives/underline.d
 })
 
 
-export class SinglePostComponent implements OnInit{
+export class SinglePostComponent implements OnInit {
 
-
-  @ViewChild('txtComment') public inputComment: ElementRef<HTMLInputElement> = {} as ElementRef;
-
-  destroyRef = inject(DestroyRef)
   public authService = inject(AuthService);
   public postService = inject(PostService);
+  private modalUploadService = inject(ModalUploadService);
+  destroyRef = inject(DestroyRef)
 
-  public post = input.required<Post>();
-  public user = signal<User | undefined>(undefined);
-  // public user = toSignal(
-  //   toObservable(this.post).pipe(switchMap((post) => this.getUserById(post.userId)))
-  // )
+  @Output() loaded = new EventEmitter<number>();
+  @Output() userUpdated = new EventEmitter<string>();
+  @ViewChild('txtComment') public inputComment: ElementRef<HTMLInputElement> = {} as ElementRef;
 
+  public index: InputSignal<number> = input.required<number>();
+  public post: InputSignal<Post> = input.required<Post>();
+  public allComments = signal<boolean>(false)
 
   public showTooltip = signal<boolean>(false);
   public showMenu = signal<boolean>(false);
   public displayCommentMenu = signal<boolean>(false);
 
   public newCommentForm: FormGroup = new FormGroup({
-    text: new FormControl<string>('', Validators.required)
+    text: new FormControl<string>('', [Validators.required])
   });
 
-  public afterChangeAvatar = effect(() => {
-    if (!this.currentUser) return;
-    if (this.currentUser.id === this.post()?.userId) this.user.set(this.currentUser)
+  // public afterChangeAvatar = effect(() => {
+  //   if (!this.currentUser) return;
+  //   if (this.currentUser.id === this.post().userId) this.user.set(this.currentUser)
 
-  }, { allowSignalWrites: true });
+  // }, { allowSignalWrites: true });
 
+  constructor() {
+    toObservable(this.authService.afterCurrentUserUpdate).subscribe((user: User | undefined) => {
+      if (user) {
+        const userUpdated: User = this.post().user.id === user.id ? user : this.post().user;
+        const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.user.id === user.id ? { ..._comment, user: user } : _comment)
+        this.postService.update({
+          ...this.post(),
+          user: userUpdated,
+          comments: commentsUpdated
+        }).subscribe()
+      }
+    })
+  }
 
   ngOnInit() {
-    this.postService.loading.set(true);
-      this.authService.getUserById(this.post().userId)
-        .subscribe((u) => {
-          this.user.set(u);
-          this.postService.loading.set(false);
-        });
-  }
-  constructor() {
+    this.loaded.emit(this.index());
   }
 
   get currentUser() {
     return this.authService.user()!
+  }
+
+  viewAllComments(){
+    this.allComments.set(true);
+  }
+
+  viewLessComments() {
+    this.allComments.set(false);
   }
 
   onClickOutside() {
@@ -111,11 +131,12 @@ export class SinglePostComponent implements OnInit{
 
     this.postService.updateLikes(this.post(), action).pipe(
       takeUntilDestroyed(this.destroyRef),
-    )
-      .subscribe();
+    ).subscribe();
   }
 
   onAddComment() {
+
+    if (this.newCommentForm.invalid) return;
 
     this.postService.addComment(this.post(), this.newCommentForm.controls['text'].value)
       .pipe(
@@ -125,6 +146,8 @@ export class SinglePostComponent implements OnInit{
     this.newCommentForm.patchValue({
       text: this.newCommentForm.controls['text'].reset()
     })
+
+    this.allComments.set(true);
   }
 
   deleteComment(idComment: string) {
@@ -138,6 +161,15 @@ export class SinglePostComponent implements OnInit{
     this.postService.updateCommentLikes(this.post(), comment, action).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe();
+  }
+
+  updateComments(user: User, comment: Comment) {
+    const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.user.id === user.id ? { ..._comment, user: user } : _comment)
+    const postToUpdate = {
+      ...this.post(),
+      comments: commentsUpdated
+    }
+    this.postService.update(postToUpdate).subscribe();
   }
 
 
@@ -154,19 +186,22 @@ export class SinglePostComponent implements OnInit{
 
 
   hasLiked(): boolean {
-    const likes: UserId[] = this.post().likes
-    return likes.some((userId: UserId) => userId === this.currentUser.id);
+    const likes: User[] = this.post().likes
+    return likes.some((user: User) => user.id === this.currentUser.id);
   }
 
 
   addEmojiToInput(event: any): void {
-    console.log('hi');
 
     const emoji = event.emoji.native
     this.inputComment.nativeElement.value += emoji;
     this.newCommentForm.patchValue({
       text: this.newCommentForm.controls['text'].value + ' ' + emoji
     })
+  }
+
+  onOpenModal() {
+    this.modalUploadService.openModal(ModalType.editPost, this.post().id);
   }
 
 }

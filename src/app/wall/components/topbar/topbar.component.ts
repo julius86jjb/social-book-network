@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ModalType, ModalUploadService } from '../../services/modalUpload.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'wall-topbar-topbar',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule
   ],
   templateUrl: './topbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,19 +17,22 @@ import { ModalType, ModalUploadService } from '../../services/modalUpload.servic
     "(window:click)": "onClickOutside()"
   },
 
+
 })
 export class TopbarComponent {
 
+  public showProfileMenu: boolean = false
   public showMenu: boolean = false
   private authService = inject(AuthService);
   private modalUploadService = inject(ModalUploadService);
 
   toogleProfileMenu($event: any) {
     $event.stopPropagation();
-    this.showMenu = !this.showMenu
+    this.showProfileMenu = !this.showProfileMenu
   }
 
   onClickOutside() {
+    this.showProfileMenu = false
     this.showMenu = false
   }
 
@@ -40,8 +45,15 @@ export class TopbarComponent {
   }
 
   onOpenModal() {
-    this.modalUploadService.openModal(ModalType.changeavatar)
+    this.modalUploadService.openModal(ModalType.profile)
+    this.showProfileMenu = false;
     this.showMenu = false;
+  }
+
+  toggleMenu($event: any) {
+    console.log('hey!');
+    $event.stopPropagation();
+    this.showMenu = !this.showMenu
   }
 
 

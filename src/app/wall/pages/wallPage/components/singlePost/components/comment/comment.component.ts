@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, effect, inject, input, signal } from '@angular/core';
-import { Comment, Post, UserId } from '../../../../../../interfaces/post.interface';
+import { Comment } from '../../../../../../interfaces/post.interface';
 import { UserNamePipe } from '../../../../../../pipes/userName.pipe';
 import { UserAvatarPipe } from '../../../../../../pipes/userAvatar.pipe';
 import { PostService } from '../../../../../../services/post.service';
 import { AuthService } from '../../../../../../../auth/services/auth.service';
 import { User } from '../../../../../../../auth/interfaces/user.interface';
 import { Observable, of } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { TimeAgoPipe } from '../../../../../../../shared/pipes/timeAgo.pipe';
 
 
 export interface commentWithAvatar {
@@ -24,7 +25,8 @@ export interface commentWithAvatar {
   imports: [
     CommonModule,
     UserNamePipe,
-    UserAvatarPipe
+    UserAvatarPipe,
+    TimeAgoPipe
   ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css',
@@ -33,7 +35,7 @@ export interface commentWithAvatar {
     "(window:click)": "onClickOutside()"
   },
 })
-export class CommentComponent implements OnInit{
+export class CommentComponent{
 
 
   private postService = inject(PostService)
@@ -43,53 +45,15 @@ export class CommentComponent implements OnInit{
 
   @Output() onDeleteComment = new EventEmitter();
   @Output() onUpdateLikesComment = new EventEmitter<string>();
+  @Output() onUpdateComment = new EventEmitter<User>();
 
 
   public displayCommentMenu = signal<boolean>(false);
 
-  // public sComment = signal(this.comment)
-  public comment = input.required<Comment>();
-  // public user: Observable<User | undefined> = of(undefined);
-
-  public user = signal<User | undefined>(undefined);
-
+  public comment: InputSignal<Comment> = input.required<Comment>();
   public showMenu = signal<boolean>(false);
   public showTooltip = signal<boolean>(false);
 
-
-  // @Input()
-  // public set comment(comment: Comment) {
-  //   this.sComment.set(comment);
-  //   this.user = this.authService.getUserById(this.sComment().user)
-  // }
-
-  // public afterChangeAvatar = effect(() => {
-  //   if (!this.authService.user) return;
-
-  //   if (this.authService.user()!.id === this.sComment().user) {
-  //     this.user = of(this.authService.user()!);
-  //     this.cd.markForCheck();
-  //   }
-  // })
-
-  public afterChangeAvatar = effect(() => {
-    if (!this.currentUser) return;
-    if (this.currentUser.id === this.comment()?.user)
-      this.user.set(this.currentUser)
-
-  }, { allowSignalWrites: true });
-
-  constructor() {
-  }
-
-  ngOnInit() {
-    this.postService.loading.set(true);
-      this.authService.getUserById(this.comment().user)
-        .subscribe((u) => {
-          this.user.set(u)
-          this.postService.loading.set(false);
-        });
-  }
 
   get currentUser() {
     return this.authService.user()!
@@ -116,8 +80,8 @@ export class CommentComponent implements OnInit{
   }
 
   hasLiked(): boolean {
-    const likes: UserId[] = this.comment().likes
-    return likes.some((userId: UserId) => userId === this.currentUser.id);
+    const likes: User[] = this.comment().likes
+    return likes.some((user: User) => user.id === this.currentUser.id);
   }
 
 

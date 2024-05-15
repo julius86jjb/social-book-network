@@ -4,6 +4,8 @@ import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 @Injectable({ providedIn: 'root' })
 export class ValidatorService {
 
+  public emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+
 
   public isNotValidField(form: FormGroup, field: string): boolean | null {
 
@@ -15,16 +17,20 @@ export class ValidatorService {
 
     const errors = form.controls[field].errors || {};
 
+    if (Object.keys(errors).includes('pattern') && field === 'email') return `Incorrect email format`
+
     for (const key of Object.keys(errors)) {
       switch (key) {
         case 'required':
-          return 'Este campo es requerido'
+          return 'This field is required'
         case 'email':
-          return 'Formato de email inválido'
+          return 'Invalid email format'
         case 'minlength':
-          return `Introduce un mínimo de ${errors['minlength'].requiredLength} caracteres`
+          return `Enter a minimum of ${errors['minlength'].requiredLength} characters`
         case 'maxlength':
-          return `Introduce un máximo de ${errors['minlength'].requiredLength} caracteres`
+          return `Enter a maximum of ${errors['minlength'].requiredLength} characters`
+        case 'emailTaken':
+          return `This email has already been registered`
 
       }
     }

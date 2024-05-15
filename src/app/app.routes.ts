@@ -4,7 +4,7 @@ import { isNotAuthenticatedGuard } from './auth/guards/isNotAuthenticated.guard'
 
 export const routes: Routes = [
   {
-    path: 'wall',
+    path: 'dashboard',
     canActivate: [isAuthenticatedGuard],
     loadChildren: () => import('./wall/wall.routes').then(r => r.WALL_ROUTES)
   },

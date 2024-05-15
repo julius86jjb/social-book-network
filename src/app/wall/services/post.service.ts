@@ -1,13 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, OnDestroy, computed, effect, inject, signal } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
-import { catchError, of, Observable, throwError, finalize, first, tap } from 'rxjs';
+import { catchError, of, Observable, throwError, finalize, first, tap, Observer, skip, take, map } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Post, Comment, UserId } from '../interfaces/post.interface';
+import { Post, Comment } from '../interfaces/post.interface';
 import { AuthService } from '../../auth/services/auth.service';
 import { subscribe } from 'diagnostics_channel';
+import { User } from '../../auth/interfaces/user.interface';
 
 
 @Injectable({
@@ -25,37 +26,36 @@ export class PostService {
   public havePosts = signal<boolean>(true);
   public loading = signal<boolean>(false);
 
+  constructor() { }
+
 
   get currentUser() {
     return this.authService.user()!
   }
 
-  constructor() { }
-
-  getPosts(): Observable<Post[]> {
-
-    return this.http.get<Post[]>(`${this.baseUrl}?_embed=user`)
+  getPosts(i: number, type: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseUrl}`)
       .pipe(
-        tap((posts: Post[]) => this.posts.set(posts.reverse())),
-        tap((posts: Post[]) => posts.length === 0
-          ? this.havePosts.set(false)
-          : this.havePosts.set(true)),
-        catchError(this.handleError)
+        tap((posts: Post[]) => posts.length === 0 ? this.havePosts.set(false) : this.havePosts.set(true)),
+        map(posts => {
 
+          switch (type) {
+            case 'my-posts':
+              return posts.filter(post => post.user.id === this.authService.user()!.id)
+            case 'following':
+              return posts.filter(post => this.currentUser.following.includes(post.user.id) || post.user.id === this.currentUser.id)
+            default:
+              return posts
+          }
+        }
+        ),
+        map(posts => posts.reverse()),
+        map(posts => posts.slice(i, i + 5)),
+        tap((posts: Post[]) => this.posts.update(oldPosts => [...oldPosts, ...posts])),
+        catchError(this.handleError)
       )
   }
 
-  savePost(post: Post) {
-    this.http.post<Post>(`${this.baseUrl}`, post).subscribe((post) => {
-      if (this.posts()) {
-        this.posts.update((posts) => [
-          post,
-          ...posts!
-        ])
-        if (this.posts()!.length > 0) this.havePosts.set(true);
-      }
-    })
-  }
 
   createPost(post: Post, img: File | null): Observable<number | undefined> {
     try {
@@ -87,7 +87,53 @@ export class PostService {
     }
   }
 
-  update(post: Post) {
+  editPost(post: Post, img: File | null): Observable<number | undefined> {
+    try {
+      if (!img) {
+
+        this.update(post).subscribe()
+        return of(undefined)
+
+      } else {
+
+        const filePath = `${this.basePath}/${img!.name}`;
+        const storageRef = this.storage.ref(filePath);
+        const uploadTask = this.storage.upload(filePath, img);
+
+        uploadTask.snapshotChanges().pipe(
+          finalize(() => {
+            storageRef.getDownloadURL().subscribe(downloadURL => {
+              const newPost = { ...post, imageUrl: downloadURL } as Post
+              this.update(newPost).subscribe()
+
+            })
+          })
+        ).subscribe();
+        return uploadTask.percentageChanges();
+      }
+    } catch (error) {
+
+      return of(undefined)
+    }
+  }
+
+
+  savePost(post: Post) {
+    this.http.post<Post>(`${this.baseUrl}`, post).subscribe((_post) => {
+      if (this.posts()) {
+        this.posts.update((posts) => [
+          _post,
+          ...posts!,
+        ])
+
+        if (this.posts()!.length > 0) this.havePosts.set(true);
+      }
+    })
+  }
+
+
+
+  update(post: Post): Observable<Post> {
 
     if (!post.id) throw Error('Post is required');
     return this.http.patch<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
@@ -95,7 +141,6 @@ export class PostService {
         posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)))
     )
   }
-
 
 
   delete(post: Post) {
@@ -107,48 +152,36 @@ export class PostService {
     )
   }
 
-
-
-
   getPostById(postId: string): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/posts/${postId}`)
+    return this.http.get<Post>(`${this.baseUrl}/${postId}`)
   }
 
 
   updateLikes(postToUpdate: Post, action: string) {
     switch (action) {
       case 'addLike':
-        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()!.id as UserId] }
+        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()! as User] }
         break;
       case 'dislike':
         postToUpdate.likes = postToUpdate.likes
-          .filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
+          .filter((user: User) => user.id !== this.authService.user()!.id)
         break;
     }
     return this.update(postToUpdate)
   }
 
+
   updateCommentLikes(post: Post, comment: Comment, action: string) {
-
-
 
     switch (action) {
       case 'addLike':
         post.comments.find(_comment => comment.id === _comment.id)?.likes
-          .push(this.currentUser.id)
+          .push(this.currentUser)
         break;
       case 'dislike':
-        console.log('entra');
-
-        const newLikes = comment.likes.filter((userId: UserId) => userId !== this.authService.user()!.id as UserId)
-        console.log(comment.likes);
-
-        console.log(newLikes);
-
-
+        const newLikes = comment.likes.filter((user: User) => user.id !== this.authService.user()!.id)
         post.comments = post.comments.map((_comment) => {
           if (comment.id === _comment.id) {
-            console.log('hey!');
 
             return {
               ..._comment,
@@ -166,7 +199,7 @@ export class PostService {
       ...postToUpdate,
       comments: [
         ...postToUpdate.comments,
-        { id: uuidv4(), user: this.authService.user()!.id as UserId, message: textComment!, likes: [] }
+        { id: uuidv4(), user: this.authService.user()! as User, message: textComment!, likes: [], date: new Date() }
       ]
     }
     return this.update(postToUpdate)
@@ -177,6 +210,7 @@ export class PostService {
       .filter((comment: Comment) => comment.id !== commentId)
     return this.update(postToUpdate)
   }
+
 
 
   private handleError(err: HttpErrorResponse): Observable<never> {

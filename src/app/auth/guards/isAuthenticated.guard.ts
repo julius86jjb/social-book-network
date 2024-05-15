@@ -9,7 +9,7 @@ export const isAuthenticatedGuard: CanActivateFn = (route, state) => {
   const url_destino = state.url;
   localStorage.setItem('url', url_destino);
 
-  if (authService.user() !== null) {
+  if (authService.user() !== undefined) {
     return true;
   };
 

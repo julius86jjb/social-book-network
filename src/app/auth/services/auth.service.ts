@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { User } from '../interfaces/user.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, defaultIfEmpty, filter, finalize, isEmpty, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, defaultIfEmpty, filter, finalize, isEmpty, map, mergeMap, of, switchMap, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { PostService } from '../../wall/services/post.service';
@@ -20,18 +20,20 @@ export class AuthService {
   private storage = inject(AngularFireStorage)
 
 
-  public user = signal<User | null>(null);
+  public user = signal<User | undefined>(undefined);
+
+  public afterCurrentUserUpdate = signal<User | undefined>(undefined)
 
 
   constructor() {
     this.loadFromLocalStorage();
   }
 
-  register(user: User): Observable<User> {
+  register(user: any): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/users`, user);
   }
 
-  login(email: string, password: string): Observable<User | null> {
+  login(email: string, password: string): Observable<User | undefined> {
 
     return this.http.get<User[]>(`${this.baseUrl}/users`)
       .pipe(
@@ -39,8 +41,8 @@ export class AuthService {
         // mergeMap((users: User[]) => users),
         // concatMap((users: User[]) => users),
         filter((user: User) => (user.email === email && user.password === password)),
-        tap((user: User | null) => this.setAuthentication({...user!, last_login: new Date()})),
-        defaultIfEmpty(null)
+        tap((user: User | undefined) => this.setAuthentication({...user!, last_login: new Date()})),
+        defaultIfEmpty(undefined)
 
         // map((users: User[]) => users.filter((user: User) => user.email === email && user.password === password)),
         // tap((users: User[]) => users.length ? this.user.set(users[0]) : this.user.set(undefined)),
@@ -49,7 +51,7 @@ export class AuthService {
       )
   }
 
-  private setAuthentication(user: User | null): boolean {
+  private setAuthentication(user: User | undefined): boolean {
     this.user.set(user);
     this.saveLocalStorage(user);
     return true;
@@ -58,10 +60,10 @@ export class AuthService {
   logout() {
     this.router.navigate(['/login']);
     localStorage.removeItem('user');
-    this.user.set(null);
+    this.user.set(undefined);
   }
 
-  saveLocalStorage(user: User | null) {
+  saveLocalStorage(user: User | undefined) {
     if (user)
       localStorage.setItem('user', JSON.stringify(user));
   }
@@ -69,12 +71,12 @@ export class AuthService {
   loadFromLocalStorage() {
     localStorage.getItem('user')
       ? this.user.set(JSON.parse(localStorage.getItem('user')!))
-      : this.user.set(null)
+      : this.user.set(undefined)
   }
 
 
 
-  changeAvatar(img: File): Observable<number | undefined> {
+  changeAvatar(img: File): Observable<User | undefined> {
 
     try {
       const filePath = `${this.basePath}/${img.name}`;
@@ -88,24 +90,26 @@ export class AuthService {
               ...this.user(),
               avatar: downloadURL
             } as User
-            this.updateUser(userUpdate).subscribe()
+            this.updateCurrentUser(userUpdate)
+              .subscribe()
           })
         })
       ).subscribe();
 
-      return uploadTask.percentageChanges();
+
+      return of(this.user());
 
     } catch (error) {
-      console.log(error);
       return of(undefined);
     }
 
   }
 
 
-  updateUser(user: User): Observable<User> {
+  updateCurrentUser(user: User): Observable<User> {
     return this.http.patch(`${this.baseUrl}/users/${this.user()!.id}`, user).pipe(
       tap((userUpdated: any) => this.user.set(userUpdated)),
+      tap((userUpdated: any) => this.afterCurrentUserUpdate.set(userUpdated)),
       tap(() => this.saveLocalStorage(this.user())),
     )
   }
