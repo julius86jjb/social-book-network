@@ -76,7 +76,7 @@ export class AuthService {
 
 
 
-  changeAvatar(img: File): Observable<User | undefined> {
+  changeAvatar(user: User, img: File): Observable<User | undefined> {
 
     try {
       const filePath = `${this.basePath}/${img.name}`;
@@ -87,11 +87,12 @@ export class AuthService {
         finalize(() => {
           storageRef.getDownloadURL().subscribe(downloadURL => {
             const userUpdate = {
-              ...this.user(),
+              ...user,
               avatar: downloadURL
             } as User
+            console.log(userUpdate)
             this.updateCurrentUser(userUpdate)
-              .subscribe()
+              .subscribe( resp => console.log(resp))
           })
         })
       ).subscribe();
@@ -109,6 +110,7 @@ export class AuthService {
   updateCurrentUser(user: User): Observable<User> {
     return this.http.patch(`${this.baseUrl}/users/${this.user()!.id}`, user).pipe(
       tap((userUpdated: any) => this.user.set(userUpdated)),
+      tap((userUpdated: any) => console.log(userUpdated)),
       tap((userUpdated: any) => this.afterCurrentUserUpdate.set(userUpdated)),
       tap(() => this.saveLocalStorage(this.user())),
     )

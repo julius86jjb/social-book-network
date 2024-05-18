@@ -1,4 +1,6 @@
-
+buscador
+deborah output
 notifications de likes y comments
+problema cuando no hay posts (pero si hay) y al recargar
 tamaño post en viewport iintermedio "adaptative"
-problem comment palabra megalarga
+'ngx-toastr';

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, signal } from '@angular/core';
 
 @Component({
   selector: 'shared-lazy-image',
@@ -17,15 +17,14 @@ import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core
 })
 export class LazyImageComponent {
 
+  public type = input.required<string>();
+
   public url = input.required<string>();
 
   public hasLoaded = signal<boolean>(false)
 
   onLoad() {
-    setTimeout(() => {
       this.hasLoaded.set(true);
-
-    }, 4000);
   }
 
 }

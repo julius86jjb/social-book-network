@@ -1,16 +1,21 @@
 @if (this.postService.havePosts()) {
 <li class="flex items-center my-2"
-  (mouseover)="this.currentUser.id === post().user.id ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseover)="this.currentUser.id === post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
   (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-  (ontouchstart)="this.currentUser.id === this.post().user.id ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
+  (ontouchstart)="this.currentUser.id === this.post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
   (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full">
 
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-2">
-        <img [src]="post().user.avatar" alt="User Avatar" class="w-10 h-10 rounded-full">
+
+        @if((post().userId | userAvatar) | async ) {
+          <shared-lazy-image type='avatar'  [url]="((post().userId | userAvatar) | async)!" alt="User avatar"></shared-lazy-image>
+
+        }
+
         <div>
-          <p class="text-gray-800 font-semibold">{{post().user.userName}} </p>
+          <p class="text-gray-800 font-semibold">{{(post().userId | userName) | async}} </p>
           <p class="text-gray-500 text-sm">{{post().date | appTimeAgo }}</p>
         </div>
       </div>
@@ -52,7 +57,7 @@
     <!-- <div class="mb-4 flex items-center justify-center">
       <img [src]="post().imageUrl" alt="Post Image" class="w-full h-auto  object-cover rounded-md">
     </div> -->
-    <shared-lazy-image [url]="post().imageUrl!" alt="Post Image"></shared-lazy-image>
+    <shared-lazy-image type='postImage' [url]="post().imageUrl!" alt="Post Image"></shared-lazy-image>
     }
 
 
@@ -111,7 +116,7 @@
       aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
       @for (item of this.post().likes; track $index) {
       <!-- <p class="block px-2 text-xs text-white">Paco</p> -->
-      <p class="block px-2 text-xs text-white">{{item.userName}}</p>
+      <p class="block px-2 text-xs text-white">{{item}}</p>
       }
     </div>
 

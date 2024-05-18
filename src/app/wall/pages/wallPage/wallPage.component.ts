@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 import { PostService } from '../../services/post.service';
 import { ModalType, ModalUploadService } from '../../services/modalUpload.service';
@@ -12,6 +12,7 @@ import { TopbarComponent } from '../../components/topbar/topbar.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { SelectPostsComponent } from './components/selectPosts/selectPosts.component';
 import { map, tap } from 'rxjs';
+import { ModalUploadComponent } from '../../components/modalUpload/modalUpload.component';
 
 @Component({
   standalone: true,
@@ -21,7 +22,8 @@ import { map, tap } from 'rxjs';
     RouterModule,
     NewPostFormComponent,
     SinglePostComponent,
-    SelectPostsComponent
+    SelectPostsComponent,
+    ModalUploadComponent
   ],
   templateUrl: './wallPage.component.html',
   styleUrl: './wallPage.component.css',
@@ -44,7 +46,12 @@ export default class WallPageComponent implements OnDestroy {
         tap(posts => this.posts.set(posts)),
         takeUntilDestroyed(this.destroyRef),
       ).subscribe();
+
+    toObservable(this.authService.afterCurrentUserUpdate).subscribe(() => {
+      this.onUpdateCurrentUser()
+    })
   }
+
 
   onChangeCategory(type: string) {
     this.postService.posts.set([])
@@ -53,6 +60,15 @@ export default class WallPageComponent implements OnDestroy {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
       ).subscribe();
+  }
+
+  onUpdateCurrentUser() {
+
+    this.postService.posts.set([])
+    this.postService.getPosts(0, this.postsType())
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe(resp => console.log(resp));
   }
 
 

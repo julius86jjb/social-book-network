@@ -43,6 +43,7 @@ export class ModalUploadComponent {
   public imgTemp = signal<any>(null);
   public loading = signal(false);
   public postEdit = this.modalUploadService.post
+  public removeEditPic = signal(false);
 
   public isEmojiPickerVisible: boolean = false;
   public comment: string = '';
@@ -58,7 +59,7 @@ export class ModalUploadComponent {
 
   public profileForm: FormGroup = new FormGroup({
     userName: new FormControl<string>(this.currentUser.userName, [Validators.required]),
-    email: new FormControl<string>(this.currentUser.email,[Validators.required], [this.emailValidator.validate.bind(this.emailValidator)]),
+    email: new FormControl<string>(this.currentUser.email, [Validators.required], [this.emailValidator.validate.bind(this.emailValidator)]),
     file: new FormControl<File | null>(null),
 
   });
@@ -72,12 +73,12 @@ export class ModalUploadComponent {
     const message = this.postForm.controls['text'].value
 
     const post = {
-      user: this.authService.user() as User,
+      userId: this.currentUser.id,
       date: new Date(),
-      likes: [] as User[],
-      comments: [] as Comment[],
+      likes: [],
+      comments: [],
       message: message,
-    } as Post
+    } as unknown as Post
 
     return post
   }
@@ -95,7 +96,7 @@ export class ModalUploadComponent {
     });
   }
 
-  onUploadImage(event: any, post: boolean) {
+  onUploadImage(event: any) {
 
     this.imgToUpload.set(event.target.files);
 
@@ -104,11 +105,10 @@ export class ModalUploadComponent {
 
 
       if (!file) {
-        if (post) {
-          this.postForm.patchValue({
-            file: null
-          })
-        }
+        this.postForm.patchValue({
+          file: null
+        })
+
         this.imgTemp.set(null);
         return;
       }
@@ -118,11 +118,11 @@ export class ModalUploadComponent {
 
       reader.onloadend = () => {
         this.imgTemp.set(reader.result);
-        if (post) {
-          this.postForm.patchValue({
-            file: reader.result
-          })
-        }
+
+        this.postForm.patchValue({
+          file: reader.result
+        })
+
       }
     }
   }
@@ -130,6 +130,8 @@ export class ModalUploadComponent {
   onUpdateProfile(): void {
 
     if (!this.imgToUpload()) {
+      console.log('entra sin img');
+
       this.updateUser()
       return;
     }
@@ -143,13 +145,18 @@ export class ModalUploadComponent {
 
     if (file) {
       this.loading.set(true);
-      this.authService.changeAvatar(file)!.subscribe({
+      const { userName, email } = this.profileForm.value
+      const { id, password, last_login, avatar } = this.currentUser
+      const user = { id, userName, email, password, avatar, last_login } as User
+      this.authService.changeAvatar(user, file)!.subscribe({
         error: (message: string) => {
           this.closeModal();
           this.swalError('Unable to update profile. Try again!')
         },
-        complete: () => {
-          this.updateUser()
+        complete: async () => {
+          this.swalSuccess('Profile Saved!');
+          this.loading.set(false);
+          this.closeModal();
         },
       })
 
@@ -160,7 +167,7 @@ export class ModalUploadComponent {
     const { userName, email } = this.profileForm.value
     const { id, password, last_login, avatar } = this.currentUser
     const user = { id, userName, email, password, avatar, last_login } as User
-    this.authService.updateCurrentUser(user)
+    return this.authService.updateCurrentUser(user)
       .subscribe(() => {
         this.swalSuccess('Profile Saved!');
         this.loading.set(false);
@@ -170,6 +177,11 @@ export class ModalUploadComponent {
 
 
   onCreatePost() {
+
+    if (this.postForm.invalid) {
+      Swal.fire('At least one field is required', 'Please write a message or select an image.', 'error')
+      return;
+    }
 
     const file = this.checkFormAndFile()
     if (file === undefined) return;
@@ -196,12 +208,16 @@ export class ModalUploadComponent {
 
     const file = this.checkFormAndFile()
     if (file === undefined) return;
-
-    const postEdited = {
-      ...this.modalUploadService.post()!,
-      message: this.postForm.controls['text'].value
-
+    console.log(this.postEdit()?.message)
+    const postEdited: Post = {
+      ...this.postEdit()!,
+      message: this.postForm.controls['text'].dirty ? this.postForm.controls['text'].value : this.postEdit()!.message,
+      imageUrl: this.removeEditPic() ? undefined : this.postEdit()!.imageUrl
     }
+
+    console.log(postEdited);
+    console.log(file);
+
 
     this.postService.editPost(postEdited, file).subscribe({
       error: () => {
@@ -219,10 +235,7 @@ export class ModalUploadComponent {
   }
 
   checkFormAndFile(): File | null | undefined {
-    if (this.postForm.invalid) {
-      Swal.fire('At least one field is required', 'Please write a message or select an image.', 'error')
-      return;
-    }
+
 
     const file: File | null = this.imgToUpload()?.item(0) ?? null
 
@@ -231,8 +244,24 @@ export class ModalUploadComponent {
       return;
     }
     this.imgToUpload.set(null)
-    this.loading.set(true);
+    // this.loading.set(true);
     return file
+  }
+
+  onRemoveEditPic() {
+    this.removeEditPic.set(true)
+  }
+
+  onRemovePic() {
+
+
+    this.imgTemp.set(null)
+    this.imgToUpload.set(null)
+
+    this.postForm.patchValue({
+      file: null
+    })
+    this.modalUploadService.removeImage();
   }
 
   swalSuccess(message: string): Promise<SweetAlertResult> {
@@ -272,7 +301,7 @@ export class ModalUploadComponent {
     return this.validatorService.isNotValidField(this.profileForm, field);
   }
 
-  getFieldError(field: string): string | null{
+  getFieldError(field: string): string | null {
     return this.validatorService.getFieldError(this.profileForm, field);
   }
 

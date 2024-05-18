@@ -22,6 +22,7 @@ import { UnderlineDirective } from '../../../../../shared/directives/underline.d
 import { TimeAgoPipe } from '../../../../../shared/pipes/timeAgo.pipe';
 import { LazyImageComponent } from '../../../../../shared/components/lazyImage/lazyImage.component';
 import { ModalType, ModalUploadService } from '../../../../services/modalUpload.service';
+import { UserAvatarPipe } from '../../../../pipes/userAvatar.pipe';
 
 @Component({
   selector: 'wall-single-post',
@@ -33,9 +34,10 @@ import { ModalType, ModalUploadService } from '../../../../services/modalUpload.
     ReactiveFormsModule,
     CommentComponent,
     UserNamePipe,
+    UserAvatarPipe,
     UnderlineDirective,
     TimeAgoPipe,
-    LazyImageComponent
+    LazyImageComponent,
   ],
   host: {
     "(window:click)": "onClickOutside()"
@@ -77,17 +79,7 @@ export class SinglePostComponent implements OnInit {
   // }, { allowSignalWrites: true });
 
   constructor() {
-    toObservable(this.authService.afterCurrentUserUpdate).subscribe((user: User | undefined) => {
-      if (user) {
-        const userUpdated: User = this.post().user.id === user.id ? user : this.post().user;
-        const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.user.id === user.id ? { ..._comment, user: user } : _comment)
-        this.postService.update({
-          ...this.post(),
-          user: userUpdated,
-          comments: commentsUpdated
-        }).subscribe()
-      }
-    })
+
   }
 
   ngOnInit() {
@@ -123,7 +115,13 @@ export class SinglePostComponent implements OnInit {
     this.postService.delete(this.post()).pipe(
       takeUntilDestroyed(this.destroyRef),
     )
-      .subscribe();
+    .subscribe((deletedPost: Post) => {
+      const newCurrentUser: User = {
+        ...this.currentUser,
+        posts: this.currentUser.posts.filter(postId => postId != deletedPost.id)
+      }
+      this.authService.updateCurrentUser(newCurrentUser)
+    });
   }
 
 
@@ -164,7 +162,7 @@ export class SinglePostComponent implements OnInit {
   }
 
   updateComments(user: User, comment: Comment) {
-    const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.user.id === user.id ? { ..._comment, user: user } : _comment)
+    const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.userId === user.id ? { ..._comment, user: user } : _comment)
     const postToUpdate = {
       ...this.post(),
       comments: commentsUpdated
@@ -186,8 +184,8 @@ export class SinglePostComponent implements OnInit {
 
 
   hasLiked(): boolean {
-    const likes: User[] = this.post().likes
-    return likes.some((user: User) => user.id === this.currentUser.id);
+    const likes: string[] = this.post().likes
+    return likes.some((id: string) => id === this.currentUser.id);
   }
 
 

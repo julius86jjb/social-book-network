@@ -2,9 +2,9 @@ import { User } from "../../auth/interfaces/user.interface";
 
 export interface Post {
   id: string;
-  user: User;
+  userId: string;
   date: Date;
-  likes: User[];
+  likes: string[];
   comments: Comment[];
   message?: string;
   imageUrl?: string;
@@ -14,9 +14,9 @@ export interface Post {
 
 export interface Comment {
   id: string;
-  user: User;
+  userId: string;
   message: string;
-  likes: User[];
+  likes: string[];
   date: Date;
 }
 

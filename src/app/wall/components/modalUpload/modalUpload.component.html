@@ -1,25 +1,25 @@
 <div #modalDiv
-  class="main-modal fixed w-full h-auto inset-0 z-50 overflow-hidden justify-center items-center animated faster"
+  class="main-modal fixed w-full h-[auto] inset-0 z-50 overflow-auto-auto justify-center items-center animated faster"
   [ngClass]="modalUploadService.visible() ? 'flex fadeIn' : 'hidden fadeOut' " style="background: rgba(0,0,0,.7);">
   <div
-    class="border border-teal-500 modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+    class="border border-teal-500 max-h-[100vh] modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
     <div class="modal-content py-4  px-6">
       <!--Title-->
       <div class=" flex justify-between items-center pb-3">
         <p class="text-2xl font-bold ">
           @switch (this.modalUploadService.modalType()) {
 
-            @case ('newPost') {
-            New Post
-            }
+          @case ('newPost') {
+          New Post
+          }
 
-            @case ('profile') {
-            Update Profile
-            }
+          @case ('profile') {
+          Update Profile
+          }
 
-            @case ('editPost') {
-            Edit Post
-            }
+          @case ('editPost') {
+          Edit Post
+          }
           }
         </p>
         <div class="modal-close cursor-pointer z-50" (click)="closeModal()">
@@ -34,55 +34,154 @@
       <!--Body-->
 
       @switch (this.modalUploadService.modalType()) {
-        @case ('newPost') {
-          <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">
+      @case ('newPost') {
+      <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">
 
 
-            <div class="grid grid-cols-[88%_12%] md:grid-cols-[92%_8%] relative my-5 w-full">
+        <div class="grid grid-cols-[88%_12%] md:grid-cols-[92%_8%] relative my-5 w-full">
 
-              <input #txtMessage formControlName="text"
-                class="text-left text-sm md:text-base p-2 rounded-lg text-gray-600 focus:outline-none"
-                placeholder="What's on your mind, {{this.authService.user()?.userName}}?">
+          <input #txtMessage formControlName="text"
+            class="text-left text-sm md:text-base p-2 rounded-lg text-gray-600 focus:outline-none"
+            placeholder="What's on your mind, {{this.authService.user()?.userName}}?">
 
-              <app-emoji (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
-            </div>
+          <app-emoji (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
+        </div>
 
 
 
-            <div class="grid my-5 w-full">
-              <div class="flex justify-center items-center">
-                <img *ngIf="!imgTemp()" [src]="this.modalUploadService.img " class="cursor-pointer"
-                  (click)="fileInput.click()">
-                <img *ngIf="imgTemp()" [src]="imgTemp()" class="w-auto max-h-[50vh]" (click)="fileInput.click()">
-              </div>
+        <div class="grid  w-full">
+          <div class="flex justify-center items-center">
+            <img *ngIf="!imgTemp()" [src]="this.modalUploadService.img "
+              class="cursor-pointer w-full h-auto  object-cover rounded-md" (click)="fileInput.click()">
+            <img *ngIf="imgTemp()" [src]="imgTemp()" class="cursor-pointer w-full h-auto  object-cover rounded-md"
+              (click)="fileInput.click()">
+          </div>
 
-              <input hidden type="file" #fileInput (change)="onUploadImage($event, true)">
-            </div>
+          <input hidden type="file" #fileInput (change)="onUploadImage($event)">
+        </div>
 
-            <button type="submit" class=" w-full focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white"
-              [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">Create Post</button>
-
-          </form>
+        @if (imgTemp()) {
+          <div class="grid text-right w-full">
+            <span (click)="onRemovePic()" class="cursor-pointer text-xs ">Remove Picture</span>
+          </div>
         }
 
 
-        @case ('profile') {
-          <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()">
+        <button type="submit" class=" w-full focus:outline-none px-4 mt-5 bg-teal-500 p-3  rounded-lg text-white"
+          [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">Create Post</button>
 
-            <div class="my-6">
-              <div class="flex justify-center items-center">
-                <img *ngIf="!imgTemp()" [src]="this.currentUser.avatar || this.modalUploadService.img"
-                  class=" rounded-lg cursor-pointer w-auto md:max-h-[30vh] " (click)="fileInput.click()">
-                <img *ngIf="imgTemp()" [src]="imgTemp()" class=" rounded-lg w-auto md:max-h-[30vh]" (click)="fileInput.click()">
+        <!-- <div class="grid  w-full">
+          <div class="flex justify-center items-center">
+            <img *ngIf="!imgTemp()" [src]="this.modalUploadService.post()?.imageUrl || this.modalUploadService.img"
+              class="cursor-pointer w-full h-auto  object-cover rounded-md" (click)="fileInput.click()">
+            <img *ngIf="imgTemp()" [src]="imgTemp()" class="cursor-pointer w-full h-auto  object-cover rounded-md"
+              (click)="fileInput.click()">
+          </div>
+
+          <input hidden type="file" #fileInput (change)="onUploadImage($event, true)">
+        </div>
+
+        <div class="grid text-right	 w-full">
+          <span class="cursor-pointer text-xs ">Remove Picture</span>
+        </div>
+
+        <button type="submit" class=" w-full focus:outline-none px-4 mt-5 bg-teal-500 p-3 ml-3 rounded-lg text-white"
+          [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">Edit Post</button> -->
+
+      </form>
+      }
+
+
+      @case ('profile') {
+      <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()">
+
+        <div class="my-6">
+          <div class="flex justify-center items-center">
+
+            <div class="profilepic cursor-pointer" (click)="fileInput.click()">
+              <!-- <img class="profilepic__image"
+                src="https://images.unsplash.com/photo-1510227272981-87123e259b17?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=3759e09a5b9fbe53088b23c615b6312e"
+                width="150" height="150" alt="Profibild" /> -->
+              <img *ngIf="!imgTemp()" [src]="this.currentUser.avatar || this.modalUploadService.img"
+                class=" profilepic__image cursor-pointer w-full h-auto  object-cover rounded-md">
+              <img *ngIf="imgTemp()" [src]="imgTemp()"
+                class=" profilepic__image  cursor-pointer w-full h-auto  object-cover rounded-md">
+              <input hidden type="file" #fileInput (change)="onUploadImage($event)">
+              <div class="profilepic__content">
+                <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
+                <span class="profilepic__text">Change Avatar</span>
               </div>
 
-              <input hidden type="file" #fileInput (change)="onUploadImage($event, false)">
             </div>
+          </div>
 
-            <div class="my-6">
-              <label for="userName" class="mb-3 block text-base font-medium text-[#1f2937]"> User Name
-              </label>
-              <input formControlName="userName" type="text" placeholder="User Name" class="
+
+        </div>
+
+        <div class="flex flex-wrap -mx-1">
+          <div class="w-full max-w-full px-3  mx-auto bg-white">
+            <div class="flex mx-2 ">
+
+              <div class="w-full max-w-full  px-3  sm:w-1/3  xl:mb-0 xl:w-1/3 ">
+                <div class="relative flex flex-col min-w-0  break-words bg-light/30 ">
+                  <!-- card body  -->
+                  <div class="flex flex-col items-center justify-between flex-auto px2  md:px-9">
+
+                    <div class="flex flex-col my-2">
+                      <span
+                        class="text-[#1f2937] md:text-xl text- text-center tracking-[-0.115rem] font-bold">{{currentUser.posts.length}}</span>
+                      <div class="m-0">
+                        <span class="font-medium text-gray-500 text-sm">Posts</span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- end card body  -->
+                </div>
+              </div>
+              <div class="w-full max-w-full  px-3  sm:w-1/3  xl:mb-0 xl:w-1/3 ">
+                <div class="relative flex flex-col min-w-0  break-words bg-light/30 ">
+                  <!-- card body  -->
+                  <div class="flex flex-col items-center justify-between flex-auto px2  md:px-9">
+
+                    <div class="flex flex-col my-2">
+                      <span
+                        class="text-[#1f2937] md:text-xl text- text-center tracking-[-0.115rem] font-bold">{{currentUser.followers.length}}</span>
+                      <div class="m-0">
+                        <span class="font-medium text-gray-500 text-sm">Followers</span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- end card body  -->
+                </div>
+              </div>
+              <div class="w-full max-w-full  px-3  sm:w-1/3  xl:mb-0 xl:w-1/3 ">
+                <div class="relative flex flex-col min-w-0  break-words bg-light/30 ">
+                  <!-- card body  -->
+                  <div class="flex flex-col items-center justify-between flex-auto px2  md:px-9">
+
+                    <div class="flex flex-col my-2">
+                      <span
+                        class="text-[#1f2937] md:text-xl text- text-center tracking-[-0.115rem] font-bold">{{currentUser.following.length}}</span>
+                      <div class="m-0">
+                        <span class="font-medium text-gray-500 text-sm">Following</span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- end card body  -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="my-6">
+          <label for="userName" class="mb-3 block text-base font-medium text-[#1f2937]"> User Name
+          </label>
+          <input formControlName="userName" type="text" placeholder="User Name" class="
                  w-full
                  rounded
                  py-3
@@ -93,12 +192,12 @@
                  focus-visible:shadow-none
                  focus:border-primary
                  " />
-            </div>
+        </div>
 
-            <div class="">
-              <label for="email" class="mb-3 block text-base font-medium text-[#1f2937]"> Email
-              </label>
-              <input formControlName="email" type="text" placeholder="Email" class="
+        <div class="">
+          <label for="email" class="mb-3 block text-base font-medium text-[#1f2937]"> Email
+          </label>
+          <input formControlName="email" type="text" placeholder="Email" class="
                  w-full
                  rounded
                  py-3
@@ -109,57 +208,62 @@
                  focus-visible:shadow-none
                  focus:border-primary
                  " />
-            </div>
-            @if (isNotValidField('email')) {
-              <span class="mb-3  text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                {{getFieldError('email')}}
-              </span>
-            }
-
-
-
-
-            <div class="flex justify-end pt-2 mt-6">
-              <button type="submit" [disabled]="this.profileForm.invalid"
-                class=" w-full focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white"
-                [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': this.profileForm.valid}">
-                Save Profile
-              </button>
-            </div>
-
-          </form>
+        </div>
+        @if (isNotValidField('email')) {
+        <span class="mb-3  text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+          {{getFieldError('email')}}
+        </span>
         }
 
-        @case ('editPost') {
-          <form [formGroup]="postForm" (ngSubmit)="onEditPost()">
-
-
-            <div class="grid grid-cols-[88%_12%] md:grid-cols-[92%_8%] relative my-5 w-full">
-
-              <input #txtMessage formControlName="text" [value]="this.modalUploadService.post()?.message"
-                class="text-left text-sm md:text-base p-2 rounded-lg text-gray-600 focus:outline-none"
-                placeholder="What's on your mind, {{this.authService.user()?.userName}}?">
-
-              <app-emoji (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
-            </div>
 
 
 
-            <div class="grid my-5 w-full">
-              <div class="flex justify-center items-center">
-                <img *ngIf="!imgTemp()" [src]="this.modalUploadService.post()?.imageUrl || this.modalUploadService.img" class="cursor-pointer"
-                  (click)="fileInput.click()">
-                <img *ngIf="imgTemp()" [src]="imgTemp()" class="w-auto max-h-[50vh]" (click)="fileInput.click()">
-              </div>
+        <div class="flex justify-end pt-2 mt-6">
+          <button type="submit" [disabled]="this.profileForm.invalid"
+            class=" w-full focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white"
+            [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': this.profileForm.valid}">
+            Save Profile
+          </button>
+        </div>
 
-              <input hidden type="file" #fileInput (change)="onUploadImage($event, true)">
-            </div>
+      </form>
+      }
 
-            <button type="submit" class=" w-full focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white"
-              [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">Edit Post</button>
+      @case ('editPost') {
+      <form [formGroup]="postForm" (ngSubmit)="onEditPost()">
 
-          </form>
-        }
+
+        <div class="grid grid-cols-[88%_12%] md:grid-cols-[92%_8%] relative my-5 w-full">
+
+          <input #txtMessage formControlName="text" [value]="this.postEdit()?.message"
+            class="text-left text-sm md:text-base p-2 rounded-lg text-gray-600 focus:outline-none"
+            placeholder="What's on your mind, {{this.authService.user()?.userName}}?">
+
+          <app-emoji (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
+        </div>
+
+
+
+        <div class="grid  w-full">
+          <div class="flex justify-center items-center">
+            <img *ngIf="!imgTemp()" [src]="this.postEdit()?.imageUrl || this.modalUploadService.img"
+              class="cursor-pointer w-full h-auto  object-cover rounded-md" (click)="fileInput.click()">
+            <img *ngIf="imgTemp()" [src]="imgTemp()" class="cursor-pointer w-full h-auto  object-cover rounded-md"
+              (click)="fileInput.click()">
+          </div>
+
+          <input hidden type="file" #fileInput (change)="onUploadImage($event)">
+        </div>
+
+        <div class="grid text-right	 w-full">
+          <span (click)="onRemovePic()" class="cursor-pointer text-xs ">Remove Picture</span>
+        </div>
+
+        <button type="submit" class=" w-full focus:outline-none px-4 mt-5 bg-teal-500 p-3 ml-3 rounded-lg text-white"
+          [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">Edit Post</button>
+
+      </form>
+      }
       }
 
     </div>

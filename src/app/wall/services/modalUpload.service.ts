@@ -42,6 +42,14 @@ export class ModalUploadService {
     this.visible.set(false);
   }
 
+  removeImage() {
+    const newPost: Post = {
+      ...this.post()!,
+      imageUrl: undefined
+    }
+    this.post.set(newPost)
+  }
+
 
 
 

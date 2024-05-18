@@ -38,12 +38,11 @@ export class PostService {
       .pipe(
         tap((posts: Post[]) => posts.length === 0 ? this.havePosts.set(false) : this.havePosts.set(true)),
         map(posts => {
-
           switch (type) {
             case 'my-posts':
-              return posts.filter(post => post.user.id === this.authService.user()!.id)
+              return posts.filter(post => post.userId === this.authService.user()!.id)
             case 'following':
-              return posts.filter(post => this.currentUser.following.includes(post.user.id) || post.user.id === this.currentUser.id)
+              return posts.filter(post => this.currentUser.following.includes(post.userId) || post.userId === this.currentUser.id)
             default:
               return posts
           }
@@ -57,25 +56,24 @@ export class PostService {
   }
 
 
-  createPost(post: Post, img: File | null): Observable<number | undefined> {
+  createPost(post: Post, file: File | null): Observable<number | undefined> {
     try {
-      if (!img) {
+      if (!file) {
 
         this.savePost(post)
         return of(undefined)
 
       } else {
 
-        const filePath = `${this.basePath}/${img!.name}`;
+        const filePath = `${this.basePath}/${file!.name}`;
         const storageRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, img);
+        const uploadTask = this.storage.upload(filePath, file);
 
         uploadTask.snapshotChanges().pipe(
           finalize(() => {
             storageRef.getDownloadURL().subscribe(downloadURL => {
-              const newPost = { ...post, imageUrl: downloadURL } as Post
+              const newPost: Post = { ...post, imageUrl: downloadURL } as Post
               this.savePost(newPost)
-
             })
           })
         ).subscribe();
@@ -87,18 +85,29 @@ export class PostService {
     }
   }
 
-  editPost(post: Post, img: File | null): Observable<number | undefined> {
-    try {
-      if (!img) {
+  // updateCurrentUser(user: User) {
 
-        this.update(post).subscribe()
+
+  //   this.http.patch(`http://localhost:3000/users/${this.currentUser.id}`, user).pipe(
+  //     tap((userUpdated: any) => this.authService.user.set(userUpdated)),
+  //     tap((userUpdated: any) => console.log(userUpdated)),
+  //     tap((userUpdated: any) => this.authService.afterCurrentUserUpdate.set(userUpdated)),
+  //     tap(() => this.authService.saveLocalStorage(this.currentUser)),
+  //     catchError(this.handleError)
+  //   )
+  // }
+
+  editPost(post: Post, file: File | null): Observable<number | undefined> {
+    try {
+      if (!file) {
+        this.update(post).subscribe(a => console.log(a));
         return of(undefined)
 
       } else {
 
-        const filePath = `${this.basePath}/${img!.name}`;
+        const filePath = `${this.basePath}/${file!.name}`;
         const storageRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, img);
+        const uploadTask = this.storage.upload(filePath, file);
 
         uploadTask.snapshotChanges().pipe(
           finalize(() => {
@@ -119,6 +128,7 @@ export class PostService {
 
 
   savePost(post: Post) {
+    console.log('heysave')
     this.http.post<Post>(`${this.baseUrl}`, post).subscribe((_post) => {
       if (this.posts()) {
         this.posts.update((posts) => [
@@ -127,16 +137,19 @@ export class PostService {
         ])
 
         if (this.posts()!.length > 0) this.havePosts.set(true);
+        const newCurrentUser: User = { ...this.currentUser, posts: [...this.currentUser.posts, _post.id] }
+        this.authService.updateCurrentUser(newCurrentUser).subscribe(resp => console.log(resp));
       }
     })
+
   }
 
 
 
   update(post: Post): Observable<Post> {
-
+    console.log(post);
     if (!post.id) throw Error('Post is required');
-    return this.http.patch<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
+    return this.http.put<Post>(`${this.baseUrl}/${post.id}`, post).pipe(
       tap((postUpdated: Post) => this.posts.update((posts: Post[]) =>
         posts.map((_post: Post) => _post.id === post.id ? postUpdated : _post)))
     )
@@ -160,11 +173,11 @@ export class PostService {
   updateLikes(postToUpdate: Post, action: string) {
     switch (action) {
       case 'addLike':
-        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()! as User] }
+        postToUpdate = { ...postToUpdate, likes: [...postToUpdate.likes, this.authService.user()!.id] }
         break;
       case 'dislike':
         postToUpdate.likes = postToUpdate.likes
-          .filter((user: User) => user.id !== this.authService.user()!.id)
+          .filter((userId: string) => userId !== this.authService.user()!.id)
         break;
     }
     return this.update(postToUpdate)
@@ -176,10 +189,10 @@ export class PostService {
     switch (action) {
       case 'addLike':
         post.comments.find(_comment => comment.id === _comment.id)?.likes
-          .push(this.currentUser)
+          .push(this.currentUser.id)
         break;
       case 'dislike':
-        const newLikes = comment.likes.filter((user: User) => user.id !== this.authService.user()!.id)
+        const newLikes = comment.likes.filter((userId: string) => userId !== this.authService.user()!.id)
         post.comments = post.comments.map((_comment) => {
           if (comment.id === _comment.id) {
 
@@ -199,7 +212,7 @@ export class PostService {
       ...postToUpdate,
       comments: [
         ...postToUpdate.comments,
-        { id: uuidv4(), user: this.authService.user()! as User, message: textComment!, likes: [], date: new Date() }
+        { id: uuidv4(), userId: this.authService.user()!.id, message: textComment!, likes: [], date: new Date() }
       ]
     }
     return this.update(postToUpdate)

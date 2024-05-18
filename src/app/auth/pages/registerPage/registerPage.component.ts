@@ -58,6 +58,7 @@ export class RegisterPageComponent {
       password,
       followers: [],
       following: [],
+      posts: [],
       // last_login: new Date().getTime(),
       avatar: '../../../../assets/images/default-avatar.jpg'
     }

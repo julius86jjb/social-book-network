@@ -80,8 +80,8 @@ export class CommentComponent{
   }
 
   hasLiked(): boolean {
-    const likes: User[] = this.comment().likes
-    return likes.some((user: User) => user.id === this.currentUser.id);
+    const likes: string[] = this.comment().likes
+    return likes.some((userId: string) => userId === this.currentUser.id);
   }
 
 

@@ -22,7 +22,6 @@ export class UserService {
     return this.authService.user()!
   }
 
-
   getUsers(i: number): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}`).pipe(
       map(users => users.slice(i, i + 5)),
@@ -44,8 +43,6 @@ export class UserService {
       switchMap(() => this.authService.updateCurrentUser(newCurrentUser)),
     )
   }
-
-
 
   unFollow(user: User) {
     user.followers = user.followers.filter((userId: string) => userId !== this.currentUser.id)

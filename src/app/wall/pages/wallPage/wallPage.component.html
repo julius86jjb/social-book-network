@@ -5,7 +5,7 @@
     @if (this.postService.posts().length > 0) {
     @for (post of this.posts(); track $index) {
     @defer (on viewport) {
-    <wall-single-post [post]="post" [index]="$index" (loaded)="getPosts($event)" />
+    <wall-single-post [post]="post" [index]="$index" (loaded)="getPosts($event)" (userUpdated)="onUpdateCurrentUser()" />
     } @placeholder {
     <li class="flex items-center my-2">
       <div class="bg-white p-8 rounded-lg shadow-md w-full">
@@ -42,3 +42,5 @@
   </ul>
 
 </div>
+
+<wall-modal-upload #modalDiv ></wall-modal-upload>

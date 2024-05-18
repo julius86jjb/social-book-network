@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
 import { UserService } from '../../services/user.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { UserItemComponent } from './userItem/userItem.component';
+import { ModalUploadComponent } from '../../components/modalUpload/modalUpload.component';
 
 
 @Component({
@@ -13,7 +13,8 @@ import { UserItemComponent } from './userItem/userItem.component';
   imports: [
     CommonModule,
     ScrollingModule,
-    UserItemComponent
+    UserItemComponent,
+    ModalUploadComponent
   ],
   templateUrl: './usersPage.component.html',
   styleUrl: './usersPage.component.css',
