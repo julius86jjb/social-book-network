@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TopbarComponent } from "./components/topbar/topbar.component";
 import { RouterModule } from '@angular/router';
-import { ModalUploadComponent } from './components/modalUpload/modalUpload.component';
+import { ModalComponent } from './components/modal/modal.component';
 import { PostService } from './services/post.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { PostService } from './services/post.service';
         CommonModule,
         TopbarComponent,
         RouterModule,
-        ModalUploadComponent
+        ModalComponent
     ]
 })
 export class WallLayoutComponent {

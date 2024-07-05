@@ -4,8 +4,9 @@ import {
   InputSignal,
   OnInit,
   Output,
-  ViewChild, effect, inject, input, signal
+  ViewChild, computed, inject, input, signal
 } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 
@@ -21,8 +22,11 @@ import { UserNamePipe } from '../../../../pipes/userName.pipe';
 import { UnderlineDirective } from '../../../../../shared/directives/underline.directive';
 import { TimeAgoPipe } from '../../../../../shared/pipes/timeAgo.pipe';
 import { LazyImageComponent } from '../../../../../shared/components/lazyImage/lazyImage.component';
-import { ModalType, ModalUploadService } from '../../../../services/modalUpload.service';
+import { ModalUploadService } from '../../../../services/modalUpload.service';
 import { UserAvatarPipe } from '../../../../pipes/userAvatar.pipe';
+import { Observable, map, switchMap, tap } from 'rxjs';
+import { NotificationType, Notification } from '../../../../interfaces/notification.interface';
+import { NotificationService } from '../../../../services/notification.service';
 
 @Component({
   selector: 'wall-single-post',
@@ -54,6 +58,7 @@ export class SinglePostComponent implements OnInit {
   public authService = inject(AuthService);
   public postService = inject(PostService);
   private modalUploadService = inject(ModalUploadService);
+  private notificationService = inject(NotificationService);
   destroyRef = inject(DestroyRef)
 
   @Output() loaded = new EventEmitter<number>();
@@ -62,7 +67,7 @@ export class SinglePostComponent implements OnInit {
 
   public index: InputSignal<number> = input.required<number>();
   public post: InputSignal<Post> = input.required<Post>();
-  public allComments = signal<boolean>(false)
+  public showAllComments = signal<boolean>(false)
 
   public showTooltip = signal<boolean>(false);
   public showMenu = signal<boolean>(false);
@@ -72,15 +77,10 @@ export class SinglePostComponent implements OnInit {
     text: new FormControl<string>('', [Validators.required])
   });
 
-  // public afterChangeAvatar = effect(() => {
-  //   if (!this.currentUser) return;
-  //   if (this.currentUser.id === this.post().userId) this.user.set(this.currentUser)
+  public hasLiked = computed(() => this.post().likes.includes(this.currentUser.id))
 
-  // }, { allowSignalWrites: true });
 
-  constructor() {
-
-  }
+  constructor() { }
 
   ngOnInit() {
     this.loaded.emit(this.index());
@@ -90,12 +90,12 @@ export class SinglePostComponent implements OnInit {
     return this.authService.user()!
   }
 
-  viewAllComments(){
-    this.allComments.set(true);
+  viewAllComments() {
+    this.showAllComments.set(true);
   }
 
   viewLessComments() {
-    this.allComments.set(false);
+    this.showAllComments.set(false);
   }
 
   onClickOutside() {
@@ -110,70 +110,85 @@ export class SinglePostComponent implements OnInit {
   }
 
   onDeletePost() {
-
     this.showMenu.set(false);
     this.postService.delete(this.post()).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    )
-    .subscribe((deletedPost: Post) => {
-      const newCurrentUser: User = {
-        ...this.currentUser,
-        posts: this.currentUser.posts.filter(postId => postId != deletedPost.id)
-      }
-      this.authService.updateCurrentUser(newCurrentUser)
-    });
-  }
-
-
-  onUpdateLikes(action: 'addLike' | 'dislike') {
-
-    this.postService.updateLikes(this.post(), action).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe();
   }
 
-  onAddComment() {
+  onUpdateLikes() {
+    this.postService.update({ ...this.post(), likes: [...this.post().likes, this.authService.user()!.id] }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((post: Post) =>
+      this.notificationService.createNotification(post.userId, NotificationType.likedPost, post.message || '',).subscribe()
+    );
+  }
 
+  onUpdateDislikes() {
+    this.postService.update({
+      ...this.post(), likes: this.post().likes
+        .filter((userId: string) => userId !== this.authService.user()!.id)
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe()
+  }
+
+
+  onAddComment() {
+     const postToUpdate: Post = {
+      ...this.post(),
+      comments: [
+        ...this.post().comments,
+        { id: uuidv4(), userId: this.authService.user()!.id, message: this.newCommentForm.controls['text'].value, likes: [], date: new Date() }
+      ]
+    }
     if (this.newCommentForm.invalid) return;
 
-    this.postService.addComment(this.post(), this.newCommentForm.controls['text'].value)
+    this.postService.update(postToUpdate)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe();
+      ).subscribe((post: Post) => this.notificationService.createNotification(post.userId, NotificationType.commentOn, post.message || '',).subscribe());
     this.newCommentForm.patchValue({
       text: this.newCommentForm.controls['text'].reset()
     })
-
-    this.allComments.set(true);
+    this.showAllComments.set(true);
   }
 
+
+
   deleteComment(idComment: string) {
-    this.postService.deleteComment(this.post(), idComment).pipe(
+    this.post().comments = this.post().comments
+      .filter((comment: Comment) => comment.id !== idComment)
+    this.postService.update(this.post()).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe();
   }
 
 
   updateCommentLikes(action: string, comment: Comment) {
-    this.postService.updateCommentLikes(this.post(), comment, action).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe();
-  }
-
-  updateComments(user: User, comment: Comment) {
-    const commentsUpdated: Comment[] = this.post().comments.map(_comment => _comment.userId === user.id ? { ..._comment, user: user } : _comment)
-    const postToUpdate = {
-      ...this.post(),
-      comments: commentsUpdated
+    switch (action) {
+      case 'addLike':
+        this.post().comments.find(_comment => comment.id === _comment.id)?.likes
+          .push(this.currentUser.id)
+        break;
+      case 'dislike':
+        const newLikes = comment.likes.filter((userId: string) => userId !== this.authService.user()!.id)
+        this.post().comments = this.post().comments.map((_comment) => {
+          if (comment.id === _comment.id) {
+            return {
+              ..._comment,
+              likes: newLikes
+            }
+          } else return _comment
+        })
+        break;
     }
-    this.postService.update(postToUpdate).subscribe();
+    this.postService.update(this.post()).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((post: Post) => this.notificationService.createNotification(comment.userId, NotificationType.likedComment, comment.message || '',).subscribe());
   }
-
-
 
   fillColor(): string {
-
     switch (this.newCommentForm.valid) {
       case true:
         return 'fillSvgValid';
@@ -182,15 +197,7 @@ export class SinglePostComponent implements OnInit {
     }
   }
 
-
-  hasLiked(): boolean {
-    const likes: string[] = this.post().likes
-    return likes.some((id: string) => id === this.currentUser.id);
-  }
-
-
   addEmojiToInput(event: any): void {
-
     const emoji = event.emoji.native
     this.inputComment.nativeElement.value += emoji;
     this.newCommentForm.patchValue({
@@ -199,7 +206,15 @@ export class SinglePostComponent implements OnInit {
   }
 
   onOpenModal() {
-    this.modalUploadService.openModal(ModalType.editPost, this.post().id);
+    this.modalUploadService.loadPost(this.post())
+  }
+
+  onOpenUserModal() {
+    this.modalUploadService.loadUser(this.post().userId)
+  }
+
+  onCloseModal() {
+    this.modalUploadService.closeModal();
   }
 
 }

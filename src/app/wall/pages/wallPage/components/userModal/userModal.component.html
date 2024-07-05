@@ -1,0 +1,47 @@
+<div class=" flex justify-between items-center ">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center space-x-4">
+
+      @if(userData()?.avatar ) {
+      <shared-lazy-image class="cursor-pointer w-20 h-20" type='userModal' [url]="userData()!.avatar"
+        alt="User avatar"></shared-lazy-image>
+
+      <!-- <img class="w-24 h-24 rounded-full"
+        src="https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=1978d64f-2490-40c2-99a7-9610fc84e06c"
+        alt="user-avatar"> -->
+      }
+
+      <div class="">
+        <p class="text-gray-800 font-semibold cursor-pointer text-2xl">{{userData()?.userName}}</p>
+        <p class="text-gray-500 text-xl">{{userData()?.email}}</p>
+        <button type="button"
+          class="mt-2 inline-block rounded-xl md:rounded-full bg-[#335D91] px-3 py-2 md:px-6 md:pb-2 md:pt-2.5 text-xs font-medium leading-normal
+             text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-[#112745] hover:shadow-primary-2
+             focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2
+             motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong disabled:bg-[#6C94C4]">
+          <i class="fa fa-user-plus mr-1" aria-hidden="true"></i><span class="hidden md:inline-block">Follow</span>
+        </button>
+      </div>
+    </div>
+    <div hidden class="text-gray-500 cursor-pointer">
+
+      <button class="hover:bg-gray-50 rounded-full p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="7" r="1" />
+          <circle cx="12" cy="12" r="1" />
+          <circle cx="12" cy="17" r="1" />
+        </svg>
+      </button>
+
+    </div>
+
+  </div>
+  <div class="modal-close cursor-pointer z-50" (click)="onCloseModal()">
+    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <path
+        d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+      </path>
+    </svg>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, effect, inject, input, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, computed, effect, inject, input, signal } from '@angular/core';
 import { Comment } from '../../../../../../interfaces/post.interface';
 import { UserNamePipe } from '../../../../../../pipes/userName.pipe';
 import { UserAvatarPipe } from '../../../../../../pipes/userAvatar.pipe';
@@ -50,9 +50,11 @@ export class CommentComponent{
 
   public displayCommentMenu = signal<boolean>(false);
 
+
   public comment: InputSignal<Comment> = input.required<Comment>();
   public showMenu = signal<boolean>(false);
   public showTooltip = signal<boolean>(false);
+  public hasLikedComment = computed(() => this.comment().likes.includes(this.currentUser.id))
 
 
   get currentUser() {
@@ -79,10 +81,6 @@ export class CommentComponent{
     this.onUpdateLikesComment.emit(action)
   }
 
-  hasLiked(): boolean {
-    const likes: string[] = this.comment().likes
-    return likes.some((userId: string) => userId === this.currentUser.id);
-  }
 
 
 

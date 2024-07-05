@@ -6,6 +6,5 @@ export interface User {
   avatar: string;
   followers: string[];
   following: string[];
-  posts: string[];
   last_login?: Date;
 }

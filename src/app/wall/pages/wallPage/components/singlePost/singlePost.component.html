@@ -1,25 +1,26 @@
 @if (this.postService.havePosts()) {
 <li class="flex items-center my-2"
   (mouseover)="this.currentUser.id === post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
-  (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-  (ontouchstart)="this.currentUser.id === this.post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)"
-  (ontouchend)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
+  (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full">
 
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-2">
 
-        @if((post().userId | userAvatar) | async ) {
-          <shared-lazy-image type='avatar'  [url]="((post().userId | userAvatar) | async)!" alt="User avatar"></shared-lazy-image>
-
+        @if(post().userId | userAvatar ) {
+        <shared-lazy-image class="cursor-pointer" (click)="onOpenUserModal()" type='avatar'
+          [url]="(post().userId | userAvatar | async)!" alt="User avatar"></shared-lazy-image>
         }
 
         <div>
-          <p class="text-gray-800 font-semibold">{{(post().userId | userName) | async}} </p>
+          <p (click)="onOpenUserModal()"
+            class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{post().userId | userName |
+            async}} </p>
+          <!-- <p (click)="onOpenUserModal()"  class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{(post().userId | userName) | async}} </p> -->
           <p class="text-gray-500 text-sm">{{post().date | appTimeAgo }}</p>
         </div>
       </div>
-      <div hidden class="text-gray-500 cursor-pointer" [ngClass]="{'show' : this.displayCommentMenu()}">
+      <div class="relative text-gray-500 cursor-pointer md:hidden" [ngClass]="{'show' : this.displayCommentMenu()}">
 
         <button class="hover:bg-gray-50 rounded-full p-1" (click)="toogleProfileMenu($event)">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -31,7 +32,7 @@
         </button>
 
         <div [ngClass]="{'hidden' : !showMenu()}"
-          class="absolute z-10 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="absolute right-0 z-10 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
 
           <a (click)="onOpenModal()" class="block px-4 py-2 text-xs text-gray-700 cursor-pointer " role="menuitem"
@@ -63,14 +64,17 @@
 
     <div class="flex items-center justify-between  text-gray-500">
       <div class="flex items-center space-x-1">
-        <button (click)="hasLiked() ? onUpdateLikes('dislike'): onUpdateLikes('addLike')"
+
+        @if (hasLiked()) {
+        <button (click)="onUpdateDislikes()"
           class="flex justify-center items-center gap-1 hover:bg-gray-50 rounded-full ">
-          @if (hasLiked()) {
           <svg class="w-6 h-6 fill-grey-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
               d="M12 21.35l-1.45-1.32C6.11 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-4.11 6.86-8.55 11.54L12 21.35z" />
           </svg>
-          }@else {
+        </button>
+        }@else {
+        <button (click)="onUpdateLikes()" class="flex justify-center items-center gap-1 hover:bg-gray-50 rounded-full ">
           <svg class="hover:fill-gray-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             fill="#000000" height="22px" width="22px" version="1.1" id="Capa_1" viewBox="0 0 491.701 491.701"
             xml:space="preserve">
@@ -79,8 +83,9 @@
                 d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1   c-24.7-24.7-57.6-38.4-92.5-38.4c-34.8,0-67.6,13.6-92.2,38.2c-24.7,24.7-38.3,57.5-38.2,92.4c0,34.9,13.7,67.6,38.4,92.3   l187.8,187.8c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-3.9l188.2-187.5c24.7-24.7,38.3-57.5,38.3-92.4   C471.801,124.501,458.301,91.701,433.601,67.001z M414.401,232.701l-178.7,178l-178.3-178.3c-19.6-19.6-30.4-45.6-30.4-73.3   s10.7-53.7,30.3-73.2c19.5-19.5,45.5-30.3,73.1-30.3c27.7,0,53.8,10.8,73.4,30.4l22.6,22.6c5.3,5.3,13.8,5.3,19.1,0l22.4-22.4   c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3   C444.801,187.101,434.001,213.101,414.401,232.701z" />
             </g>
           </svg>
-          }
         </button>
+        }
+
 
         <button class="cursor-default" (mouseover)="this.showTooltip.set(true)"
           (ontouchstart)="this.showTooltip.set(true)" (mouseout)="this.showTooltip.set(false)"
@@ -116,7 +121,7 @@
       aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
       @for (item of this.post().likes; track $index) {
       <!-- <p class="block px-2 text-xs text-white">Paco</p> -->
-      <p class="block px-2 text-xs text-white">{{item}}</p>
+      <p class="block px-2 text-xs text-white">{{(item | userName) | async}}</p>
       }
     </div>
 
@@ -150,47 +155,47 @@
     <div class="mt-4">
 
       @switch (true) {
-        @case ( this.post().comments.length === 1 && !this.allComments()) {
-          <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
-            (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
-            [comment]="this.post().comments[0]"></single-post-comment>
-        }
-        @case (this.post().comments.length === 2 && !this.allComments()) {
-          <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
-            (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
-            [comment]="this.post().comments[0]"></single-post-comment>
-          <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[1].id)"
-            (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[1])"
-            [comment]="this.post().comments[1]"></single-post-comment>
-        }
-        @case (this.post().comments.length > 2 && !this.allComments()) {
-          <div class="text-sm cursor-pointer text-gray-500 font-semibold">
-            <span appUnderline (click)="viewAllComments()">View more comments <i class="fa fa-caret-down ml-1"
-                aria-hidden="true"></i></span>
-          </div>
+      @case ( this.post().comments.length === 1 && !this.showAllComments()) {
+      <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
+        [comment]="this.post().comments[0]"></single-post-comment>
+      }
+      @case (this.post().comments.length === 2 && !this.showAllComments()) {
+      <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
+        [comment]="this.post().comments[0]"></single-post-comment>
+      <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[1].id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[1])"
+        [comment]="this.post().comments[1]"></single-post-comment>
+      }
+      @case (this.post().comments.length > 2 && !this.showAllComments()) {
+      <div class="text-sm cursor-pointer text-gray-500 font-semibold">
+        <span appUnderline (click)="viewAllComments()">View more comments <i class="fa fa-caret-down ml-1"
+            aria-hidden="true"></i></span>
+      </div>
 
-          <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
-            (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
-            [comment]="this.post().comments[0]"></single-post-comment>
+      <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[0].id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[0])"
+        [comment]="this.post().comments[0]"></single-post-comment>
 
-          <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[1].id)"
-            (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[1])"
-            [comment]="this.post().comments[1]"></single-post-comment>
-          }
+      <single-post-comment (onDeleteComment)="deleteComment(this.post().comments[1].id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, this.post().comments[1])"
+        [comment]="this.post().comments[1]"></single-post-comment>
+      }
 
-        @case (this.allComments()) {
-          @if (this.post().comments.length >= 3) {
-            <div class="text-sm cursor-pointer text-gray-500 font-semibold">
-              <span appUnderline (click)="viewLessComments()">View less comments <i class="fa fa-caret-up ml-1"
-                  aria-hidden="true"></i></span>
-            </div>
-          }
+      @case (this.showAllComments()) {
+      @if (this.post().comments.length >= 3) {
+      <div class="text-sm cursor-pointer text-gray-500 font-semibold">
+        <span appUnderline (click)="viewLessComments()">View less comments <i class="fa fa-caret-up ml-1"
+            aria-hidden="true"></i></span>
+      </div>
+      }
 
-          @for (comment of this.post().comments; track $index) {
-            <single-post-comment (onDeleteComment)="deleteComment(comment.id)"
-              (onUpdateLikesComment)="updateCommentLikes($event, comment)" [comment]="comment"></single-post-comment>
-            }
-        }
+      @for (comment of this.post().comments; track $index) {
+      <single-post-comment (onDeleteComment)="deleteComment(comment.id)"
+        (onUpdateLikesComment)="updateCommentLikes($event, comment)" [comment]="comment"></single-post-comment>
+      }
+      }
       }
 
 

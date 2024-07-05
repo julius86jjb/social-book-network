@@ -6,7 +6,6 @@ import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2'
 
 import { AuthService } from '../../services/auth.service';
-import { User } from '../../interfaces/user.interface';
 import { ValidatorService } from '../../../shared/services/validator.service';
 import { EmailValidator } from '../../../shared/validators/email-validator.service';
 
@@ -30,9 +29,9 @@ export class RegisterPageComponent {
   private validatorService = inject(ValidatorService);
 
   public myForm = this.fb.group({
-    userName: ['', [Validators.required, Validators.minLength(6)]],
-    email: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], [new EmailValidator()]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    userName: ['User 1', [Validators.required, Validators.minLength(6)]],
+    email: ['user1@email.com', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], [new EmailValidator()]],
+    password: ['123456', [Validators.required, Validators.minLength(6)]]
   })
 
 
@@ -58,7 +57,6 @@ export class RegisterPageComponent {
       password,
       followers: [],
       following: [],
-      posts: [],
       // last_login: new Date().getTime(),
       avatar: '../../../../assets/images/default-avatar.jpg'
     }

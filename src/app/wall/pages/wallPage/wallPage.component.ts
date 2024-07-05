@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { PostService } from '../../services/post.service';
 import { ModalType, ModalUploadService } from '../../services/modalUpload.service';
@@ -11,8 +11,10 @@ import { SinglePostComponent } from './components/singlePost/singlePost.componen
 import { TopbarComponent } from '../../components/topbar/topbar.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { SelectPostsComponent } from './components/selectPosts/selectPosts.component';
-import { map, tap } from 'rxjs';
-import { ModalUploadComponent } from '../../components/modalUpload/modalUpload.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { PostFormComponent } from './components/postForm/postForm.component';
+import { ProfileFormComponent } from './components/profileForm/profileForm.component';
+import { UserModalComponent } from './components/userModal/userModal.component';
 
 @Component({
   standalone: true,
@@ -23,13 +25,16 @@ import { ModalUploadComponent } from '../../components/modalUpload/modalUpload.c
     NewPostFormComponent,
     SinglePostComponent,
     SelectPostsComponent,
-    ModalUploadComponent
+    ModalComponent,
+    PostFormComponent,
+    ProfileFormComponent,
+    UserModalComponent
   ],
   templateUrl: './wallPage.component.html',
   styleUrl: './wallPage.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class WallPageComponent implements OnDestroy {
+export default class WallPageComponent implements OnInit, OnDestroy {
 
 
   public modalService = inject(ModalUploadService);
@@ -40,42 +45,36 @@ export default class WallPageComponent implements OnDestroy {
   public posts = this.postService.posts;
   public postsType = signal<string>('following')
 
-  constructor() {
-    this.postService.getPosts(0, this.postsType())
-      .pipe(
-        tap(posts => this.posts.set(posts)),
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe();
 
-    toObservable(this.authService.afterCurrentUserUpdate).subscribe(() => {
-      this.onUpdateCurrentUser()
-    })
+
+  ngOnInit() {
+    // this.getPosts()
+    this.onCurrentUserUpdate();
   }
 
+  onCurrentUserUpdate() {
+    this.authService.currentUserUpdate$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.getPosts())
+  }
+
+
+  getPosts() {
+    this.postService.posts.set([])
+    this.postService.getPosts(0, this.postsType())
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe();
+  }
 
   onChangeCategory(type: string) {
-    this.postService.posts.set([])
     this.postsType.set(type);
-    this.postService.getPosts(0, this.postsType())
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe();
+    this.getPosts()
   }
 
-  onUpdateCurrentUser() {
-
-    this.postService.posts.set([])
-    this.postService.getPosts(0, this.postsType())
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe(resp => console.log(resp));
-  }
-
-
-
-
-  getPosts(i: number) {
-
+  getMorePosts(i: number) {
     if (i === this.posts().length - 1) {
       this.postService.getPosts(i + 1, this.postsType()).pipe(
         takeUntilDestroyed(this.destroyRef),
@@ -84,17 +83,12 @@ export default class WallPageComponent implements OnDestroy {
   }
 
   onOpenModal() {
-    this.modalService.openModal(ModalType.newPost);
+    this.modalService.openModal(ModalType.post);
   }
 
   ngOnDestroy(): void {
     this.postService.posts.set([])
   }
-
-
-
-
-
 }
 
 

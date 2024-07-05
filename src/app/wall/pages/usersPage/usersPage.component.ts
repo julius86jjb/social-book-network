@@ -1,53 +1,32 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { UserItemComponent } from './userItem/userItem.component';
-import { ModalUploadComponent } from '../../components/modalUpload/modalUpload.component';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, computed, inject, signal } from '@angular/core';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { PostFormComponent } from "../wallPage/components/postForm/postForm.component";
+import { ProfileFormComponent } from "../wallPage/components/profileForm/profileForm.component";
+import { UserModalComponent } from "../wallPage/components/userModal/userModal.component";
+import { ModalUploadService } from '../../services/modalUpload.service';
+import { FilterComponent } from '../../../shared/components/filter/filter.component';
+import { UserListComponent } from './components/userList/userList.component';
 
 
 @Component({
   selector: 'app-users-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    ScrollingModule,
-    UserItemComponent,
-    ModalUploadComponent
-  ],
   templateUrl: './usersPage.component.html',
   styleUrl: './usersPage.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    ModalComponent,
+    PostFormComponent,
+    ProfileFormComponent,
+    UserModalComponent,
+    FilterComponent,
+    UserListComponent,
+  ]
 })
-export class UsersPageComponent implements OnInit {
-
-  private userService = inject(UserService);
-  private destroyRef = inject(DestroyRef)
-
-  public users = this.userService.users
-
-  constructor() {
-    this.userService.getUsers(0).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe()
-  }
-  ngOnInit(): void {
-
-  }
-
-  public getUsers(i: number) {
-    if (i === this.userService.users().length - 1) {
-      this.userService.getUsers(i + 1).pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe();
-    }
-  }
-
-
-  ngOnDestroy(): void {
-    this.userService.users.set([])
-  }
-
-
+export class UsersPageComponent {
+  public modalService = inject(ModalUploadService);
+  listFilter = signal('');
+  filterLength = computed(() => this.listFilter().length);
 }

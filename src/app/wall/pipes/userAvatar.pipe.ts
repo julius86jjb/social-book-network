@@ -1,8 +1,7 @@
 import { Pipe, inject, type PipeTransform } from '@angular/core';
-import { Observable, delay, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from '../../auth/interfaces/user.interface';
-import { AuthService } from '../../auth/services/auth.service';
-import { PostService } from '../services/post.service';
+import { UserService } from '../services/user.service';
 
 @Pipe({
   name: 'userAvatar',
@@ -10,10 +9,10 @@ import { PostService } from '../services/post.service';
 })
 export class UserAvatarPipe implements PipeTransform {
 
-  private authService = inject(AuthService)
+  private userService = inject(UserService)
 
-  transform(id: string) {
-    return this.authService.getUserById(id).pipe(
+  transform(id: string): Observable<string> {
+    return this.userService.getUserById(id).pipe(
       map((user: User) => user.avatar),
     )
   }

@@ -1,376 +1,266 @@
 {
-  "users": [
+  "notifications": [
     {
-      "id": "2a1e",
-      "userName": "User 3",
-      "email": "user3@email.com",
-      "password": "123456",
-      "followers": [
-        "4883",
-        "2299",
-        "d9dc",
-        "6080",
-        "e6bc"
-      ],
-      "following": [
-        "4883",
-        "2299"
-      ],
-      "posts": [
-        "b7bb",
-        "5fc9",
-        "bf51",
-        "e9e6"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00005.png?alt=media&token=fdcacb01-e98c-442f-b447-c44095bc5128",
-      "last_login": "2024-05-17T08:39:53.753Z"
+      "id": "3989",
+      "userId": "bbf5",
+      "type": "follow",
+      "readed": false,
+      "date": "2024-07-03T19:35:20.696Z",
+      "generatedById": "4e98",
+      "content": "",
+      "deleted": false
     },
     {
-      "id": "e6bc",
+      "id": "e3bc",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T19:00:25.661Z",
+      "generatedById": "f290",
+      "content": "hey!",
+      "deleted": false
+    },
+    {
+      "id": "1b8f",
+      "userId": "4e98",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T19:00:25.666Z",
+      "generatedById": "f290",
+      "content": "hey!",
+      "deleted": false
+    },
+    {
+      "id": "36f1",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T19:00:25.675Z",
+      "generatedById": "f290",
+      "content": "hey!",
+      "deleted": false
+    },
+    {
+      "id": "b8de",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:50:17.302Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "756b",
+      "userId": "4e98",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:50:17.307Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "f797",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:50:17.321Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "4456",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:57:35.332Z",
+      "generatedById": "f290",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "1d65",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:57:35.343Z",
+      "generatedById": "f290",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "73dd",
+      "userId": "4e98",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T21:57:35.337Z",
+      "generatedById": "f290",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "1a8e",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T22:10:50.831Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "c1fc",
+      "userId": "4e98",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T22:10:50.836Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "0851",
+      "userId": "bbf5",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-05T22:10:50.841Z",
+      "generatedById": "f290",
+      "content": "1",
+      "deleted": false
+    }
+  ],
+  "users": [
+    {
+      "id": "4e98",
       "userName": "User 1",
       "email": "user1@email.com",
       "password": "123456",
       "followers": [
-        "d9dc"
+        "f290",
+        "bbf5"
       ],
       "following": [
-        "2a1e",
-        "6080"
+        "f290",
+        "bbf5"
       ],
-      "posts": [
-        "6676",
-        "7fe3",
-        "afd1",
-        "7cde",
-        "b7f5",
-        "c9b6",
-        "ad06",
-        "3b52",
-        "808d",
-        "9735",
-        "ad80",
-        "fbe3",
-        "f923",
-        "0106",
-        "420e",
-        "3c7b",
-        "e531",
-        "a04b",
-        "cc6e",
-        "e586",
-        "fa36",
-        "1f71",
-        "4099",
-        "37cf",
-        "1aef",
-        "cc8b",
-        "9391",
-        "4475",
-        "c0af",
-        "1256",
-        "e12c",
-        "8e4f",
-        "b7ed",
-        "54a0",
-        "e51b"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=1978d64f-2490-40c2-99a7-9610fc84e06c",
-      "last_login": "2024-05-17T09:55:21.691Z"
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=b79f9dd9-6eaa-4081-9746-531a5b216cea",
+      "last_login": "2024-07-03T19:36:02.935Z"
     },
     {
-      "id": "6080",
-      "userName": "User 2",
-      "email": "user2@email.com",
-      "password": "123456",
-      "followers": [
-        "e6bc"
-      ],
-      "following": [
-        "2a1e"
-      ],
-      "posts": [
-        "5de1",
-        "943c",
-        "70f4",
-        "f74f"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=ca28cd93-761b-4636-a433-978e8e726c20",
-      "last_login": "2024-05-17T08:41:05.717Z"
-    },
-    {
-      "id": "d9dc",
+      "id": "f290",
       "userName": "User 4",
       "email": "user4@email.com",
       "password": "123456",
       "followers": [
-        "6080"
+        "bbf5",
+        "4e98",
+        "bbf5"
       ],
       "following": [
-        "2a1e",
-        "e6bc"
+        "4e98"
       ],
-      "posts": [
-        "c23c",
-        "3415",
-        "ad6a",
-        "89c8"
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-4.png?alt=media&token=e18f0192-ceb2-4565-816b-2f82dedee8ba",
+      "last_login": "2024-07-04T16:17:32.104Z"
+    },
+    {
+      "id": "bbf5",
+      "userName": "User 3",
+      "email": "user3@email.com",
+      "password": "123456",
+      "followers": [
+        "f290",
+        "4e98"
       ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0.png?alt=media&token=49c91d67-c5fe-457e-b8ef-64bfc465e6dc",
-      "last_login": "2024-05-17T09:10:25.867Z"
+      "following": [
+        "4e98",
+        "f290"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=c4de5c33-e3c8-4145-be06-d485e1327623",
+      "last_login": "2024-07-03T19:24:04.032Z"
     }
   ],
   "posts": [
     {
-      "id": "5de1",
-      "userId": "6080",
-      "date": "2024-05-17T08:37:15.829Z",
-      "likes": [],
-      "comments": [],
-      "message": "2"
+      "id": "3c69",
+      "userId": "f290",
+      "date": "2024-07-03T19:08:58.904Z",
+      "likes": [
+        "4e98",
+        "bbf5"
+      ],
+      "comments": [
+        {
+          "id": "ff0b4551-ed8f-4bc7-a2c0-592d3a70acb2",
+          "userId": "4e98",
+          "message": "That's awesome!",
+          "likes": [
+            "bbf5"
+          ],
+          "date": "2024-07-03T19:14:52.698Z"
+        },
+        {
+          "id": "cef0dd55-7616-4641-a271-7685f0dc3a14",
+          "userId": "bbf5",
+          "message": "Love it!",
+          "likes": [
+            "4e98"
+          ],
+          "date": "2024-07-03T19:15:59.580Z"
+        }
+      ],
+      "message": "Brainstorming!  👍 😜",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fimage.png?alt=media&token=17e1e1ac-9a7f-4226-ac68-be4803a694a2"
     },
     {
-      "id": "943c",
-      "userId": "6080",
-      "date": "2024-05-17T08:37:19.469Z",
+      "id": "24da",
+      "userId": "4e98",
+      "date": "2024-07-03T19:11:28.089Z",
+      "likes": [
+        "bbf5"
+      ],
+      "comments": [
+        {
+          "id": "ce0bf5bf-89bf-48a2-a19e-90daf4b37fbc",
+          "userId": "bbf5",
+          "message": "Coll! 👏",
+          "likes": [
+            "4e98",
+            "f290"
+          ],
+          "date": "2024-07-03T19:13:37.244Z"
+        }
+      ],
+      "message": "Virtual Vision!  😋"
+    },
+    {
+      "id": "a9cb",
+      "userId": "bbf5",
+      "date": "2024-07-03T19:12:51.744Z",
+      "likes": [],
+      "comments": [
+        {
+          "id": "661f6e74-51c6-4061-841b-71e87aa51559",
+          "userId": "bbf5",
+          "message": "Hey!",
+          "likes": [
+            "4e98"
+          ],
+          "date": "2024-07-03T19:22:39.668Z"
+        }
+      ],
+      "message": "My angular courses! Im very proud to have finish that great list of courses made by Enrique Oriol!  👍",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Faprendeangular.png?alt=media&token=2945ca43-e0d8-4123-9571-e3ee0785abc8"
+    },
+    {
+      "id": "d9e3",
+      "userId": "f290",
+      "date": "2024-07-05T22:10:50.775Z",
       "likes": [],
       "comments": [],
       "message": "1"
-    },
-    {
-      "id": "b7bb",
-      "userId": "2a1e",
-      "date": "2024-05-17T08:38:39.243Z",
-      "likes": [],
-      "comments": [],
-      "message": "1"
-    },
-    {
-      "id": "70f4",
-      "userId": "6080",
-      "date": "2024-05-17T08:38:51.083Z",
-      "likes": [],
-      "comments": [],
-      "message": "3"
-    },
-    {
-      "id": "5fc9",
-      "userId": "2a1e",
-      "date": "2024-05-17T08:39:00.389Z",
-      "likes": [],
-      "comments": [],
-      "message": "2"
-    },
-    {
-      "id": "bf51",
-      "userId": "2a1e",
-      "date": "2024-05-17T08:39:03.865Z",
-      "likes": [],
-      "comments": [],
-      "message": "3"
-    },
-    {
-      "id": "f74f",
-      "userId": "6080",
-      "date": "2024-05-17T08:39:27.092Z",
-      "likes": [],
-      "comments": [],
-      "message": "4"
-    },
-    {
-      "id": "c23c",
-      "userId": "d9dc",
-      "date": "2024-05-17T08:39:48.738Z",
-      "likes": [],
-      "comments": [],
-      "message": "1"
-    },
-    {
-      "id": "e9e6",
-      "userId": "2a1e",
-      "date": "2024-05-17T08:39:57.408Z",
-      "likes": [],
-      "comments": [],
-      "message": "4"
-    },
-    {
-      "id": "3415",
-      "userId": "d9dc",
-      "date": "2024-05-17T08:40:07.162Z",
-      "likes": [],
-      "comments": [],
-      "message": "2"
-    },
-    {
-      "id": "ad6a",
-      "userId": "d9dc",
-      "date": "2024-05-17T08:40:10.278Z",
-      "likes": [],
-      "comments": [],
-      "message": "3"
-    },
-    {
-      "id": "89c8",
-      "userId": "d9dc",
-      "date": "2024-05-17T08:40:13.503Z",
-      "likes": [],
-      "comments": [],
-      "message": "4"
-    },
-    {
-      "id": "bd85",
-      "userId": "e6bc",
-      "date": "2024-05-17T19:44:42.332Z",
-      "likes": [],
-      "comments": [],
-      "message": "Hi! How are you people?",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F00001.png?alt=media&token=893950d5-5a10-487d-98cc-48bbc67fa3f8"
-    },
-    {
-      "id": "3b52",
-      "userId": "e6bc",
-      "date": "2024-05-17T20:04:59.361Z",
-      "likes": [],
-      "comments": [],
-      "message": "1",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F0.png?alt=media&token=d8a3422c-244f-48ca-98ed-d072ad2a8f14"
-    },
-    {
-      "id": "808d",
-      "userId": "e6bc",
-      "date": "2024-05-17T20:05:30.673Z",
-      "likes": [],
-      "comments": [],
-      "message": "1"
-    },
-    {
-      "id": "cf77",
-      "userId": "e6bc",
-      "date": "2024-05-17T20:05:47.079Z",
-      "likes": [],
-      "comments": [],
-      "message": "3",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F1.png?alt=media&token=43c32736-e415-406d-9e6b-e79dada966e1"
-    },
-    {
-      "id": "9735",
-      "userId": "e6bc",
-      "date": "2024-05-17T20:08:58.657Z",
-      "likes": [],
-      "comments": [],
-      "message": "holaaaa!",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F0000000.png?alt=media&token=6982f6c2-aa75-4c0e-a791-35caf78b33a6",
-      "text": "4"
-    },
-    {
-      "id": "420e",
-      "userId": "e6bc",
-      "date": "2024-05-17T23:46:03.855Z",
-      "likes": [],
-      "comments": [],
-      "message": "1"
-    },
-    {
-      "id": "3c7b",
-      "userId": "e6bc",
-      "date": "2024-05-18T08:51:28.484Z",
-      "likes": [],
-      "comments": [],
-      "message": "213213213213"
-    },
-    {
-      "id": "e586",
-      "userId": "e6bc",
-      "date": "2024-05-18T10:06:22.524Z",
-      "likes": [],
-      "comments": [],
-      "message": "sadsadsdasdasd"
-    },
-    {
-      "id": "243a",
-      "userId": "e6bc",
-      "date": "2024-05-18T11:58:56.888Z",
-      "likes": [],
-      "comments": [],
-      "message": "sdsadfsad",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F0.png?alt=media&token=ffc0bf93-afb4-404a-98d4-86ea2dad8099"
-    },
-    {
-      "id": "4099",
-      "userId": "e6bc",
-      "date": "2024-05-18T11:59:19.058Z",
-      "likes": [],
-      "comments": [],
-      "message": "",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F1.png?alt=media&token=1156b791-1831-408f-81ca-2c8cf20c428d"
-    },
-    {
-      "id": "4475",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:21:49.875Z",
-      "likes": [],
-      "comments": [],
-      "message": "",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F0.png?alt=media&token=15b36b99-ff5c-4756-9725-e17e0f22e75a"
-    },
-    {
-      "id": "c0af",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:22:19.192Z",
-      "likes": [],
-      "comments": [],
-      "message": "sadsadssadsadsdasdsadasdasdas"
-    },
-    {
-      "id": "1256",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:33:25.789Z",
-      "likes": [],
-      "comments": [],
-      "message": "asdsadsa",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F00005.png?alt=media&token=e6bdd905-d12d-4ec8-9b9c-b38c33b05da9"
-    },
-    {
-      "id": "8e4f",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:35:31.539Z",
-      "likes": [],
-      "comments": [],
-      "message": "sddsddssadadsadasdasda"
-    },
-    {
-      "id": "b7ed",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:38:43.438Z",
-      "likes": [],
-      "comments": [],
-      "message": "sddsddssadadsadasdasda",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fabout-bg.png?alt=media&token=d199340c-8f3b-4aed-bc42-29d17e91bf18"
-    },
-    {
-      "id": "07ed",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:39:25.531Z",
-      "likes": [],
-      "comments": [],
-      "message": "sddsddssadadsadasdasdasdsadsadsa",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Faward5.png?alt=media&token=a1fca1b4-9e69-4acb-b590-ed421a67842f"
-    },
-    {
-      "id": "54a0",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:41:03.680Z",
-      "likes": [],
-      "comments": [],
-      "message": "sddsddssadadsadasdasda",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2F00005.png?alt=media&token=9120c680-c877-4386-b14a-0774a798d86d"
-    },
-    {
-      "id": "e51b",
-      "userId": "e6bc",
-      "date": "2024-05-18T12:50:43.799Z",
-      "likes": [],
-      "comments": [],
-      "message": "ewerewqwq"
     }
-  ]
+  ],
+  "notificationss": []
 }

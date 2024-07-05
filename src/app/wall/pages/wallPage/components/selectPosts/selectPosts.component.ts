@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, inject, type OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, effect, inject, output, signal, type OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs';
 import { PostService } from '../../../../services/post.service';
 
@@ -9,7 +9,8 @@ import { PostService } from '../../../../services/post.service';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './selectPosts.component.html',
   styleUrl: './selectPosts.component.css',
@@ -17,23 +18,29 @@ import { PostService } from '../../../../services/post.service';
 })
 export class SelectPostsComponent implements OnInit {
 
-  @Output() public postsTypeChange = new EventEmitter<string>()
+  // @Output() public postsTypeChange = new EventEmitter<string>()
+  public postsTypeProcess = output<string>()
 
   private fb = inject(FormBuilder)
   private postService = inject(PostService)
 
+  public postType = signal('following')
 
-  public postTypeForm: FormGroup = this.fb.group({
-    postsType: ['following', Validators.required]
-  })
+  // public postTypeForm: FormGroup = this.fb.group({
+  //   postsType: ['following', Validators.required]
+  // })
 
   ngOnInit(): void {
-    this.onPostsTypeChange()
+    // this.onPostsTypeChange()
   }
 
+  postTypeEff = effect(() => {
+    console.log('postTypeEff');
+    this.postsTypeProcess.emit(this.postType())
+  })
 
-  onPostsTypeChange() {
-    this.postTypeForm.get('postsType')!.valueChanges
-      .subscribe((type) => this.postsTypeChange.emit(type))
-  }
+  // onPostsTypeChange() {
+  //   this.postTypeForm.get('postsType')!.valueChanges
+  //     .subscribe((type) => this.postsTypeProcess.emit(type))
+  // }
 }

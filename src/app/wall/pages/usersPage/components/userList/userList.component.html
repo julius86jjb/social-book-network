@@ -1,0 +1,13 @@
+<ul class="bg-white flex flex-col divide-y w-full  ">
+  @for (user of filteredUsers(); track $index) {
+  @defer (on viewport) {
+  <app-user-item [user]="user" [index]="$index" (loaded)="getMoreUsers($event)" />
+  } @placeholder {
+  <li class="flex items-center my-2">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full">
+      <img src="assets/loader.svg" alt="no-img" class="h-9 w-9 mt-3 ">
+    </div>
+  </li>
+  }
+  }
+</ul>

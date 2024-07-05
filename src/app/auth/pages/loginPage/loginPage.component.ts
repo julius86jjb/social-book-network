@@ -60,7 +60,7 @@ export class LoginPageComponent {
           this.authService.updateCurrentUser({
             ...user,
             last_login: new Date()
-          }).subscribe();
+          }, false).subscribe();
 
           this.router.navigateByUrl('/dashboard')
         },

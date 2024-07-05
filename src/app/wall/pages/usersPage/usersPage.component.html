@@ -4,22 +4,16 @@
     <div class="bg-[#112745] py-2 px-4 sm:px-6 lg:px-6 ">
       <h2 class="text-xl font-semibold text-white">Registered Users</h2>
     </div>
-    <!-- <cdk-virtual-scroll-viewport  class="h-screen" itemSize="30" > -->
-    <ul class="bg-white flex flex-col divide-y w-full  ">
-      @for (user of users(); track $index) {
-      @defer (on viewport) {
-      <app-user-item [user]="user" [index]="$index" (loaded)="getUsers($event)"/>
-      } @placeholder {
-      <li class="flex items-center my-2">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full">
-          <img src="assets/loader.svg" alt="no-img" class="h-9 w-9 mt-3 ">
-        </div>
-      </li>
-      }
-      }
-    </ul>
+
+    <app-filter [(filterCriteria)]="listFilter" />
+
+    <app-user-list [listCriteria]="listFilter()" />
     <!-- </cdk-virtual-scroll-viewport> -->
 
   </div>
 </div>
-<wall-modal-upload #modalDiv  ></wall-modal-upload>
+<wall-modal-upload>
+  <app-post-form [postData]="this.modalService.post()"></app-post-form>
+  <app-profile-form></app-profile-form>
+  <app-user-modal [userData]="this.modalService.user()"></app-user-modal>
+</wall-modal-upload>

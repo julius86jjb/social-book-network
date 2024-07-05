@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, O
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../../auth/services/auth.service';
 import { ModalUploadService, ModalType } from '../../../../services/modalUpload.service';
-import { ModalUploadComponent } from '../../../../components/modalUpload/modalUpload.component';
+import { ModalComponent } from '../../../../components/modal/modal.component';
+import { TopbarService } from '../../../../services/topbar.service';
 
 @Component({
   selector: 'wall-new-post-form',
@@ -11,8 +12,7 @@ import { ModalUploadComponent } from '../../../../components/modalUpload/modalUp
   imports: [
     CommonModule,
     RouterModule,
-    ModalUploadComponent,
-
+    ModalComponent
   ],
   templateUrl: './newPostForm.component.html',
   styles: `
@@ -22,18 +22,32 @@ import { ModalUploadComponent } from '../../../../components/modalUpload/modalUp
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewPostFormComponent{
+export class NewPostFormComponent {
 
   private modalUploadService = inject(ModalUploadService);
   private authService = inject(AuthService);
+  private topbarService = inject(TopbarService);
 
-  onOpenModal() {
-    this.modalUploadService.openModal(ModalType.newPost);
+  onOpenModal(type: string) {
+    switch (type) {
+      case 'post':
+        this.modalUploadService.openModal(ModalType.post);
+        break;
+      case 'profile':
+        this.modalUploadService.openModal(ModalType.profile);
+        break;
+
+      default:
+        break;
+    }
+
   }
 
   get user() {
     return this.authService.user();
   }
+
+
 
 
 }

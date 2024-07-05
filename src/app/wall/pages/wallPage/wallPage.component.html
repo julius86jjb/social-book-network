@@ -1,11 +1,11 @@
 <div class="bg-gray-100  flex flex-grow  justify-center">
   <ul class="w-full md:max-w-md ">
     <wall-new-post-form />
-    <app-select-posts (postsTypeChange)="this.onChangeCategory($event)"/>
-    @if (this.postService.posts().length > 0) {
+    <app-select-posts (postsTypeProcess)="onChangeCategory($event)"/>
+    @if (this.posts().length > 0) {
     @for (post of this.posts(); track $index) {
     @defer (on viewport) {
-    <wall-single-post [post]="post" [index]="$index" (loaded)="getPosts($event)" (userUpdated)="onUpdateCurrentUser()" />
+    <wall-single-post [post]="post" [index]="$index" (loaded)="getMorePosts($event)" />
     } @placeholder {
     <li class="flex items-center my-2">
       <div class="bg-white p-8 rounded-lg shadow-md w-full">
@@ -21,18 +21,50 @@
       <div class="bg-white p-8 rounded-lg shadow-md w-full">
         <div class=" grid grid-cols-[62%_38%]  bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4"
           role="alert">
-          <div>
-            <p class="font-bold">No post published!</p>
-            <p>Be the first to share a post.</p>
-          </div>
-          <div class="flex items-center justify-center">
-            <button (click)="onOpenModal()" type="button"
-              class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
-                focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2
-                 dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-600 dark:focus:ring-indigo-900">
-              New Post +
-            </button>
-          </div>
+          @switch (this.postsType()) {
+            @case ('my-posts') {
+              <div>
+                <p class="font-bold">You have not published any post</p>
+              </div>
+              <div class="flex items-center justify-center">
+                <button (click)="onOpenModal()" type="button"
+                  class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
+                    focus:outline-none focus:ring-indigo-300 font-medium rounded-lg md:text-sm text-xs px-5 py-2.5 text-center me-2 mb-2
+                     dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-600 dark:focus:ring-indigo-900">
+                     <i class="fa fa-plus"></i> New Post
+                </button>
+              </div>
+            }
+            @case ('following') {
+              <div>
+                <p class="font-bold">The users you follow haven't published anything yet</p>
+                <p>Consider following more users</p>
+              </div>
+              <div class="flex items-center justify-center">
+                <a [routerLink]="['/dashboard/users']" type="button"
+                  class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
+                    focus:outline-none focus:ring-indigo-300 font-medium rounded-lg md:text-sm text-xs px-5 py-2.5 text-center me-2 mb-2
+                     dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-600 dark:focus:ring-indigo-900">
+                  <i class="fa fa-user"></i> Users
+                </a>
+              </div>
+            }
+            @case ('all') {
+              <div>
+                <p class="font-bold">No post published!</p>
+                <p>Be the first to share a post.</p>
+              </div>
+              <div class="flex items-center justify-center">
+                <button (click)="onOpenModal()" type="button"
+                  class="text-indigo-700 hover:text-white border border-indigo-700 hover:bg-indigo-800 focus:ring-4
+                    focus:outline-none focus:ring-indigo-300 font-medium rounded-lg md:text-sm text-xs px-5 py-2.5 text-center me-2 mb-2
+                     dark:border-indigo-500 dark:text-indigo-500 dark:hover:text-white dark:hover:bg-indigo-600 dark:focus:ring-indigo-900">
+                     <i class="fa fa-plus"></i> New Post
+                </button>
+              </div>
+            }
+          }
+
 
         </div>
       </div>
@@ -43,4 +75,8 @@
 
 </div>
 
-<wall-modal-upload #modalDiv ></wall-modal-upload>
+<wall-modal-upload>
+  <app-post-form (reloadPost)="this.getPosts()" [postData]="this.modalService.post()" ></app-post-form>
+  <app-profile-form></app-profile-form>
+  <app-user-modal [userData]="this.modalService.user()"></app-user-modal>
+</wall-modal-upload>

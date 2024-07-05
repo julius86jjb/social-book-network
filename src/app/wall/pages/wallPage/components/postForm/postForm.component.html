@@ -1,0 +1,73 @@
+<!--Title-->
+<div class=" flex justify-between items-center pb-3">
+  <p class="text-2xl font-bold ">
+    @if (this.postData()) {
+    Edit Post
+    }@else {
+    New Post
+    }
+
+  </p>
+  <div class="modal-close cursor-pointer z-50" (click)="onCloseModal()">
+    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+      <path
+        d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+      </path>
+    </svg>
+  </div>
+</div>
+<!--Body-->
+
+<form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+
+
+  <div class="grid grid-cols-[88%_12%] md:grid-cols-[92%_8%] relative my-5 w-full">
+
+    <input #txtMessage formControlName="text"
+      class="text-left text-sm md:text-base p-2 rounded-lg text-gray-600 focus:outline-none"
+      placeholder="What's on your mind, {{this.authService.user()?.userName}}?">
+
+    <app-emoji (onSelectedEmoji)="addEmojiToInput($event)"></app-emoji>
+  </div>
+
+
+
+  <div class="grid  w-full">
+    <div class="flex justify-center items-center">
+      <img *ngIf="!imgTemp()" [src]="this.modalUploadService.img "
+        class="cursor-pointer w-full h-auto  object-cover rounded-md" (click)="fileInput.click()">
+      <img *ngIf="imgTemp()" [src]="imgTemp()" class="cursor-pointer w-full h-auto  object-cover rounded-md"
+        (click)="fileInput.click()">
+    </div>
+
+    <input hidden type="file" #fileInput (change)="onUploadImage($event)">
+  </div>
+
+  @if (imgTemp()) {
+  <div class="grid text-right w-full">
+    <span (click)="onRemovePic()" class="cursor-pointer text-xs ">Remove Picture</span>
+  </div>
+  }
+
+  @if (isUploading()) {
+  <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+    <div class="bg-[#1f2937] text-xs font-medium text-white text-center p-0.5 leading-none rounded-full"
+      [ngStyle]="{'width.%': uploadPercentage()}"> {{uploadPercentage() | number: '1.0-0'}}%</div>
+  </div>
+  }
+
+
+
+  <button type="submit" class=" w-full focus:outline-none px-4 mt-5 bg-teal-500 p-3  rounded-lg text-white"
+    [ngClass]="{ 'hover:bg-teal-400 cursor-pointer': imgToUpload()}">
+    @if (this.postData()) {
+    Update Post
+    }@else {
+    Create Post
+    }
+
+  </button>
+
+
+
+</form>
