@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 import { AuthService } from '../../services/auth.service';
 import { ValidatorService } from '../../../shared/services/validator.service';
 import { EmailValidator } from '../../../shared/validators/email-validator.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register-page',
@@ -27,11 +28,12 @@ export class RegisterPageComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private validatorService = inject(ValidatorService);
+  private toastr = inject(ToastrService);
 
   public myForm = this.fb.group({
-    userName: ['User 1', [Validators.required, Validators.minLength(6)]],
-    email: ['user1@email.com', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], [new EmailValidator()]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]]
+    userName: ['', [Validators.required, Validators.minLength(6)]],
+    email: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], [new EmailValidator()]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   })
 
 
@@ -64,12 +66,11 @@ export class RegisterPageComponent {
     this.authService.register(user)
       .subscribe(user => {
         this.router.navigateByUrl('/login')
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "User succefully created",
-          showConfirmButton: false,
-          timer: 1500
+
+
+        this.toastr.success( 'User succefully created', '',  {
+          closeButton: true,
+
         });
       })
   }

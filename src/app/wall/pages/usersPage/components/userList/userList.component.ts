@@ -55,7 +55,7 @@ export class UserListComponent {
   }
 
   public getMoreUsers(i: number) {
-    if (i === this.userService.users().length - 1) {
+    if (i === this.users().length -1  ) {
       this.userService.getUsers(i + 1).pipe(
         takeUntilDestroyed(this.destroyRef),
       ).subscribe();

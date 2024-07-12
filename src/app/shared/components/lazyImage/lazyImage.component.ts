@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, input, signal } from '@angular/core';
 
+export enum LazyImageType {
+  postImage = 'postImage',
+  avatar = 'avatar',
+  notification = 'notification',
+  userModal = 'userModal'
+}
+
 @Component({
   selector: 'shared-lazy-image',
   standalone: true,
@@ -17,7 +24,7 @@ import { ChangeDetectionStrategy, Component, Input, input, signal } from '@angul
 })
 export class LazyImageComponent {
 
-  public type = input.required<string>();
+  public type = input.required<LazyImageType>();
 
   public url = input.required<string>();
 

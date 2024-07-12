@@ -21,12 +21,12 @@ import { CommentComponent } from './components/comment/comment.component';
 import { UserNamePipe } from '../../../../pipes/userName.pipe';
 import { UnderlineDirective } from '../../../../../shared/directives/underline.directive';
 import { TimeAgoPipe } from '../../../../../shared/pipes/timeAgo.pipe';
-import { LazyImageComponent } from '../../../../../shared/components/lazyImage/lazyImage.component';
+import { LazyImageComponent, LazyImageType } from '../../../../../shared/components/lazyImage/lazyImage.component';
 import { ModalUploadService } from '../../../../services/modalUpload.service';
-import { UserAvatarPipe } from '../../../../pipes/userAvatar.pipe';
 import { Observable, map, switchMap, tap } from 'rxjs';
 import { NotificationType, Notification } from '../../../../interfaces/notification.interface';
 import { NotificationService } from '../../../../services/notification.service';
+import { UserDataPipe } from "../../../../pipes/userData.pipe";
 
 @Component({
   selector: 'wall-single-post',
@@ -37,11 +37,10 @@ import { NotificationService } from '../../../../services/notification.service';
     EmojiComponent,
     ReactiveFormsModule,
     CommentComponent,
-    UserNamePipe,
-    UserAvatarPipe,
     UnderlineDirective,
     TimeAgoPipe,
     LazyImageComponent,
+    UserDataPipe
   ],
   host: {
     "(window:click)": "onClickOutside()"
@@ -78,6 +77,7 @@ export class SinglePostComponent implements OnInit {
   });
 
   public hasLiked = computed(() => this.post().likes.includes(this.currentUser.id))
+  public lazyImageType = LazyImageType;
 
 
   constructor() { }
@@ -119,9 +119,10 @@ export class SinglePostComponent implements OnInit {
   onUpdateLikes() {
     this.postService.update({ ...this.post(), likes: [...this.post().likes, this.authService.user()!.id] }).pipe(
       takeUntilDestroyed(this.destroyRef),
-    ).subscribe((post: Post) =>
-      this.notificationService.createNotification(post.userId, NotificationType.likedPost, post.message || '',).subscribe()
-    );
+    ).subscribe((post: Post) => {
+      if (this.currentUser.id !== post.userId)
+        this.notificationService.createNotification(post.userId, NotificationType.likedPost, post.message || '',).subscribe()
+    });
   }
 
   onUpdateDislikes() {
@@ -135,7 +136,7 @@ export class SinglePostComponent implements OnInit {
 
 
   onAddComment() {
-     const postToUpdate: Post = {
+    const postToUpdate: Post = {
       ...this.post(),
       comments: [
         ...this.post().comments,
@@ -147,7 +148,10 @@ export class SinglePostComponent implements OnInit {
     this.postService.update(postToUpdate)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-      ).subscribe((post: Post) => this.notificationService.createNotification(post.userId, NotificationType.commentOn, post.message || '',).subscribe());
+      ).subscribe((post: Post) => {
+        if (this.currentUser.id !== post.userId)
+          this.notificationService.createNotification(post.userId, NotificationType.commentOn, post.message || '',).subscribe()
+      })
     this.newCommentForm.patchValue({
       text: this.newCommentForm.controls['text'].reset()
     })
@@ -185,7 +189,10 @@ export class SinglePostComponent implements OnInit {
     }
     this.postService.update(this.post()).pipe(
       takeUntilDestroyed(this.destroyRef),
-    ).subscribe((post: Post) => this.notificationService.createNotification(comment.userId, NotificationType.likedComment, comment.message || '',).subscribe());
+    ).subscribe((post: Post) => {
+      if (this.currentUser.id !== comment.userId)
+        this.notificationService.createNotification(comment.userId, NotificationType.likedComment, comment.message || '',).subscribe()
+    });
   }
 
   fillColor(): string {

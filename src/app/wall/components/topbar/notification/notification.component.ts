@@ -6,8 +6,6 @@ import { NotificationService } from '../../../services/notification.service';
 import { AuthService } from '../../../../auth/services/auth.service';
 import { TimeAgoPipe } from "../../../../shared/pipes/timeAgo.pipe";
 import { LazyImageComponent } from "../../../../shared/components/lazyImage/lazyImage.component";
-import { UserAvatarPipe } from "../../../pipes/userAvatar.pipe";
-import { UserNamePipe } from "../../../pipes/userName.pipe";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationItemComponent } from "./notificationItem/notificationItem.component";
 import { Notification } from '../../../interfaces/notification.interface';
@@ -24,8 +22,6 @@ import { switchMap, tap } from 'rxjs';
     RouterModule,
     TimeAgoPipe,
     LazyImageComponent,
-    UserAvatarPipe,
-    UserNamePipe,
     NotificationItemComponent
   ],
 })
@@ -66,22 +62,19 @@ export class NotificationComponent implements OnInit {
   }
 
 
-  onToogleNotificationMenu($event: any) {
-    this.topbarService.toogleNotificationMenu($event)
+  onToogleNotificationMenu() {
+    this.topbarService.toogleNotificationMenu()
   }
 
 
-  onCloseNotifications($event: any) {
-    this.topbarService.toogleNotificationMenu($event)
+  onCloseNotifications() {
+    this.topbarService.toogleNotificationMenu()
   }
 
   onDeleteNotification(not: Notification) {
-    const deletedNot = { ...not, deleted: true, readed: true }
-    console.log(deletedNot);
 
-    this.notificationService.updateNotification(deletedNot).pipe(
-      tap(() => this.notificationService.notifications.set([])),
-      switchMap(() => this.notificationService.getNotifications(0))
+    this.notificationService.deleteNotification(not).pipe(
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe()
   }
 

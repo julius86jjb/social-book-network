@@ -1,266 +1,485 @@
 {
   "notifications": [
     {
-      "id": "3989",
-      "userId": "bbf5",
+      "id": "8eb5",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:07:38.249Z",
+      "generatedById": "439f",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "a57a",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:07:38.241Z",
+      "generatedById": "439f",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "7eba",
+      "userId": "439f",
       "type": "follow",
-      "readed": false,
-      "date": "2024-07-03T19:35:20.696Z",
-      "generatedById": "4e98",
+      "readed": true,
+      "date": "2024-07-11T09:07:59.719Z",
+      "generatedById": "9570",
       "content": "",
       "deleted": false
     },
     {
-      "id": "e3bc",
-      "userId": "bbf5",
-      "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T19:00:25.661Z",
-      "generatedById": "f290",
-      "content": "hey!",
+      "id": "13b0",
+      "userId": "a1ba",
+      "type": "follow",
+      "readed": true,
+      "date": "2024-07-11T09:08:01.471Z",
+      "generatedById": "9570",
+      "content": "",
       "deleted": false
     },
     {
-      "id": "1b8f",
-      "userId": "4e98",
+      "id": "5e4e",
+      "userId": "439f",
       "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T19:00:25.666Z",
-      "generatedById": "f290",
-      "content": "hey!",
-      "deleted": false
-    },
-    {
-      "id": "36f1",
-      "userId": "bbf5",
-      "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T19:00:25.675Z",
-      "generatedById": "f290",
-      "content": "hey!",
-      "deleted": false
-    },
-    {
-      "id": "b8de",
-      "userId": "bbf5",
-      "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T21:50:17.302Z",
-      "generatedById": "f290",
+      "readed": true,
+      "date": "2024-07-11T09:25:04.997Z",
+      "generatedById": "a1ba",
       "content": "1",
       "deleted": false
     },
     {
-      "id": "756b",
-      "userId": "4e98",
+      "id": "4a60",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T21:50:17.307Z",
-      "generatedById": "f290",
+      "date": "2024-07-11T09:25:05.007Z",
+      "generatedById": "a1ba",
       "content": "1",
       "deleted": false
     },
     {
-      "id": "f797",
-      "userId": "bbf5",
+      "id": "62ec",
+      "userId": "439f",
       "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T21:50:17.321Z",
-      "generatedById": "f290",
-      "content": "1",
+      "readed": true,
+      "date": "2024-07-11T09:25:28.525Z",
+      "generatedById": "a1ba",
+      "content": "2",
       "deleted": false
     },
     {
-      "id": "4456",
-      "userId": "bbf5",
+      "id": "144f",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T21:57:35.332Z",
-      "generatedById": "f290",
+      "date": "2024-07-11T09:25:28.531Z",
+      "generatedById": "a1ba",
+      "content": "2",
+      "deleted": false
+    },
+    {
+      "id": "f76a",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:26:11.766Z",
+      "generatedById": "a1ba",
+      "content": "3",
+      "deleted": false
+    },
+    {
+      "id": "38b0",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:26:11.783Z",
+      "generatedById": "a1ba",
+      "content": "3",
+      "deleted": false
+    },
+    {
+      "id": "a082",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:28:59.324Z",
+      "generatedById": "a1ba",
       "content": "4",
       "deleted": false
     },
     {
-      "id": "1d65",
-      "userId": "bbf5",
+      "id": "edf3",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T21:57:35.343Z",
-      "generatedById": "f290",
+      "date": "2024-07-11T09:28:59.329Z",
+      "generatedById": "a1ba",
       "content": "4",
       "deleted": false
     },
     {
-      "id": "73dd",
-      "userId": "4e98",
+      "id": "1f75",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:30:10.933Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "726e",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T21:57:35.337Z",
-      "generatedById": "f290",
+      "date": "2024-07-11T09:30:10.940Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "153f",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:30:48.073Z",
+      "generatedById": "a1ba",
       "content": "4",
       "deleted": false
     },
     {
-      "id": "1a8e",
-      "userId": "bbf5",
+      "id": "a04a",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T22:10:50.831Z",
-      "generatedById": "f290",
-      "content": "1",
+      "date": "2024-07-11T09:30:48.079Z",
+      "generatedById": "a1ba",
+      "content": "4",
       "deleted": false
     },
     {
-      "id": "c1fc",
-      "userId": "4e98",
+      "id": "62b5",
+      "userId": "439f",
       "type": "newPost",
-      "readed": false,
-      "date": "2024-07-05T22:10:50.836Z",
-      "generatedById": "f290",
-      "content": "1",
+      "readed": true,
+      "date": "2024-07-11T09:44:11.941Z",
+      "generatedById": "a1ba",
+      "content": "2312",
       "deleted": false
     },
     {
-      "id": "0851",
-      "userId": "bbf5",
+      "id": "8d71",
+      "userId": "9570",
       "type": "newPost",
       "readed": false,
-      "date": "2024-07-05T22:10:50.841Z",
-      "generatedById": "f290",
-      "content": "1",
+      "date": "2024-07-11T09:44:11.958Z",
+      "generatedById": "a1ba",
+      "content": "2312",
+      "deleted": false
+    },
+    {
+      "id": "50ea",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:45:06.372Z",
+      "generatedById": "a1ba",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "6865",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:45:06.378Z",
+      "generatedById": "a1ba",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "a207",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:51:55.897Z",
+      "generatedById": "439f",
+      "content": "a",
+      "deleted": false
+    },
+    {
+      "id": "8127",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:51:55.902Z",
+      "generatedById": "439f",
+      "content": "a",
+      "deleted": false
+    },
+    {
+      "id": "cdcb",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:52:24.124Z",
+      "generatedById": "439f",
+      "content": "dsfdsf",
+      "deleted": false
+    },
+    {
+      "id": "4561",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:52:24.116Z",
+      "generatedById": "439f",
+      "content": "dsfdsf",
+      "deleted": false
+    },
+    {
+      "id": "3cd8",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.263Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "8ff6",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.267Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "2890",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.504Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "dd2c",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.505Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "215f",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:57:10.339Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "9347",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:57:10.337Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "07d8",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T16:05:00.958Z",
+      "generatedById": "439f",
+      "content": "hey!",
+      "deleted": false
+    },
+    {
+      "id": "410c",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T16:05:00.961Z",
+      "generatedById": "439f",
+      "content": "hey!",
       "deleted": false
     }
   ],
   "users": [
     {
-      "id": "4e98",
+      "id": "439f",
       "userName": "User 1",
       "email": "user1@email.com",
       "password": "123456",
       "followers": [
-        "f290",
-        "bbf5"
+        "a1ba",
+        "9570"
       ],
       "following": [
-        "f290",
-        "bbf5"
+        "a1ba",
+        "9570"
       ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=b79f9dd9-6eaa-4081-9746-531a5b216cea",
-      "last_login": "2024-07-03T19:36:02.935Z"
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-7.png?alt=media&token=d2822e41-f207-48e6-a95b-8510f51e819c",
+      "last_login": "2024-07-12T09:41:52.260Z"
     },
     {
-      "id": "f290",
-      "userName": "User 4",
-      "email": "user4@email.com",
+      "id": "a1ba",
+      "userName": "User 2",
+      "email": "user2@email.com",
       "password": "123456",
       "followers": [
-        "bbf5",
-        "4e98",
-        "bbf5"
+        "439f",
+        "9570"
       ],
       "following": [
-        "4e98"
+        "439f",
+        "9570"
       ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-4.png?alt=media&token=e18f0192-ceb2-4565-816b-2f82dedee8ba",
-      "last_login": "2024-07-04T16:17:32.104Z"
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-4.png?alt=media&token=63849a4a-b7b5-4a2f-9c84-e84844d82547",
+      "last_login": "2024-07-11T09:08:10.031Z"
     },
     {
-      "id": "bbf5",
+      "id": "9570",
       "userName": "User 3",
       "email": "user3@email.com",
       "password": "123456",
       "followers": [
-        "f290",
-        "4e98"
+        "439f",
+        "a1ba"
       ],
       "following": [
-        "4e98",
-        "f290"
+        "439f",
+        "a1ba"
       ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=c4de5c33-e3c8-4145-be06-d485e1327623",
-      "last_login": "2024-07-03T19:24:04.032Z"
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=590b7b57-af4b-4740-93ae-ad80332f04b1",
+      "last_login": "2024-07-11T09:07:51.849Z"
+    },
+    {
+      "id": "3d2b",
+      "userName": "User 4",
+      "email": "user4@email.com",
+      "password": "123456",
+      "followers": [],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg"
+    },
+    {
+      "id": "e476",
+      "userName": "User 5",
+      "email": "user5@email.com",
+      "password": "123456",
+      "followers": [],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg"
+    },
+    {
+      "id": "9ece",
+      "userName": "User 6",
+      "email": "user6@email.com",
+      "password": "123456",
+      "followers": [],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg"
     }
   ],
   "posts": [
     {
-      "id": "3c69",
-      "userId": "f290",
-      "date": "2024-07-03T19:08:58.904Z",
-      "likes": [
-        "4e98",
-        "bbf5"
-      ],
-      "comments": [
-        {
-          "id": "ff0b4551-ed8f-4bc7-a2c0-592d3a70acb2",
-          "userId": "4e98",
-          "message": "That's awesome!",
-          "likes": [
-            "bbf5"
-          ],
-          "date": "2024-07-03T19:14:52.698Z"
-        },
-        {
-          "id": "cef0dd55-7616-4641-a271-7685f0dc3a14",
-          "userId": "bbf5",
-          "message": "Love it!",
-          "likes": [
-            "4e98"
-          ],
-          "date": "2024-07-03T19:15:59.580Z"
-        }
-      ],
-      "message": "Brainstorming!  👍 😜",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fimage.png?alt=media&token=17e1e1ac-9a7f-4226-ac68-be4803a694a2"
-    },
-    {
-      "id": "24da",
-      "userId": "4e98",
-      "date": "2024-07-03T19:11:28.089Z",
-      "likes": [
-        "bbf5"
-      ],
-      "comments": [
-        {
-          "id": "ce0bf5bf-89bf-48a2-a19e-90daf4b37fbc",
-          "userId": "bbf5",
-          "message": "Coll! 👏",
-          "likes": [
-            "4e98",
-            "f290"
-          ],
-          "date": "2024-07-03T19:13:37.244Z"
-        }
-      ],
-      "message": "Virtual Vision!  😋"
-    },
-    {
-      "id": "a9cb",
-      "userId": "bbf5",
-      "date": "2024-07-03T19:12:51.744Z",
+      "id": "296c",
+      "userId": "439f",
+      "date": "2024-07-11T09:07:38.232Z",
       "likes": [],
-      "comments": [
-        {
-          "id": "661f6e74-51c6-4061-841b-71e87aa51559",
-          "userId": "bbf5",
-          "message": "Hey!",
-          "likes": [
-            "4e98"
-          ],
-          "date": "2024-07-03T19:22:39.668Z"
-        }
-      ],
-      "message": "My angular courses! Im very proud to have finish that great list of courses made by Enrique Oriol!  👍",
-      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Faprendeangular.png?alt=media&token=2945ca43-e0d8-4123-9571-e3ee0785abc8"
+      "comments": [],
+      "message": "1",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fblog-detail-1.png?alt=media&token=44cdc3d2-d542-4f5c-af44-c205c78a58e2"
     },
     {
-      "id": "d9e3",
-      "userId": "f290",
-      "date": "2024-07-05T22:10:50.775Z",
+      "id": "c2e7",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:25:04.991Z",
       "likes": [],
       "comments": [],
       "message": "1"
+    },
+    {
+      "id": "0b49",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:25:28.519Z",
+      "likes": [],
+      "comments": [],
+      "message": "2"
+    },
+    {
+      "id": "a633",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:26:11.749Z",
+      "likes": [],
+      "comments": [],
+      "message": "3"
+    },
+    {
+      "id": "f8bb",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:28:59.318Z",
+      "likes": [],
+      "comments": [],
+      "message": "4"
+    },
+    {
+      "id": "b653",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:30:10.925Z",
+      "likes": [],
+      "comments": [],
+      "message": "1"
+    },
+    {
+      "id": "4410",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:30:48.067Z",
+      "likes": [],
+      "comments": [],
+      "message": "4"
+    },
+    {
+      "id": "4dff",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:44:11.927Z",
+      "likes": [],
+      "comments": [],
+      "message": "2312"
+    },
+    {
+      "id": "a856",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:45:04.772Z",
+      "likes": [],
+      "comments": [],
+      "message": null,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Faprendeangular.png?alt=media&token=a5403fc2-1350-4341-bae5-7235ba592cc5"
+    },
+    {
+      "id": "33b0",
+      "userId": "439f",
+      "date": "2024-07-11T16:05:00.953Z",
+      "likes": [],
+      "comments": [],
+      "message": "hey!"
     }
-  ],
-  "notificationss": []
+  ]
 }

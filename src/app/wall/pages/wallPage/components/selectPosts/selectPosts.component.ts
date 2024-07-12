@@ -35,7 +35,6 @@ export class SelectPostsComponent implements OnInit {
   }
 
   postTypeEff = effect(() => {
-    console.log('postTypeEff');
     this.postsTypeProcess.emit(this.postType())
   })
 

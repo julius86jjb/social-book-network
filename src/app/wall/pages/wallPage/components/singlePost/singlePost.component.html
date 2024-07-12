@@ -7,16 +7,18 @@
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center space-x-2">
 
-        @if(post().userId | userAvatar ) {
-        <shared-lazy-image class="cursor-pointer" (click)="onOpenUserModal()" type='avatar'
-          [url]="(post().userId | userAvatar | async)!" alt="User avatar"></shared-lazy-image>
+        @if(post().userId | userData:'avatar' ) {
+        <shared-lazy-image class="cursor-pointer"  [type]='lazyImageType.avatar'
+          [url]="(post().userId | userData:'avatar' | async)!" alt="User avatar" />
+        <!-- <shared-lazy-image class="cursor-pointer" (click)="onOpenUserModal()" [type]='lazyImageType.avatar'
+          [url]="(post().userId | userData:'avatar' | async)!" alt="User avatar" /> -->
         }
 
         <div>
           <p (click)="onOpenUserModal()"
-            class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{post().userId | userName |
+            class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{post().userId | userData:'name' |
             async}} </p>
-          <!-- <p (click)="onOpenUserModal()"  class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{(post().userId | userName) | async}} </p> -->
+          <!-- <p (click)="onOpenUserModal()"  class="text-gray-800 font-semibold cursor-pointer no-underline hover:underline">{{(post().userId | userData:'name') | async}} </p> -->
           <p class="text-gray-500 text-sm">{{post().date | appTimeAgo }}</p>
         </div>
       </div>
@@ -58,7 +60,7 @@
     <!-- <div class="mb-4 flex items-center justify-center">
       <img [src]="post().imageUrl" alt="Post Image" class="w-full h-auto  object-cover rounded-md">
     </div> -->
-    <shared-lazy-image type='postImage' [url]="post().imageUrl!" alt="Post Image"></shared-lazy-image>
+    <shared-lazy-image [type]='lazyImageType.postImage' [url]="post().imageUrl!" alt="Post Image"/>
     }
 
 
@@ -121,7 +123,7 @@
       aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
       @for (item of this.post().likes; track $index) {
       <!-- <p class="block px-2 text-xs text-white">Paco</p> -->
-      <p class="block px-2 text-xs text-white">{{(item | userName) | async}}</p>
+      <p class="block px-2 text-xs text-white">{{(item | userData:'name') | async}}</p>
       }
     </div>
 

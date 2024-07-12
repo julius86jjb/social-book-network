@@ -1,8 +1,6 @@
 
 'ngx-toastr';
 click outside modal close
-juntar pipes avatar + nombre con parametro en unico pipe getUserData
-fondo gris full screen siempre
 
-getPost con computed sin maps
-lazyImage types
+
+

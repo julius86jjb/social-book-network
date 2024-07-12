@@ -11,6 +11,7 @@ import { subscribe } from 'diagnostics_channel';
 import { User } from '../../auth/interfaces/user.interface';
 import { NotificationService } from './notification.service';
 import { NotificationType } from '../interfaces/notification.interface';
+import { environments } from '../../../environments/environments';
 
 
 @Injectable({
@@ -19,7 +20,7 @@ import { NotificationType } from '../interfaces/notification.interface';
 export class PostService {
 
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:3000/posts';
+  private baseUrl: string =`${environments.baseUrl}/posts`;
   private basePath = '/uploads/posts';
   private storage = inject(AngularFireStorage);
   private authService = inject(AuthService);
@@ -29,6 +30,7 @@ export class PostService {
   public havePosts = signal<boolean>(true);
   public loading = signal<boolean>(false);
   public allPosts = signal<Post[]>([])
+  public isUploading = signal<boolean>(false);
 
 
   constructor() { }
@@ -74,24 +76,20 @@ export class PostService {
   createPost(post: Post, file: File | null): Observable<number | undefined> {
 
     if (!file) {
-      this.savePost(post).subscribe(post => {
-        this.currentUser.followers
-          .forEach(followerId =>
-            this.notificationService.createNotification(followerId, NotificationType.newPost, post.message || '')
-              .subscribe()
-          );
-      })
+      this.savePost(post).subscribe()
       return of(100);
 
     } else {
       const filePath = `${this.basePath}/${file!.name}`;
       const storageRef = this.storage.ref(filePath);
       const uploadTask = this.storage.upload(filePath, file);
+      this.isUploading.set(true);
 
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
           storageRef.getDownloadURL().subscribe(async downloadURL => {
             this.savePost({ ...post, imageUrl: downloadURL }).subscribe(post => {
+              this.isUploading.set(false);
               this.currentUser.followers
                 .forEach(followerId =>
                   this.notificationService.createNotification(followerId, NotificationType.newPost, post.message || '')
@@ -122,6 +120,7 @@ export class PostService {
         return of(100)
 
       } else {
+        this.isUploading.set(true);
 
         const filePath = `${this.basePath}/${file!.name}`;
         const storageRef = this.storage.ref(filePath);
@@ -131,7 +130,7 @@ export class PostService {
           finalize(() => {
             storageRef.getDownloadURL().subscribe(downloadURL => {
               const newPost = { ...post, imageUrl: downloadURL } as Post
-              this.update(newPost).subscribe()
+              this.update(newPost).subscribe(() => this.isUploading.set(false))
             })
           })
         ).subscribe();

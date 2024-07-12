@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { ModalUploadService, ModalType } from './modalUpload.service';
 import { NotificationService } from './notification.service';
@@ -14,9 +14,12 @@ export class TopbarService {
   private modalUploadService = inject(ModalUploadService);
   private notificationService = inject(NotificationService);
 
-  public showProfileMenu: boolean = false
-  public showNotificationMenu: boolean = false
-  public showMenu: boolean = false
+  // public showProfileMenu: boolean = false
+  // public showNotificationMenu: boolean = false
+  // public showMenu: boolean = false
+  public showProfileMenu = signal(false);
+  public showNotificationMenu = signal(false);
+  public showMenu = signal(false);
 
   get user() {
     return this.authService.user()!;
@@ -31,33 +34,18 @@ export class TopbarService {
   }
 
 
-  toogleProfileMenu($event: any) {
-    $event.stopPropagation();
-    this.showProfileMenu = !this.showProfileMenu;
-    if (this.showNotificationMenu) {
+  toogleProfileMenu() {
+    this.showProfileMenu.set(!this.showProfileMenu());
+    if (this.showNotificationMenu()) {
       this.markNotificationsAsReaded();
     }
-    this.showNotificationMenu = false;
   }
 
-  toogleNotificationMenu($event: any) {
-    $event.stopPropagation();
-    this.showNotificationMenu = !this.showNotificationMenu;
-    if (!this.showNotificationMenu) this.markNotificationsAsReaded()
-    this.showProfileMenu = false;
-
+  toogleNotificationMenu() {
+    this.showNotificationMenu.set(!this.showNotificationMenu())
+    if (!this.showNotificationMenu()) this.markNotificationsAsReaded()
   }
 
-  // clickOutside() {
-  //   console.log('clickOutside');
-
-  //   this.showProfileMenu = false;
-  //   this.showMenu = false;
-  //   if (this.showNotificationMenu) {
-  //     this.markNotificationsAsReaded();
-  //   }
-  //   this.showNotificationMenu = false;
-  // }
 
   logout() {
     this.authService.logout();
@@ -66,13 +54,12 @@ export class TopbarService {
 
   openModal() {
     this.modalUploadService.openModal(ModalType.profile)
-    this.showProfileMenu = false;
-    this.showMenu = false;
+    this.showProfileMenu.set(false)
+    this.showMenu.set(false)
   }
 
-  toggleMenu($event: any) {
-    $event.stopPropagation();
-    this.showMenu = !this.showMenu
+  toggleMenu() {
+    this.showMenu.set(!this.showMenu())
   }
 
 }

@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild, computed, inject } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ModalType, ModalUploadService } from '../../services/modalUpload.service';
 import { RouterModule } from '@angular/router';
 import { NotificationComponent } from './notification/notification.component';
 import { TopbarService } from '../../services/topbar.service';
 import { NotificationService } from '../../services/notification.service';
+import { NgClickOutsideDirective } from 'ng-click-outside2';
+import { ProfileDropdownComponent } from "./profileDropdown/profileDropdown.component";
 
 @Component({
   selector: 'wall-topbar-topbar',
@@ -13,15 +15,20 @@ import { NotificationService } from '../../services/notification.service';
   imports: [
     CommonModule,
     RouterModule,
-    NotificationComponent
-  ],
+    NotificationComponent,
+    NgClickOutsideDirective,
+    ProfileDropdownComponent
+],
   templateUrl: './topbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 
 
 })
-export class TopbarComponent implements OnDestroy{
+export class TopbarComponent implements OnDestroy {
+
+  @ViewChild('toogleProfileButton') toogleProfileButton: ElementRef = {} as ElementRef
+  @ViewChild('toogleNotificationButton') toogleNotificationButton: ElementRef = {} as ElementRef
 
 
   public topbarService = inject(TopbarService);
@@ -32,38 +39,42 @@ export class TopbarComponent implements OnDestroy{
 
   constructor() {
     this.notificationService.getAllNotifications()
-    .subscribe()
+      .subscribe()
   }
 
   get user() {
     return this.authService.user();
   }
 
-  onToogleProfileMenu($event: any) {
-    this.topbarService.toogleProfileMenu($event)
+  onToogleProfileMenu() {
+    this.topbarService.toogleProfileMenu()
   }
 
-  onToogleNotificationMenu($event: any) {
-    this.topbarService.toogleNotificationMenu($event)
+  onToogleNotificationMenu() {
+    this.topbarService.toogleNotificationMenu()
   }
 
-  onToggleMenu($event: any) {
-    this.topbarService.toggleMenu($event)
+  onToggleMenu() {
+    this.topbarService.toggleMenu()
+  }
+
+  closeProfileDrop(event: any) {
+    if (this.topbarService.showProfileMenu())
+      this.topbarService.showProfileMenu.set(false);
+  }
+
+  closeNotifications(event: any) {
+    if (this.topbarService.showNotificationMenu())
+      this.topbarService.showNotificationMenu.set(false);
   }
 
 
-  onLogout() {
-    this.topbarService.logout()
-  }
 
-  onOpenModal() {
-    this.topbarService.openModal()
-  }
 
   ngOnDestroy(): void {
-    this.topbarService.showMenu = false;
-    this.topbarService.showNotificationMenu = false;
-    this.topbarService.showProfileMenu = false;
+    this.topbarService.showMenu.set(false)
+    this.topbarService.showNotificationMenu.set(false)
+    this.topbarService.showProfileMenu.set(false)
   }
 
 

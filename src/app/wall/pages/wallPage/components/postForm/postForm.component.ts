@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewChild, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Renderer2, ViewChild, effect, inject, input, signal } from '@angular/core';
 import { ModalUploadService } from '../../../../services/modalUpload.service';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorService } from '../../../../../shared/services/validator.service';
 import Swal, { SweetAlertResult } from 'sweetalert2'
+import { ToastrService } from 'ngx-toastr';
 import { PostService } from '../../../../services/post.service';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../../../../auth/services/auth.service';
 import { EmojiComponent } from '../../../../components/emoji/emoji.component';
 import { Post } from '../../../../interfaces/post.interface';
 import { NotificationService } from '../../../../services/notification.service';
-import { Notification, NotificationType } from '../../../../interfaces/notification.interface';
+import { NotificationType } from '../../../../interfaces/notification.interface';
+import { NgClickOutsideDirective, NgClickOutsideExcludeDirective } from 'ng-click-outside2';
 
 @Component({
   selector: 'app-post-form',
@@ -18,7 +20,8 @@ import { Notification, NotificationType } from '../../../../interfaces/notificat
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    EmojiComponent
+    EmojiComponent,
+
   ],
   templateUrl: './postForm.component.html',
   styleUrl: './postForm.component.css',
@@ -27,22 +30,26 @@ import { Notification, NotificationType } from '../../../../interfaces/notificat
 export class PostFormComponent {
 
   @ViewChild('txtMessage') public textMessage: ElementRef<HTMLInputElement> = {} as ElementRef
+  // @ViewChild('modal') public modal: ElementRef = {} as ElementRef
 
 
+
+
+  private notificationService = inject(NotificationService);
+  private validatorService = inject(ValidatorService);
+  private toastr = inject(ToastrService);
+  public postService = inject(PostService);
   public modalUploadService = inject(ModalUploadService);
   public authService = inject(AuthService)
-  public validatorService = inject(ValidatorService);
-  public postService = inject(PostService);
-  public notificationService = inject(NotificationService);
+
 
   public postData = input<any | null>(null)
-
   public loading = signal(false);
   public isEmojiPickerVisible: boolean = false;
   public imgToUpload = signal<FileList | null>(null)
   public imgTemp = signal<any>(null);
   public uploadPercentage = signal<number | undefined>(0);
-  public isUploading = signal<boolean>(false);
+
 
 
   public postForm: FormGroup = new FormGroup({
@@ -68,6 +75,10 @@ export class PostFormComponent {
   }, { allowSignalWrites: true })
 
 
+  constructor() {
+
+  }
+
 
   get currentUser() {
     return this.authService.user()!
@@ -78,17 +89,19 @@ export class PostFormComponent {
   }
 
 
-  urlImgToFile = async (url: string) => {
+  async urlImgToFile(url: string) {
     var res = await fetch(url);
     var blob = await res.blob();
     const file = new File([blob], 'image.png', { type: blob.type })
     return file;
-  };
+  }
 
 
   onSubmit() {
     if (this.postForm.invalid) {
-      Swal.fire('At least one field is required', 'Please write a message or select an image.', 'error')
+      this.toastr.error(  'Please write a message or select an image', 'At least one field is required',  {
+        closeButton: true,
+      });
       return;
     }
     if (this.postData()) {
@@ -118,17 +131,21 @@ export class PostFormComponent {
             this.swalError('Error uploading file');
             return;
           }
-          this.isUploading.set(true);
+
           this.uploadPercentage.set(uploadPercentage)
 
         },
         complete: () => {
-          setTimeout(() => {
+          this.currentUser.followers
+            .forEach(followerId =>
+              this.notificationService.createNotification(followerId, NotificationType.newPost, newPost.message || '')
+                .subscribe()
+            );
+
             this.onCloseModal();
             this.loading.set(false);
             this.swalSuccess('New post published!');
-            this.isUploading.set(false);
-          }, 1000);
+
 
         },
       })
@@ -144,34 +161,30 @@ export class PostFormComponent {
       comments,
       message: this.postForm.controls['text'].value
     }
-    console.log(this.postForm.controls['image'].value);
 
     this.postService.editPost(editedPost, this.postForm.controls['image'].value)
-    .subscribe({
-      error: () => {
-        this.swalError('Unable to edit post. Try again!');
-      },
-      next: (uploadPercentage: number | undefined) => {
-        if (uploadPercentage === undefined) {
-          this.onCloseModal();
-          this.loading.set(false);
-          this.swalError('Error uploading file');
-          return;
-        }
-        this.isUploading.set(true);
-        this.uploadPercentage.set(uploadPercentage)
+      .subscribe({
+        error: () => {
+          this.swalError('Unable to edit post. Try again!');
+        },
+        next: (uploadPercentage: number | undefined) => {
+          if (uploadPercentage === undefined) {
+            this.onCloseModal();
+            this.loading.set(false);
+            this.swalError('Error uploading file');
+            return;
+          }
 
-      },
-      complete: () => {
-        setTimeout(() => {
-          this.onCloseModal();
-          this.loading.set(false);
-          this.swalSuccess('Post successfully edited!');
-          this.isUploading.set(false);
-        }, 1000);
+          this.uploadPercentage.set(uploadPercentage)
 
-      },
-    })
+        },
+        complete: () => {
+            this.onCloseModal();
+            this.loading.set(false);
+            this.swalSuccess('Post successfully edited!');
+
+        },
+      })
   }
 
   onRemovePic() {
@@ -185,10 +198,13 @@ export class PostFormComponent {
   }
 
   onCloseModal() {
-    this.modalUploadService.closeModal();
-    this.imgTemp.set(null);
-    this.imgToUpload.set(null);
-    this.postForm.reset();
+    if (this.modalUploadService.visible()) {
+      console.log('onCloseModal');
+      this.modalUploadService.closeModal();
+      this.imgTemp.set(null);
+      this.imgToUpload.set(null);
+      this.postForm.reset();
+    }
   }
 
 
@@ -229,24 +245,18 @@ export class PostFormComponent {
     }
   }
 
-  swalSuccess(message: string): Promise<SweetAlertResult> {
-    return Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: message,
-      showConfirmButton: true,
-      timer: 2500
+  swalSuccess(message: string) {
+    return this.toastr.success( message, '',  {
+      closeButton: true,
+
     });
   }
 
   swalError(message: string) {
-    return Swal.fire({
-      position: 'top-end',
-      icon: 'error',
-      title: message,
-      showConfirmButton: true,
-      timer: 5000
-    })
+    return this.toastr.error( message, '',  {
+      closeButton: true,
+
+    });
   }
 
   public addEmojiToInput(event: any): void {

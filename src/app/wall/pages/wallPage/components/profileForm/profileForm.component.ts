@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { ModalUploadService } from '../../../../services/modalUpload.service';
 import { ValidatorService } from '../../../../../shared/services/validator.service';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { User } from '../../../../../auth/interfaces/user.interface';
 import { Observable, map } from 'rxjs';
 import { PostService } from '../../../../services/post.service';
 import { Post } from '../../../../interfaces/post.interface';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { Post } from '../../../../interfaces/post.interface';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './profileForm.component.html',
   styleUrl: './profileForm.component.css',
@@ -25,7 +26,10 @@ import { Post } from '../../../../interfaces/post.interface';
 })
 export class ProfileFormComponent {
 
-  public authService = inject(AuthService);
+  // @ViewChild('modal') public modal: ElementRef = {} as ElementRef
+
+
+  private authService = inject(AuthService);
   private emailValidator = inject(EmailValidator)
 
   public profileForm: FormGroup = new FormGroup({
@@ -35,8 +39,9 @@ export class ProfileFormComponent {
   });
 
   public modalUploadService = inject(ModalUploadService);
-  public validatorService = inject(ValidatorService);
-  public postService = inject(PostService);
+  private validatorService = inject(ValidatorService);
+  private postService = inject(PostService);
+  private toastr = inject(ToastrService);
 
   public imgToUpload = signal<FileList | null>(null)
   public imgTemp = signal<any>(null);
@@ -139,24 +144,18 @@ export class ProfileFormComponent {
   }
 
 
-  swalSuccess(message: string): Promise<SweetAlertResult> {
-    return Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: message,
-      showConfirmButton: false,
-      timer: 1500
+  swalSuccess(message: string) {
+    return this.toastr.success( message, '',  {
+      closeButton: true,
+
     });
   }
 
   swalError(message: string) {
-    return Swal.fire({
-      position: 'top-end',
-      icon: 'error',
-      title: message,
-      showConfirmButton: false,
-      timer: 5000
-    })
+    return this.toastr.error( message, '',  {
+      closeButton: true,
+
+    });
   }
 
 

@@ -4,6 +4,7 @@ import { AbstractControl, AsyncValidator, ValidationErrors } from '@angular/form
 import { Observable, map } from 'rxjs';
 import { User } from '../../auth/interfaces/user.interface';
 import { AuthService } from '../../auth/services/auth.service';
+import { environments } from './../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class EmailValidator implements AsyncValidator {
 
   private http = inject(HttpClient);
   public authService = inject(AuthService);
-  private baseUrl = 'http://localhost:3000/users';
+  private baseUrl: string =`${environments.baseUrl}/users` ;
+
 
 
   get currentUser() {

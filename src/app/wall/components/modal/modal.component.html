@@ -1,23 +1,18 @@
-<div
+<div #modal
   class="main-modal fixed w-full h-[auto] inset-0 z-50 overflow-auto-auto justify-center items-center animated faster"
   [ngClass]="modalUploadService.visible() ? 'flex fadeIn' : 'hidden fadeOut' " style="background: rgba(0,0,0,.7);">
-  <div
-    class="border border-teal-500 max-h-[100vh] modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-    <div class="modal-content py-4  px-6">
+
       @switch (modalUploadService.modalType()) {
-        @case ('profile') {
-          <ng-content select="app-profile-form"></ng-content>
-        }
-        @case ('post') {
-          <ng-content select="app-post-form"></ng-content>
-        }
-
-        @case ('user') {
-          <ng-content select="app-user-modal"></ng-content>
-        }
+      @case ('profile') {
+      <ng-content select="app-profile-form"></ng-content>
       }
-    </div>
-  </div>
+      @case ('post') {
+      <ng-content select="app-post-form"></ng-content>
+      }
+
+      @case ('user') {
+      <ng-content select="app-user-modal"></ng-content>
+      }
+      }
+
 </div>
-
-

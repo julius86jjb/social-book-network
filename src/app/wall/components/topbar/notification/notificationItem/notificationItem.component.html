@@ -1,10 +1,10 @@
-<div [ngClass]="{'bg-[#c2d7fc] border-t-[#A8C8FF]' : !notification().readed}" class="w-full py-5  bg-white  flex border-t px-6">
-  <shared-lazy-image class="focus:outline-none  flex flex-shrink-0 items-center justify-center" type='notification'
-    [url]="(notification().generatedById | userAvatar | async)! " alt="User avatar" />
+<div [ngClass]="{'bg-slate-300 border-t-[#A8C8FF]' : !notification().readed}" class="w-full py-5  bg-white  flex border-t px-6">
+  <shared-lazy-image class="focus:outline-none  flex flex-shrink-0 items-center justify-center" [type]='lazyImageType.notification'
+    [url]="(notification().generatedById | userData:'avatar' | async)! " alt="User avatar" />
   <div class="pl-3 w-full">
     <div class="flex items-center justify-between w-full">
       <p tabindex="0" class="focus:outline-none md:text-sm text-md leading-none px-2">
-        <span class="text-indigo-700">{{notification().generatedById | userName | async}}</span>
+        <span class="text-indigo-700">{{notification().generatedById | userData:'name' | async}}</span>
         @switch (notification().type) {
           @case ('follow') {
             has started to follow you

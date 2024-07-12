@@ -5,7 +5,8 @@ import { Router, RouterModule } from '@angular/router';
 import { ValidatorService } from '../../../shared/services/validator.service';
 import { User } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2'
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './loginPage.component.html',
   styleUrl: './loginPage.component.css',
@@ -26,12 +27,13 @@ export class LoginPageComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private validatorService = inject(ValidatorService);
+  private toastr = inject(ToastrService);
 
 
 
   public myForm = this.fb.group({
-    email: ['user1@email.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   })
 
 
@@ -53,8 +55,11 @@ export class LoginPageComponent {
     return this.authService.login(email!, password!)
       .subscribe({
         next: (user: User | undefined) => {
-          if (!user){
-            Swal.fire('Error', 'Wrong Credentials', 'error');
+          if (!user) {
+            this.toastr.error( 'Wrong Credentials','Error', {
+              closeButton: true,
+            })
+
             return;
           }
           this.authService.updateCurrentUser({
@@ -64,7 +69,9 @@ export class LoginPageComponent {
 
           this.router.navigateByUrl('/dashboard')
         },
-        error: () => Swal.fire('Error', 'Internal Server Error', 'error')
+        error: () => this.toastr.error('Internal Server Error', 'Error', {
+          closeButton: true,
+        })
       })
   }
 }

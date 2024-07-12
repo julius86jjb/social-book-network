@@ -1,0 +1,336 @@
+[
+  {
+      "id": "439f",
+      "userName": "User 1",
+      "email": "user1@email.com",
+      "password": "123456",
+      "followers": [
+          "a1ba",
+          "9570",
+          "Y4o3xnT",
+          "-oweTEn",
+          "HAC8qXq",
+          "e476",
+          "3d2b",
+          "9ece",
+          "OKDNHO_"
+      ],
+      "following": [
+          "a1ba",
+          "9570",
+          "9ece",
+          "Y4o3xnT",
+          "HAC8qXq"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-7.png?alt=media&token=d2822e41-f207-48e6-a95b-8510f51e819c",
+      "last_login": "2024-07-12T10:42:53.542Z"
+  },
+  {
+      "id": "a1ba",
+      "userName": "User 2",
+      "email": "user2@email.com",
+      "password": "123456",
+      "followers": [
+          "439f",
+          "9570",
+          "3d2b",
+          "e476",
+          "9ece",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "9570",
+          "sId_yVF",
+          "IB303MS",
+          "Y4o3xnT",
+          "MRavkOx",
+          "9ece",
+          "3d2b",
+          "e476",
+          "o1zLgmY"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-4.png?alt=media&token=63849a4a-b7b5-4a2f-9c84-e84844d82547",
+      "last_login": "2024-07-12T10:03:52.334Z"
+  },
+  {
+      "id": "9570",
+      "userName": "User 3",
+      "email": "user3@email.com",
+      "password": "123456",
+      "followers": [
+          "439f",
+          "a1ba",
+          "Y4o3xnT",
+          "HAC8qXq",
+          "e476",
+          "3d2b",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "a1ba",
+          "MRavkOx",
+          "e476",
+          "3d2b",
+          "o1zLgmY",
+          "Y4o3xnT"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=590b7b57-af4b-4740-93ae-ad80332f04b1",
+      "last_login": "2024-07-12T10:05:51.516Z"
+  },
+  {
+      "id": "3d2b",
+      "userName": "User 4",
+      "email": "user4@email.com",
+      "password": "123456",
+      "followers": [
+          "-oweTEn",
+          "a1ba",
+          "9570",
+          "9ece",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "e476",
+          "MRavkOx",
+          "o1zLgmY",
+          "9570"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-12.png?alt=media&token=2c3db8e9-59e2-4ca0-95f6-1578258fe73a",
+      "last_login": "2024-07-12T10:07:24.767Z"
+  },
+  {
+      "id": "e476",
+      "userName": "User 5",
+      "email": "user5@email.com",
+      "password": "123456",
+      "followers": [
+          "Y4o3xnT",
+          "-oweTEn",
+          "a1ba",
+          "9570",
+          "3d2b",
+          "9ece",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "9570",
+          "9ece",
+          "Y4o3xnT",
+          "o1zLgmY",
+          "HAC8qXq",
+          "u2hCaUT",
+          "a1ba",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0.png?alt=media&token=1fdece51-9599-444d-a84c-b24fbf4230cc",
+      "last_login": "2024-07-12T10:08:43.209Z"
+  },
+  {
+      "id": "9ece",
+      "userName": "User 6",
+      "email": "user6@email.com",
+      "password": "123456",
+      "followers": [
+          "Y4o3xnT",
+          "-oweTEn",
+          "HAC8qXq",
+          "e476",
+          "439f",
+          "a1ba",
+          "MRavkOx",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "a1ba",
+          "3d2b",
+          "o1zLgmY",
+          "OKDNHO_",
+          "HAC8qXq",
+          "-oweTEn",
+          "u2hCaUT"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=3e99eff7-2d5a-4ee9-9817-95d8c19ac503",
+      "last_login": "2024-07-12T10:10:14.981Z"
+  },
+  {
+      "userName": "User 7",
+      "email": "user7@email.com",
+      "password": "123456",
+      "followers": [
+          "a1ba",
+          "9570",
+          "3d2b",
+          "e476",
+          "OKDNHO_"
+      ],
+      "following": [
+          "a1ba",
+          "9ece",
+          "e476",
+          "3d2b",
+          "o1zLgmY",
+          "Y4o3xnT"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-2.png?alt=media&token=1a7503fc-af05-4792-b7da-46e3d028be11",
+      "id": "MRavkOx",
+      "last_login": "2024-07-12T10:23:08.991Z"
+  },
+  {
+      "userName": "User 8",
+      "email": "user8@email.com",
+      "password": "123456",
+      "followers": [
+          "Y4o3xnT",
+          "e476",
+          "9ece"
+      ],
+      "following": [
+          "439f",
+          "3d2b",
+          "9570",
+          "MRavkOx",
+          "9ece",
+          "a1ba",
+          "-oweTEn",
+          "HAC8qXq"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0000000.png?alt=media&token=a814214b-3391-4f18-9e57-5cda86ce2120",
+      "id": "OKDNHO_",
+      "last_login": "2024-07-12T10:13:37.795Z"
+  },
+  {
+      "userName": "User 9",
+      "email": "user9@email.com",
+      "password": "123456",
+      "followers": [
+          "-oweTEn",
+          "a1ba",
+          "9570",
+          "3d2b",
+          "e476",
+          "9ece",
+          "MRavkOx"
+      ],
+      "following": [],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00005.png?alt=media&token=7dabde18-44a9-4e1b-96c8-ebe36454d4b0",
+      "id": "o1zLgmY",
+      "last_login": "2024-07-12T09:59:05.916Z"
+  },
+  {
+      "userName": "User 10",
+      "email": "user10@email.com",
+      "password": "123456",
+      "followers": [
+          "HAC8qXq",
+          "e476",
+          "439f",
+          "a1ba",
+          "9570",
+          "MRavkOx"
+      ],
+      "following": [
+          "439f",
+          "e476",
+          "OKDNHO_",
+          "9570",
+          "HAC8qXq",
+          "IB303MS"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-11.png?alt=media&token=88080301-b7e0-47d0-8523-0b6208afdf3e",
+      "id": "Y4o3xnT",
+      "last_login": "2024-07-12T09:54:38.660Z"
+  },
+  {
+      "userName": "User 11",
+      "email": "user11@email.com",
+      "password": "123456",
+      "followers": [
+          "HAC8qXq",
+          "9ece",
+          "OKDNHO_"
+      ],
+      "following": [
+          "3d2b",
+          "e476",
+          "9ece",
+          "o1zLgmY",
+          "IB303MS",
+          "S4pGkMV",
+          "439f"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-8.png?alt=media&token=99149773-ad8a-4e54-be65-408e98442b2b",
+      "id": "-oweTEn",
+      "last_login": "2024-07-12T09:55:52.519Z"
+  },
+  {
+      "userName": "User 12",
+      "email": "user12@email.com",
+      "password": "123456",
+      "followers": [
+          "Y4o3xnT",
+          "439f",
+          "e476",
+          "9ece",
+          "OKDNHO_"
+      ],
+      "following": [
+          "439f",
+          "9570",
+          "-oweTEn",
+          "Y4o3xnT",
+          "9ece",
+          "sId_yVF"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-5.png?alt=media&token=73654ea4-5df4-40e1-b045-44b6f9913165",
+      "id": "HAC8qXq",
+      "last_login": "2024-07-12T10:01:05.645Z"
+  },
+  {
+      "userName": "User 13",
+      "email": "user13@email.com",
+      "password": "123456",
+      "followers": [
+          "e476",
+          "9ece"
+      ],
+      "following": [],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-3.png?alt=media&token=b4cf78dc-18f3-41b0-b2f6-42e81910d577",
+      "id": "u2hCaUT",
+      "last_login": "2024-07-12T10:01:13.277Z"
+  },
+  {
+      "userName": "User 14",
+      "email": "user14@email.com",
+      "password": "123456",
+      "followers": [
+          "Y4o3xnT",
+          "-oweTEn",
+          "a1ba"
+      ],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg",
+      "id": "IB303MS"
+  },
+  {
+      "userName": "User 15",
+      "email": "user15@email.com",
+      "password": "123456",
+      "followers": [
+          "HAC8qXq",
+          "a1ba"
+      ],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg",
+      "id": "sId_yVF"
+  }
+]

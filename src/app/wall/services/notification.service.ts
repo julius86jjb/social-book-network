@@ -3,6 +3,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { Notification, NotificationType } from '../interfaces/notification.interface';
 import { Observable, map, of, switchMap, tap } from 'rxjs';
+import { environments } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class NotificationService {
 
 
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:3000/notifications';
+  private baseUrl: string =`${environments.baseUrl}/notifications` ;
   private authService = inject(AuthService);
 
   public notifications = signal<Notification[]>([])
@@ -49,11 +50,11 @@ export class NotificationService {
       deleted: false
     } as Notification
     return this.http.post<Notification>(this.baseUrl, newNot).pipe(
-      tap((notCreated: Notification) => {
-        if (notCreated.userId === this.currentUser.id) this.notifications.update(notifications => [...notifications, notCreated])
+      tap((newNot: Notification) => {
+        if (newNot.userId === this.currentUser.id) this.notifications.update(notifications => [...notifications, newNot])
       }),
-      tap((notCreated: Notification) =>
-        this.allNotifications.update(notifications => [...notifications, notCreated]))
+      tap((newNot: Notification) =>
+        this.allNotifications.update(notifications => [...notifications, newNot]))
     )
   }
 

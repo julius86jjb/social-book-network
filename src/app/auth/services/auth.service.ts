@@ -1,9 +1,11 @@
+import { environments } from './../../../environments/environments';
 import { Injectable, inject, signal } from '@angular/core';
 import { User } from '../interfaces/user.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, defaultIfEmpty, filter, finalize, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 
 
 @Injectable({
@@ -13,7 +15,7 @@ export class AuthService {
 
   private http = inject(HttpClient)
   private router = inject(Router)
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl: string =`${environments.baseUrl}` ;
   private basePath = '/uploads/avatars';
   private storage = inject(AngularFireStorage)
 
@@ -84,7 +86,6 @@ export class AuthService {
   }
 
   updateCurrentUser(user: User, reloadPost: boolean): Observable<User> {
-    console.log('updateCurrentUser');
     return this.http.patch(`${this.baseUrl}/users/${this.user()!.id}`, user).pipe(
       tap((userUpdated: any) => this.user.set(userUpdated)),
       tap((userUpdated: any) => {

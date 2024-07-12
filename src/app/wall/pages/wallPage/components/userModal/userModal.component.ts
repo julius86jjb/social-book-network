@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, ViewChild } from '@angular/core';
 import { ModalUploadService } from '../../../../services/modalUpload.service';
-import { LazyImageComponent } from '../../../../../shared/components/lazyImage/lazyImage.component';
+import { LazyImageComponent, LazyImageType } from '../../../../../shared/components/lazyImage/lazyImage.component';
 import { User } from '../../../../../auth/interfaces/user.interface';
-import { UserAvatarPipe } from "../../../../pipes/userAvatar.pipe";
 
 @Component({
     selector: 'app-user-modal',
@@ -13,15 +12,18 @@ import { UserAvatarPipe } from "../../../../pipes/userAvatar.pipe";
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule,
-        LazyImageComponent,
-        UserAvatarPipe
+        LazyImageComponent
     ]
 })
 export class UserModalComponent {
 
+  @ViewChild('modal') public modal: ElementRef = {} as ElementRef
+
+
   public modalUploadService = inject(ModalUploadService);
 
-  public userData = input<User | null>(null)
+  public userData = input<User | null>(null);
+  public lazyImageType = LazyImageType;
 
   onCloseModal() {
     this.modalUploadService.closeModal();

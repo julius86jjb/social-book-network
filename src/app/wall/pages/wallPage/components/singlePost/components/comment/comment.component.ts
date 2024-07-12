@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, computed, effect, inject, input, signal } from '@angular/core';
 import { Comment } from '../../../../../../interfaces/post.interface';
-import { UserNamePipe } from '../../../../../../pipes/userName.pipe';
-import { UserAvatarPipe } from '../../../../../../pipes/userAvatar.pipe';
 import { PostService } from '../../../../../../services/post.service';
 import { AuthService } from '../../../../../../../auth/services/auth.service';
 import { User } from '../../../../../../../auth/interfaces/user.interface';
-import { Observable, of } from 'rxjs';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { TimeAgoPipe } from '../../../../../../../shared/pipes/timeAgo.pipe';
+import { UserDataPipe } from "../../../../../../pipes/userData.pipe";
 
 
 export interface commentWithAvatar {
@@ -24,10 +21,9 @@ export interface commentWithAvatar {
   standalone: true,
   imports: [
     CommonModule,
-    UserNamePipe,
-    UserAvatarPipe,
-    TimeAgoPipe
-  ],
+    TimeAgoPipe,
+    UserDataPipe
+],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

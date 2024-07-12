@@ -23,6 +23,8 @@ import { TopbarService } from '../../../../services/topbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewPostFormComponent {
+  @ViewChild('toogleButtonInput')
+  toogleButtonInput!: ElementRef;
 
   private modalUploadService = inject(ModalUploadService);
   private authService = inject(AuthService);

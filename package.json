@@ -25,6 +25,7 @@
     "@ngx-loading-bar/core": "^6.0.2",
     "json-server": "^1.0.0-alpha.23",
     "ng-circle-progress": "^1.7.1",
+    "ng-click-outside2": "^15.0.1",
     "ngx-toastr": "^19.0.0",
     "ngxtension": "^3.0.1",
     "path": "^0.12.7",
