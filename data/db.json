@@ -1,16 +1,51 @@
 {
-  "notifications": [],
+  "notifications": [
+    {
+      "id": "d9fe",
+      "userId": "a781",
+      "type": "follow",
+      "readed": false,
+      "date": "2024-07-14T12:15:33.986Z",
+      "generatedById": "a0f9",
+      "content": "",
+      "deleted": false
+    }
+  ],
   "users": [
     {
       "id": "a0f9",
+      "userName": "User 2",
+      "email": "user2@email.com",
+      "password": "123456",
+      "followers": [],
+      "following": [
+        "a781"
+      ],
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=a5545c40-f816-448b-93c2-fe0ba7d815d0",
+      "last_login": "2024-07-14T12:15:29.938Z"
+    },
+    {
+      "id": "a781",
       "userName": "User 1",
       "email": "user1@email.com",
       "password": "123456",
-      "followers": [],
+      "followers": [
+        "a0f9"
+      ],
       "following": [],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=a5545c40-f816-448b-93c2-fe0ba7d815d0",
-      "last_login": "2024-07-14T10:09:15.441Z"
+      "avatar": "../../../../assets/images/default-avatar.jpg",
+      "last_login": "2024-07-14T14:29:00.813Z"
     }
   ],
-  "posts": []
+  "posts": [
+    {
+      "id": "55e5",
+      "userId": "a0f9",
+      "date": "2024-07-14T12:03:53.151Z",
+      "likes": [],
+      "comments": [],
+      "message": "1",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fgallery-1.png?alt=media&token=f3d88709-4300-4bae-9474-9eb6cda5d3b1"
+    }
+  ]
 }

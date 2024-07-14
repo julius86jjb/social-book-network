@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TopbarService } from '../../../services/topbar.service';
 import { AuthService } from '../../../../auth/services/auth.service';
+import { User } from '../../../../auth/interfaces/user.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-dropdown',
@@ -17,13 +19,16 @@ export class ProfileDropdownComponent {
 
   public topbarService = inject(TopbarService);
   private authService = inject(AuthService);
+  private router = inject(Router)
 
-  get user() {
-    return this.authService.user();
+
+  get user(): User | undefined {
+    return this.authService.currentUser;
   }
 
   onLogout() {
-    this.topbarService.logout()
+    this.authService.logout()
+    this.router.navigate(['/login']);
   }
 
   onOpenModal() {

@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationItemComponent } from "./notificationItem/notificationItem.component";
 import { Notification } from '../../../interfaces/notification.interface';
 import { switchMap, tap } from 'rxjs';
+import { User } from '../../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'app-notification',
@@ -34,7 +35,7 @@ export class NotificationComponent implements OnInit {
 
   public topbarService = inject(TopbarService);
   public notifications = this.notificationService.notifications
-  public myNotifications = computed(() => this.notifications().filter(not => not.userId === this.currentUser.id && !not.deleted))
+  public myNotifications = computed(() => this.notifications().filter(not => not.userId === this.currentUser?.id && !not.deleted))
 
   ngOnInit(): void {
     this.getNotifications()
@@ -57,8 +58,8 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
 

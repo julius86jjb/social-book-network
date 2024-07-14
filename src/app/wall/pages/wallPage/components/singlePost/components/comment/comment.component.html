@@ -1,5 +1,5 @@
 <div class="flex items-center justify-between mb-4"
-  (mouseover)="this.currentUser.id === this.comment()!.userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseover)="this.currentUser?.id === this.comment()!.userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
   (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
   <div class="flex items-center mt-2  space-x-2">
     <button (click)="hasLikedComment() ? onUpdateCommentLikes('dislike'): onUpdateCommentLikes('addLike')"

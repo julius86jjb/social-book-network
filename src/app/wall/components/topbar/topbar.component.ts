@@ -7,6 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 import { TopbarService } from '../../services/topbar.service';
 import { NotificationComponent } from './notification/notification.component';
 import { ProfileDropdownComponent } from "./profileDropdown/profileDropdown.component";
+import { User } from '../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'wall-topbar-topbar',
@@ -41,8 +42,8 @@ export class TopbarComponent implements OnDestroy {
       .subscribe()
   }
 
-  get user() {
-    return this.authService.user()!;
+  get user(): User | undefined {
+    return this.authService.currentUser;
   }
 
   onToogleProfileMenu() {

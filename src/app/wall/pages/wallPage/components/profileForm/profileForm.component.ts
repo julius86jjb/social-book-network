@@ -32,8 +32,8 @@ export class ProfileFormComponent {
   private emailValidator = inject(EmailValidator)
 
   public profileForm: FormGroup = new FormGroup({
-    userName: new FormControl<string>(this.currentUser.userName, [Validators.required]),
-    email: new FormControl<string>(this.currentUser.email, [Validators.required], [this.emailValidator.validate.bind(this.emailValidator)]),
+    userName: new FormControl<string>(this.currentUser!.userName, [Validators.required]),
+    email: new FormControl<string>(this.currentUser!.email, [Validators.required], [this.emailValidator.validate.bind(this.emailValidator)]),
     file: new FormControl<File | null>(null),
   });
 
@@ -47,7 +47,7 @@ export class ProfileFormComponent {
   public loading = signal(false);
 
   currentUserPostsCount = computed(() => this.postService.allPosts()
-    .filter((post: Post) => post.userId === this.currentUser.id).length)
+    .filter((post: Post) => post.userId === this.currentUser?.id).length)
 
 
   constructor() {
@@ -55,8 +55,8 @@ export class ProfileFormComponent {
       .subscribe()
   }
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   onUploadImage(event: any) {
@@ -93,7 +93,7 @@ export class ProfileFormComponent {
     if (file) {
       this.loading.set(true);
       const { userName, email } = this.profileForm.value
-      const { id, password, last_login, avatar } = this.currentUser
+      const { id, password, last_login, avatar } = this.currentUser!
       const user = { id, userName, email, password, avatar, last_login } as User
       this.authService.changeAvatar(user, file)!.subscribe({
         error: (message: string) => {
@@ -112,7 +112,7 @@ export class ProfileFormComponent {
 
   updateUser() {
     const { userName, email } = this.profileForm.value
-    const { id, password, last_login, avatar } = this.currentUser
+    const { id, password, last_login, avatar } = this.currentUser!
     const user = { id, userName, email, password, avatar, last_login } as User
     this.authService.updateCurrentUser(user, true)
       .subscribe(() => {
@@ -124,7 +124,7 @@ export class ProfileFormComponent {
 
   getPostCount(): Observable<number> {
     return this.postService.getAllPost().pipe(
-      map((posts: Post[]) => posts.filter((post: Post) => post.userId === this.currentUser.id).length)
+      map((posts: Post[]) => posts.filter((post: Post) => post.userId === this.currentUser?.id).length)
     )
   }
 

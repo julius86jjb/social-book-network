@@ -11,7 +11,7 @@
     </div>
     <div class="">
       @if (!isFollowing()) {
-      <button (click)="onFollow()" type="button" [disabled]="currentUser.id === user().id"
+      <button (click)="onFollow()" type="button" [disabled]="currentUser?.id === user().id"
         class="inline-block rounded-xl md:rounded-full bg-[#335D91] px-3 py-2 md:px-6 md:pb-2 md:pt-2.5 text-xs font-medium leading-normal
            text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-[#112745] hover:shadow-primary-2
            focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2
@@ -19,7 +19,7 @@
         <i class="fa fa-user-plus mr-1" aria-hidden="true"></i><span class="hidden md:inline-block">Follow</span>
       </button>
       }@else {
-      <button (click)="onUnfollow()" type="button" [disabled]="currentUser.id === user().id"
+      <button (click)="onUnfollow()" type="button" [disabled]="currentUser?.id === user().id"
         class="inline-block rounded-xl md:rounded-full bg-green-600 px-3 py-2 md:px-6 md:pb-2 md:pt-2.5 text-xs font-medium leading-normal
              text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-green-800 hover:shadow-primary-2
              focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2

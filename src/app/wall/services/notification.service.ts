@@ -4,6 +4,7 @@ import { Observable, map, tap } from 'rxjs';
 import { environments } from '../../../environments/environments';
 import { AuthService } from '../../auth/services/auth.service';
 import { Notification, NotificationType } from '../interfaces/notification.interface';
+import { User } from '../../auth/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +21,13 @@ export class NotificationService {
 
   constructor() { }
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   getNotifications(i: number): Observable<Notification[]> {
     return this.http.get<Notification[]>(this.baseUrl).pipe(
-      map((nots: Notification[]) => nots.filter(not => not.userId === this.currentUser.id && !not.deleted)),
+      map((nots: Notification[]) => nots.filter(not => not.userId === this.currentUser?.id && !not.deleted)),
       map((nots: Notification[]) => nots.sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())),
       map((nots: Notification[]) => nots.slice(i, i + 6)),
       tap((nots: Notification[]) => this.notifications.update(oldNots => [...oldNots, ...nots]))
@@ -45,13 +46,13 @@ export class NotificationService {
       type: type,
       readed: false,
       date: new Date(),
-      generatedById: this.currentUser.id,
+      generatedById: this.currentUser?.id,
       content: content,
       deleted: false
     } as Notification
     return this.http.post<Notification>(this.baseUrl, newNot).pipe(
       tap((newNot: Notification) => {
-        if (newNot.userId === this.currentUser.id) this.notifications.update(notifications => [...notifications, newNot])
+        if (newNot.userId === this.currentUser?.id) this.notifications.update(notifications => [...notifications, newNot])
       }),
       tap((newNot: Notification) =>
         this.allNotifications.update(notifications => [...notifications, newNot]))

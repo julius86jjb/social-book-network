@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import { NotificationType } from '../interfaces/notification.interface';
 import { Post } from '../interfaces/post.interface';
 import { NotificationService } from './notification.service';
+import { User } from '../../auth/interfaces/user.interface';
 
 
 @Injectable({
@@ -33,8 +34,8 @@ export class PostService {
   constructor() { }
 
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   getPosts(i: number, type: string): Observable<Post[]> {
@@ -44,9 +45,9 @@ export class PostService {
         map((posts: Post[]) => {
           switch (type) {
             case 'my-posts':
-              return posts.filter(post => post.userId === this.authService.user()!.id)
+              return posts.filter(post => post.userId === this.currentUser?.id)
             case 'following':
-              return posts.filter(post => this.currentUser.following.includes(post.userId) || post.userId === this.currentUser.id)
+              return posts.filter(post => this.currentUser?.following.includes(post.userId) || post.userId === this.currentUser?.id)
             default:
               return posts
           }
@@ -87,7 +88,7 @@ export class PostService {
           storageRef.getDownloadURL().subscribe(async downloadURL => {
             this.savePost({ ...post, imageUrl: downloadURL }).subscribe(post => {
               this.isUploading.set(false);
-              this.currentUser.followers
+              this.currentUser?.followers
                 .forEach(followerId =>
                   this.notificationService.createNotification(followerId, NotificationType.newPost, post.message || '')
                     .subscribe()

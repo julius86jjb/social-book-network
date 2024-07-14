@@ -17,8 +17,8 @@ export class EmailValidator implements AsyncValidator {
 
 
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   validate(control: AbstractControl<any, any>): Observable<ValidationErrors | null> {

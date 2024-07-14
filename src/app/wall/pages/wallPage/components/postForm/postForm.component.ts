@@ -10,6 +10,7 @@ import { Post } from '../../../../interfaces/post.interface';
 import { ModalUploadService } from '../../../../services/modalUpload.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { PostService } from '../../../../services/post.service';
+import { User } from '../../../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'app-post-form',
@@ -77,8 +78,8 @@ export class PostFormComponent {
   }
 
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   get modalType() {
@@ -109,7 +110,7 @@ export class PostFormComponent {
 
   createPost() {
     const newPost: any = {
-      userId: this.currentUser.id,
+      userId: this.currentUser?.id,
       date: new Date(),
       likes: [],
       comments: [],
@@ -133,7 +134,7 @@ export class PostFormComponent {
 
         },
         complete: () => {
-          this.currentUser.followers
+          this.currentUser?.followers
             .forEach(followerId =>
               this.notificationService.createNotification(followerId, NotificationType.newPost, newPost.message || '')
                 .subscribe()

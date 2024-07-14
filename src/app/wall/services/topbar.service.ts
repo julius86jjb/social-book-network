@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 import { ModalUploadService, ModalType } from './modalUpload.service';
 import { NotificationService } from './notification.service';
+import { User } from '../../auth/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class TopbarService {
   public showNotificationMenu = signal(false);
   public showMenu = signal(false);
 
-  get user() {
-    return this.authService.user()!;
+  get user(): User | undefined {
+    return this.authService.currentUser;
   }
 
   markNotificationsAsReaded() {
@@ -47,9 +48,6 @@ export class TopbarService {
   }
 
 
-  logout() {
-    this.authService.logout();
-  }
 
 
   openModal() {

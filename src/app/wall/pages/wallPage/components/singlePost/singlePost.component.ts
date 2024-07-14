@@ -24,6 +24,7 @@ import { ModalUploadService } from '../../../../services/modalUpload.service';
 import { NotificationService } from '../../../../services/notification.service';
 import { PostService } from '../../../../services/post.service';
 import { CommentComponent } from './components/comment/comment.component';
+import { User } from '../../../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'wall-single-post',
@@ -73,7 +74,7 @@ export class SinglePostComponent implements OnInit {
     text: new FormControl<string>('', [Validators.required])
   });
 
-  public hasLiked = computed(() => this.post().likes.includes(this.currentUser.id))
+  public hasLiked = computed(() => this.post().likes.includes(this.currentUser!.id))
   public lazyImageType = LazyImageType;
 
 
@@ -83,8 +84,8 @@ export class SinglePostComponent implements OnInit {
     this.loaded.emit(this.index());
   }
 
-  get currentUser() {
-    return this.authService.user()!
+  get currentUser(): User | undefined {
+    return this.authService.currentUser;
   }
 
   viewAllComments() {
@@ -114,10 +115,10 @@ export class SinglePostComponent implements OnInit {
   }
 
   onUpdateLikes() {
-    this.postService.update({ ...this.post(), likes: [...this.post().likes, this.authService.user()!.id] }).pipe(
+    this.postService.update({ ...this.post(), likes: [...this.post().likes, this.currentUser!.id] }).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((post: Post) => {
-      if (this.currentUser.id !== post.userId)
+      if (this.currentUser!.id !== post.userId)
         this.notificationService.createNotification(post.userId, NotificationType.likedPost, post.message || '',).subscribe()
     });
   }
@@ -125,7 +126,7 @@ export class SinglePostComponent implements OnInit {
   onUpdateDislikes() {
     this.postService.update({
       ...this.post(), likes: this.post().likes
-        .filter((userId: string) => userId !== this.authService.user()!.id)
+        .filter((userId: string) => userId !== this.currentUser!.id)
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe()
@@ -137,7 +138,7 @@ export class SinglePostComponent implements OnInit {
       ...this.post(),
       comments: [
         ...this.post().comments,
-        { id: uuidv4(), userId: this.authService.user()!.id, message: this.newCommentForm.controls['text'].value, likes: [], date: new Date() }
+        { id: uuidv4(), userId: this.currentUser!.id, message: this.newCommentForm.controls['text'].value, likes: [], date: new Date() }
       ]
     }
     if (this.newCommentForm.invalid) return;
@@ -146,7 +147,7 @@ export class SinglePostComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
       ).subscribe((post: Post) => {
-        if (this.currentUser.id !== post.userId)
+        if (this.currentUser?.id !== post.userId)
           this.notificationService.createNotification(post.userId, NotificationType.commentOn, post.message || '',).subscribe()
       })
     this.newCommentForm.patchValue({
@@ -170,10 +171,10 @@ export class SinglePostComponent implements OnInit {
     switch (action) {
       case 'addLike':
         this.post().comments.find(_comment => comment.id === _comment.id)?.likes
-          .push(this.currentUser.id)
+          .push(this.currentUser!.id)
         break;
       case 'dislike':
-        const newLikes = comment.likes.filter((userId: string) => userId !== this.authService.user()!.id)
+        const newLikes = comment.likes.filter((userId: string) => userId !== this.currentUser!.id)
         this.post().comments = this.post().comments.map((_comment) => {
           if (comment.id === _comment.id) {
             return {
@@ -187,7 +188,7 @@ export class SinglePostComponent implements OnInit {
     this.postService.update(this.post()).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe((post: Post) => {
-      if (this.currentUser.id !== comment.userId)
+      if (this.currentUser!.id !== comment.userId)
         this.notificationService.createNotification(comment.userId, NotificationType.likedComment, comment.message || '',).subscribe()
     });
   }

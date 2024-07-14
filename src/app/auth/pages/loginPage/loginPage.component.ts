@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -28,11 +28,13 @@ export class LoginPageComponent {
   private validatorService = inject(ValidatorService);
   private toastr = inject(ToastrService);
 
+  public loading = signal<boolean>(false);
+
 
 
   public myForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    email: ['user1@email.com', [Validators.required, Validators.email]],
+    password: ['123456', [Validators.required, Validators.minLength(6)]]
   })
 
 
@@ -51,9 +53,11 @@ export class LoginPageComponent {
     };
 
     const { email, password } = this.myForm.value;
+    this.loading.set(true);
     return this.authService.login(email!, password!)
       .subscribe({
         next: (user: User | undefined) => {
+          this.loading.set(false);
           if (!user) {
             this.toastr.error( 'Wrong Credentials','Error', {
               closeButton: true,

@@ -19,7 +19,13 @@ export class AuthService {
   private basePath = '/uploads/avatars';
   private storage = inject(AngularFireStorage)
 
-  public user = signal<User | undefined>(undefined);
+  private user = signal<User | undefined>(undefined);
+
+  get currentUser():User|undefined {
+    if ( !this.user() ) return undefined;
+    return structuredClone( this.user() );
+  }
+
 
   public currentUserUpdate: Subject<User> = new Subject<User>();
   currentUserUpdate$: Observable<User> = this.currentUserUpdate.asObservable();
@@ -96,8 +102,7 @@ export class AuthService {
   }
 
   logout() {
-    this.router.navigate(['/login']);
-    localStorage.removeItem('user');
     this.user.set(undefined);
+    localStorage.clear();
   }
 }

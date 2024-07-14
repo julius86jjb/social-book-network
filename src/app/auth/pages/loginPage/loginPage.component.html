@@ -54,3 +54,16 @@
   </form>
 </div>
 
+
+@if (this.loading()) {
+  <div  class="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
+    <div class="flex justify-center items-center mt-[40vh]">
+      <div class="fas fa-circle-notch fa-spin fa-5x text-violet-600"></div>
+    </div>
+    <div class="flex justify-center items-center mx-40 my-6">
+      <p class="text-xl text-center  font-bold  text-violet-900">Be patient! Json-Server upload in Render.com with free tier will spin down with inactivity, which can delay requests by 50 seconds or more...</p>
+    </div>
+  </div>
+}
+
+

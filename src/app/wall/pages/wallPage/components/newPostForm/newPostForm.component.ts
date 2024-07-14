@@ -5,6 +5,7 @@ import { AuthService } from '../../../../../auth/services/auth.service';
 import { ModalComponent } from '../../../../components/modal/modal.component';
 import { ModalType, ModalUploadService } from '../../../../services/modalUpload.service';
 import { TopbarService } from '../../../../services/topbar.service';
+import { User } from '../../../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'wall-new-post-form',
@@ -45,8 +46,8 @@ export class NewPostFormComponent {
 
   }
 
-  get user() {
-    return this.authService.user()!;
+  get user(): User | undefined {
+    return this.authService.currentUser;
   }
 
 

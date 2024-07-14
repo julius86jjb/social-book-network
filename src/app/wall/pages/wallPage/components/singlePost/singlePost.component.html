@@ -1,6 +1,6 @@
 @if (this.postService.havePosts()) {
 <li class="flex items-center my-2"
-  (mouseover)="this.currentUser.id === post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
+  (mouseover)="this.currentUser?.id === post().userId ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false) "
   (mouseout)="this.showMenu() ? this.displayCommentMenu.set(true): this.displayCommentMenu.set(false)">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full">
 
