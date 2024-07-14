@@ -1,9 +1,9 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, InputSignal, computed, inject, input } from '@angular/core';
-import { UserService } from '../../../../services/user.service';
-import { UserItemComponent } from '../userItem/userItem.component';
+import { ChangeDetectionStrategy, Component, DestroyRef, InputSignal, computed, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../../../auth/services/auth.service';
+import { UserService } from '../../../../services/user.service';
+import { UserItemComponent } from '../userItem/userItem.component';
 
 @Component({
   selector: 'app-user-list',

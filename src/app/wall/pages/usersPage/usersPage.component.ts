@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FilterComponent } from '../../../shared/components/filter/filter.component';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { ModalUploadService } from '../../services/modalUpload.service';
 import { PostFormComponent } from "../wallPage/components/postForm/postForm.component";
 import { ProfileFormComponent } from "../wallPage/components/profileForm/profileForm.component";
 import { UserModalComponent } from "../wallPage/components/userModal/userModal.component";
-import { ModalUploadService } from '../../services/modalUpload.service';
-import { FilterComponent } from '../../../shared/components/filter/filter.component';
 import { UserListComponent } from './components/userList/userList.component';
 
 

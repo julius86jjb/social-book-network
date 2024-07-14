@@ -1,32 +1,29 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, EventEmitter, Input,
+  ChangeDetectionStrategy, Component, DestroyRef, ElementRef, EventEmitter,
   InputSignal,
   OnInit,
   Output,
   ViewChild, computed, inject, input, signal
 } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { v4 as uuidv4 } from 'uuid';
 
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
-import { Post, Comment } from '../../../../interfaces/post.interface';
-import { User } from '../../../../../auth/interfaces/user.interface';
 import { AuthService } from '../../../../../auth/services/auth.service';
-import { EmojiComponent } from '../../../../components/emoji/emoji.component';
-import { PostService } from '../../../../services/post.service';
-import { CommentComponent } from './components/comment/comment.component';
-import { UserNamePipe } from '../../../../pipes/userName.pipe';
+import { LazyImageComponent, LazyImageType } from '../../../../../shared/components/lazyImage/lazyImage.component';
 import { UnderlineDirective } from '../../../../../shared/directives/underline.directive';
 import { TimeAgoPipe } from '../../../../../shared/pipes/timeAgo.pipe';
-import { LazyImageComponent, LazyImageType } from '../../../../../shared/components/lazyImage/lazyImage.component';
-import { ModalUploadService } from '../../../../services/modalUpload.service';
-import { Observable, map, switchMap, tap } from 'rxjs';
-import { NotificationType, Notification } from '../../../../interfaces/notification.interface';
-import { NotificationService } from '../../../../services/notification.service';
+import { EmojiComponent } from '../../../../components/emoji/emoji.component';
+import { NotificationType } from '../../../../interfaces/notification.interface';
+import { Comment, Post } from '../../../../interfaces/post.interface';
 import { UserDataPipe } from "../../../../pipes/userData.pipe";
+import { ModalUploadService } from '../../../../services/modalUpload.service';
+import { NotificationService } from '../../../../services/notification.service';
+import { PostService } from '../../../../services/post.service';
+import { CommentComponent } from './components/comment/comment.component';
 
 @Component({
   selector: 'wall-single-post',

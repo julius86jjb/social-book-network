@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild, inject, signal, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../../auth/services/auth.service';
-import { ModalUploadService, ModalType } from '../../../../services/modalUpload.service';
 import { ModalComponent } from '../../../../components/modal/modal.component';
+import { ModalType, ModalUploadService } from '../../../../services/modalUpload.service';
 import { TopbarService } from '../../../../services/topbar.service';
 
 @Component({
@@ -46,7 +46,7 @@ export class NewPostFormComponent {
   }
 
   get user() {
-    return this.authService.user();
+    return this.authService.user()!;
   }
 
 

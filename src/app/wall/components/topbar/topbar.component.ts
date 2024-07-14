@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild, computed, inject } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
-import { ModalType, ModalUploadService } from '../../services/modalUpload.service';
 import { RouterModule } from '@angular/router';
-import { NotificationComponent } from './notification/notification.component';
-import { TopbarService } from '../../services/topbar.service';
-import { NotificationService } from '../../services/notification.service';
 import { NgClickOutsideDirective } from 'ng-click-outside2';
+import { AuthService } from '../../../auth/services/auth.service';
+import { NotificationService } from '../../services/notification.service';
+import { TopbarService } from '../../services/topbar.service';
+import { NotificationComponent } from './notification/notification.component';
 import { ProfileDropdownComponent } from "./profileDropdown/profileDropdown.component";
 
 @Component({
@@ -43,7 +42,7 @@ export class TopbarComponent implements OnDestroy {
   }
 
   get user() {
-    return this.authService.user();
+    return this.authService.user()!;
   }
 
   onToogleProfileMenu() {

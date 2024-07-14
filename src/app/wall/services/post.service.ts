@@ -1,17 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, OnDestroy, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
-import { catchError, of, Observable, throwError, finalize, first, tap, Observer, skip, take, map, switchMap, lastValueFrom, last } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { Observable, catchError, finalize, map, of, tap, throwError } from 'rxjs';
 
-import { Post, Comment } from '../interfaces/post.interface';
-import { AuthService } from '../../auth/services/auth.service';
-import { subscribe } from 'diagnostics_channel';
-import { User } from '../../auth/interfaces/user.interface';
-import { NotificationService } from './notification.service';
-import { NotificationType } from '../interfaces/notification.interface';
 import { environments } from '../../../environments/environments';
+import { AuthService } from '../../auth/services/auth.service';
+import { NotificationType } from '../interfaces/notification.interface';
+import { Post } from '../interfaces/post.interface';
+import { NotificationService } from './notification.service';
 
 
 @Injectable({

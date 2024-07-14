@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { Observable, map, tap } from 'rxjs';
+import { environments } from '../../../environments/environments';
 import { AuthService } from '../../auth/services/auth.service';
 import { Notification, NotificationType } from '../interfaces/notification.interface';
-import { Observable, map, of, switchMap, tap } from 'rxjs';
-import { environments } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'

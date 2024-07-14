@@ -1,17 +1,16 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter, withHashLocation } from '@angular/router';
 
-import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { routes } from './app.routes';
 
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
-import { environments } from '../environments/environments';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { provideToastr } from 'ngx-toastr';
+import { environments } from '../environments/environments';
 
 
 export const appConfig: ApplicationConfig = {

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Renderer2, ViewChild } from '@angular/core';
-import { TopbarComponent } from "./components/topbar/topbar.component";
+import { ChangeDetectionStrategy, Component, inject, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from './components/modal/modal.component';
+import { TopbarComponent } from "./components/topbar/topbar.component";
 import { PostService } from './services/post.service';
 import { TopbarService } from './services/topbar.service';
 

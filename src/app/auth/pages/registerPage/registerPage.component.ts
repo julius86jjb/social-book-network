@@ -3,12 +3,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-import Swal from 'sweetalert2'
 
-import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 import { ValidatorService } from '../../../shared/services/validator.service';
 import { EmailValidator } from '../../../shared/validators/email-validator.service';
-import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register-page',

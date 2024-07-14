@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, ViewChild } from '@angular/core';
-import { ModalUploadService } from '../../../../services/modalUpload.service';
-import { ValidatorService } from '../../../../../shared/services/validator.service';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../../../auth/services/auth.service';
-import { EmailValidator } from '../../../../../shared/validators/email-validator.service';
-import Swal, { SweetAlertResult } from 'sweetalert2'
-import { User } from '../../../../../auth/interfaces/user.interface';
-import { Observable, map } from 'rxjs';
-import { PostService } from '../../../../services/post.service';
-import { Post } from '../../../../interfaces/post.interface';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { map, Observable } from 'rxjs';
+import { User } from '../../../../../auth/interfaces/user.interface';
+import { AuthService } from '../../../../../auth/services/auth.service';
+import { ValidatorService } from '../../../../../shared/services/validator.service';
+import { EmailValidator } from '../../../../../shared/validators/email-validator.service';
+import { Post } from '../../../../interfaces/post.interface';
+import { ModalUploadService } from '../../../../services/modalUpload.service';
+import { PostService } from '../../../../services/post.service';
 
 
 @Component({

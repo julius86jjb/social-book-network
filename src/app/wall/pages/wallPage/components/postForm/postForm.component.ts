@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Renderer2, ViewChild, effect, inject, input, signal } from '@angular/core';
-import { ModalUploadService } from '../../../../services/modalUpload.service';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ValidatorService } from '../../../../../shared/services/validator.service';
-import Swal, { SweetAlertResult } from 'sweetalert2'
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, effect, inject, input, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { PostService } from '../../../../services/post.service';
-import { finalize } from 'rxjs';
 import { AuthService } from '../../../../../auth/services/auth.service';
+import { ValidatorService } from '../../../../../shared/services/validator.service';
 import { EmojiComponent } from '../../../../components/emoji/emoji.component';
-import { Post } from '../../../../interfaces/post.interface';
-import { NotificationService } from '../../../../services/notification.service';
 import { NotificationType } from '../../../../interfaces/notification.interface';
-import { NgClickOutsideDirective, NgClickOutsideExcludeDirective } from 'ng-click-outside2';
+import { Post } from '../../../../interfaces/post.interface';
+import { ModalUploadService } from '../../../../services/modalUpload.service';
+import { NotificationService } from '../../../../services/notification.service';
+import { PostService } from '../../../../services/post.service';
 
 @Component({
   selector: 'app-post-form',

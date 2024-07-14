@@ -1,7 +1,6 @@
 import { Pipe, inject, type PipeTransform } from '@angular/core';
-import { AuthService } from '../../auth/services/auth.service';
-import { User } from '../../auth/interfaces/user.interface';
 import { Observable, map } from 'rxjs';
+import { User } from '../../auth/interfaces/user.interface';
 import { UserService } from '../services/user.service';
 
 @Pipe({

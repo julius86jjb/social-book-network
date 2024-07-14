@@ -1,336 +1,485 @@
-[
-  {
+{
+  "notifications": [
+    {
+      "id": "8eb5",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:07:38.249Z",
+      "generatedById": "439f",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "a57a",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:07:38.241Z",
+      "generatedById": "439f",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "7eba",
+      "userId": "439f",
+      "type": "follow",
+      "readed": true,
+      "date": "2024-07-11T09:07:59.719Z",
+      "generatedById": "9570",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "13b0",
+      "userId": "a1ba",
+      "type": "follow",
+      "readed": true,
+      "date": "2024-07-11T09:08:01.471Z",
+      "generatedById": "9570",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "5e4e",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:25:04.997Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "4a60",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:25:05.007Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "62ec",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:25:28.525Z",
+      "generatedById": "a1ba",
+      "content": "2",
+      "deleted": false
+    },
+    {
+      "id": "144f",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:25:28.531Z",
+      "generatedById": "a1ba",
+      "content": "2",
+      "deleted": false
+    },
+    {
+      "id": "f76a",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:26:11.766Z",
+      "generatedById": "a1ba",
+      "content": "3",
+      "deleted": false
+    },
+    {
+      "id": "38b0",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:26:11.783Z",
+      "generatedById": "a1ba",
+      "content": "3",
+      "deleted": false
+    },
+    {
+      "id": "a082",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:28:59.324Z",
+      "generatedById": "a1ba",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "edf3",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:28:59.329Z",
+      "generatedById": "a1ba",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "1f75",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:30:10.933Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "726e",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:30:10.940Z",
+      "generatedById": "a1ba",
+      "content": "1",
+      "deleted": false
+    },
+    {
+      "id": "153f",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:30:48.073Z",
+      "generatedById": "a1ba",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "a04a",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:30:48.079Z",
+      "generatedById": "a1ba",
+      "content": "4",
+      "deleted": false
+    },
+    {
+      "id": "62b5",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:44:11.941Z",
+      "generatedById": "a1ba",
+      "content": "2312",
+      "deleted": false
+    },
+    {
+      "id": "8d71",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:44:11.958Z",
+      "generatedById": "a1ba",
+      "content": "2312",
+      "deleted": false
+    },
+    {
+      "id": "50ea",
+      "userId": "439f",
+      "type": "newPost",
+      "readed": true,
+      "date": "2024-07-11T09:45:06.372Z",
+      "generatedById": "a1ba",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "6865",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:45:06.378Z",
+      "generatedById": "a1ba",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "a207",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:51:55.897Z",
+      "generatedById": "439f",
+      "content": "a",
+      "deleted": false
+    },
+    {
+      "id": "8127",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:51:55.902Z",
+      "generatedById": "439f",
+      "content": "a",
+      "deleted": false
+    },
+    {
+      "id": "cdcb",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:52:24.124Z",
+      "generatedById": "439f",
+      "content": "dsfdsf",
+      "deleted": false
+    },
+    {
+      "id": "4561",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:52:24.116Z",
+      "generatedById": "439f",
+      "content": "dsfdsf",
+      "deleted": false
+    },
+    {
+      "id": "3cd8",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.263Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "8ff6",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.267Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "2890",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.504Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "dd2c",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:54:44.505Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "215f",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:57:10.339Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "9347",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T09:57:10.337Z",
+      "generatedById": "439f",
+      "content": "",
+      "deleted": false
+    },
+    {
+      "id": "07d8",
+      "userId": "a1ba",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T16:05:00.958Z",
+      "generatedById": "439f",
+      "content": "hey!",
+      "deleted": false
+    },
+    {
+      "id": "410c",
+      "userId": "9570",
+      "type": "newPost",
+      "readed": false,
+      "date": "2024-07-11T16:05:00.961Z",
+      "generatedById": "439f",
+      "content": "hey!",
+      "deleted": false
+    }
+  ],
+  "users": [
+    {
       "id": "439f",
       "userName": "User 1",
       "email": "user1@email.com",
       "password": "123456",
       "followers": [
-          "a1ba",
-          "9570",
-          "Y4o3xnT",
-          "-oweTEn",
-          "HAC8qXq",
-          "e476",
-          "3d2b",
-          "9ece",
-          "OKDNHO_"
+        "a1ba",
+        "9570"
       ],
       "following": [
-          "a1ba",
-          "9570",
-          "9ece",
-          "Y4o3xnT",
-          "HAC8qXq"
+        "a1ba",
+        "9570"
       ],
       "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-7.png?alt=media&token=d2822e41-f207-48e6-a95b-8510f51e819c",
-      "last_login": "2024-07-12T10:42:53.542Z"
-  },
-  {
+      "last_login": "2024-07-12T09:41:52.260Z"
+    },
+    {
       "id": "a1ba",
       "userName": "User 2",
       "email": "user2@email.com",
       "password": "123456",
       "followers": [
-          "439f",
-          "9570",
-          "3d2b",
-          "e476",
-          "9ece",
-          "MRavkOx",
-          "OKDNHO_"
+        "439f",
+        "9570"
       ],
       "following": [
-          "439f",
-          "9570",
-          "sId_yVF",
-          "IB303MS",
-          "Y4o3xnT",
-          "MRavkOx",
-          "9ece",
-          "3d2b",
-          "e476",
-          "o1zLgmY"
+        "439f",
+        "9570"
       ],
       "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-4.png?alt=media&token=63849a4a-b7b5-4a2f-9c84-e84844d82547",
-      "last_login": "2024-07-12T10:03:52.334Z"
-  },
-  {
+      "last_login": "2024-07-11T09:08:10.031Z"
+    },
+    {
       "id": "9570",
       "userName": "User 3",
       "email": "user3@email.com",
       "password": "123456",
       "followers": [
-          "439f",
-          "a1ba",
-          "Y4o3xnT",
-          "HAC8qXq",
-          "e476",
-          "3d2b",
-          "MRavkOx",
-          "OKDNHO_"
+        "439f",
+        "a1ba"
       ],
       "following": [
-          "439f",
-          "a1ba",
-          "MRavkOx",
-          "e476",
-          "3d2b",
-          "o1zLgmY",
-          "Y4o3xnT"
+        "439f",
+        "a1ba"
       ],
       "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00003.png?alt=media&token=590b7b57-af4b-4740-93ae-ad80332f04b1",
-      "last_login": "2024-07-12T10:05:51.516Z"
-  },
-  {
+      "last_login": "2024-07-11T09:07:51.849Z"
+    },
+    {
       "id": "3d2b",
       "userName": "User 4",
       "email": "user4@email.com",
       "password": "123456",
-      "followers": [
-          "-oweTEn",
-          "a1ba",
-          "9570",
-          "9ece",
-          "MRavkOx",
-          "OKDNHO_"
-      ],
-      "following": [
-          "439f",
-          "e476",
-          "MRavkOx",
-          "o1zLgmY",
-          "9570"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-12.png?alt=media&token=2c3db8e9-59e2-4ca0-95f6-1578258fe73a",
-      "last_login": "2024-07-12T10:07:24.767Z"
-  },
-  {
+      "followers": [],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg"
+    },
+    {
       "id": "e476",
       "userName": "User 5",
       "email": "user5@email.com",
       "password": "123456",
-      "followers": [
-          "Y4o3xnT",
-          "-oweTEn",
-          "a1ba",
-          "9570",
-          "3d2b",
-          "9ece",
-          "MRavkOx",
-          "OKDNHO_"
-      ],
-      "following": [
-          "439f",
-          "9570",
-          "9ece",
-          "Y4o3xnT",
-          "o1zLgmY",
-          "HAC8qXq",
-          "u2hCaUT",
-          "a1ba",
-          "MRavkOx",
-          "OKDNHO_"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0.png?alt=media&token=1fdece51-9599-444d-a84c-b24fbf4230cc",
-      "last_login": "2024-07-12T10:08:43.209Z"
-  },
-  {
+      "followers": [],
+      "following": [],
+      "avatar": "../../../../assets/images/default-avatar.jpg"
+    },
+    {
       "id": "9ece",
       "userName": "User 6",
       "email": "user6@email.com",
       "password": "123456",
-      "followers": [
-          "Y4o3xnT",
-          "-oweTEn",
-          "HAC8qXq",
-          "e476",
-          "439f",
-          "a1ba",
-          "MRavkOx",
-          "OKDNHO_"
-      ],
-      "following": [
-          "439f",
-          "a1ba",
-          "3d2b",
-          "o1zLgmY",
-          "OKDNHO_",
-          "HAC8qXq",
-          "-oweTEn",
-          "u2hCaUT"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00001.png?alt=media&token=3e99eff7-2d5a-4ee9-9817-95d8c19ac503",
-      "last_login": "2024-07-12T10:10:14.981Z"
-  },
-  {
-      "userName": "User 7",
-      "email": "user7@email.com",
-      "password": "123456",
-      "followers": [
-          "a1ba",
-          "9570",
-          "3d2b",
-          "e476",
-          "OKDNHO_"
-      ],
-      "following": [
-          "a1ba",
-          "9ece",
-          "e476",
-          "3d2b",
-          "o1zLgmY",
-          "Y4o3xnT"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-2.png?alt=media&token=1a7503fc-af05-4792-b7da-46e3d028be11",
-      "id": "MRavkOx",
-      "last_login": "2024-07-12T10:23:08.991Z"
-  },
-  {
-      "userName": "User 8",
-      "email": "user8@email.com",
-      "password": "123456",
-      "followers": [
-          "Y4o3xnT",
-          "e476",
-          "9ece"
-      ],
-      "following": [
-          "439f",
-          "3d2b",
-          "9570",
-          "MRavkOx",
-          "9ece",
-          "a1ba",
-          "-oweTEn",
-          "HAC8qXq"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F0000000.png?alt=media&token=a814214b-3391-4f18-9e57-5cda86ce2120",
-      "id": "OKDNHO_",
-      "last_login": "2024-07-12T10:13:37.795Z"
-  },
-  {
-      "userName": "User 9",
-      "email": "user9@email.com",
-      "password": "123456",
-      "followers": [
-          "-oweTEn",
-          "a1ba",
-          "9570",
-          "3d2b",
-          "e476",
-          "9ece",
-          "MRavkOx"
-      ],
+      "followers": [],
       "following": [],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2F00005.png?alt=media&token=7dabde18-44a9-4e1b-96c8-ebe36454d4b0",
-      "id": "o1zLgmY",
-      "last_login": "2024-07-12T09:59:05.916Z"
-  },
-  {
-      "userName": "User 10",
-      "email": "user10@email.com",
-      "password": "123456",
-      "followers": [
-          "HAC8qXq",
-          "e476",
-          "439f",
-          "a1ba",
-          "9570",
-          "MRavkOx"
-      ],
-      "following": [
-          "439f",
-          "e476",
-          "OKDNHO_",
-          "9570",
-          "HAC8qXq",
-          "IB303MS"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-11.png?alt=media&token=88080301-b7e0-47d0-8523-0b6208afdf3e",
-      "id": "Y4o3xnT",
-      "last_login": "2024-07-12T09:54:38.660Z"
-  },
-  {
-      "userName": "User 11",
-      "email": "user11@email.com",
-      "password": "123456",
-      "followers": [
-          "HAC8qXq",
-          "9ece",
-          "OKDNHO_"
-      ],
-      "following": [
-          "3d2b",
-          "e476",
-          "9ece",
-          "o1zLgmY",
-          "IB303MS",
-          "S4pGkMV",
-          "439f"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-8.png?alt=media&token=99149773-ad8a-4e54-be65-408e98442b2b",
-      "id": "-oweTEn",
-      "last_login": "2024-07-12T09:55:52.519Z"
-  },
-  {
-      "userName": "User 12",
-      "email": "user12@email.com",
-      "password": "123456",
-      "followers": [
-          "Y4o3xnT",
-          "439f",
-          "e476",
-          "9ece",
-          "OKDNHO_"
-      ],
-      "following": [
-          "439f",
-          "9570",
-          "-oweTEn",
-          "Y4o3xnT",
-          "9ece",
-          "sId_yVF"
-      ],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-5.png?alt=media&token=73654ea4-5df4-40e1-b045-44b6f9913165",
-      "id": "HAC8qXq",
-      "last_login": "2024-07-12T10:01:05.645Z"
-  },
-  {
-      "userName": "User 13",
-      "email": "user13@email.com",
-      "password": "123456",
-      "followers": [
-          "e476",
-          "9ece"
-      ],
-      "following": [],
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Favatars%2Fleader-3.png?alt=media&token=b4cf78dc-18f3-41b0-b2f6-42e81910d577",
-      "id": "u2hCaUT",
-      "last_login": "2024-07-12T10:01:13.277Z"
-  },
-  {
-      "userName": "User 14",
-      "email": "user14@email.com",
-      "password": "123456",
-      "followers": [
-          "Y4o3xnT",
-          "-oweTEn",
-          "a1ba"
-      ],
-      "following": [],
-      "avatar": "../../../../assets/images/default-avatar.jpg",
-      "id": "IB303MS"
-  },
-  {
-      "userName": "User 15",
-      "email": "user15@email.com",
-      "password": "123456",
-      "followers": [
-          "HAC8qXq",
-          "a1ba"
-      ],
-      "following": [],
-      "avatar": "../../../../assets/images/default-avatar.jpg",
-      "id": "sId_yVF"
-  }
-]
+      "avatar": "../../../../assets/images/default-avatar.jpg"
+    }
+  ],
+  "posts": [
+    {
+      "id": "296c",
+      "userId": "439f",
+      "date": "2024-07-11T09:07:38.232Z",
+      "likes": [],
+      "comments": [],
+      "message": "1",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Fblog-detail-1.png?alt=media&token=44cdc3d2-d542-4f5c-af44-c205c78a58e2"
+    },
+    {
+      "id": "c2e7",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:25:04.991Z",
+      "likes": [],
+      "comments": [],
+      "message": "1"
+    },
+    {
+      "id": "0b49",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:25:28.519Z",
+      "likes": [],
+      "comments": [],
+      "message": "2"
+    },
+    {
+      "id": "a633",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:26:11.749Z",
+      "likes": [],
+      "comments": [],
+      "message": "3"
+    },
+    {
+      "id": "f8bb",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:28:59.318Z",
+      "likes": [],
+      "comments": [],
+      "message": "4"
+    },
+    {
+      "id": "b653",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:30:10.925Z",
+      "likes": [],
+      "comments": [],
+      "message": "1"
+    },
+    {
+      "id": "4410",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:30:48.067Z",
+      "likes": [],
+      "comments": [],
+      "message": "4"
+    },
+    {
+      "id": "4dff",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:44:11.927Z",
+      "likes": [],
+      "comments": [],
+      "message": "2312"
+    },
+    {
+      "id": "a856",
+      "userId": "a1ba",
+      "date": "2024-07-11T09:45:04.772Z",
+      "likes": [],
+      "comments": [],
+      "message": null,
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/social-network-book-613a7.appspot.com/o/uploads%2Fposts%2Faprendeangular.png?alt=media&token=a5403fc2-1350-4341-bae5-7235ba592cc5"
+    },
+    {
+      "id": "33b0",
+      "userId": "439f",
+      "date": "2024-07-11T16:05:00.953Z",
+      "likes": [],
+      "comments": [],
+      "message": "hey!"
+    }
+  ]
+}

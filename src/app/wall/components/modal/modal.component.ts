@@ -1,14 +1,12 @@
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, HostListener, ElementRef, ViewChild} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { ModalUploadService } from '../../services/modalUpload.service';
-import { ClickOutsideDirective } from '../../../shared/directives/clickOutside.directive';
 @Component({
   selector: 'wall-modal-upload',
   standalone: true,
   imports: [
     CommonModule,
-    ClickOutsideDirective
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css',

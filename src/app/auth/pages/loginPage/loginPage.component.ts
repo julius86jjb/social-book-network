@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ValidatorService } from '../../../shared/services/validator.service';
 import { User } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
-import Swal from 'sweetalert2';
-import { ToastrService } from 'ngx-toastr';
 
 
 @Component({

@@ -1,11 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { FileUpload } from '../interfaces/file-upload.model';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable, finalize } from 'rxjs';
+import { User } from '../../auth/interfaces/user.interface';
 import { Post } from '../interfaces/post.interface';
 import { PostService } from './post.service';
-import { User } from '../../auth/interfaces/user.interface';
 import { UserService } from './user.service';
 
 export enum ModalType {

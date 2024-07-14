@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, InputSignal, Output, computed, inject, input, type OnInit } from '@angular/core';
+import { switchMap } from 'rxjs';
 import { User } from '../../../../../auth/interfaces/user.interface';
 import { AuthService } from '../../../../../auth/services/auth.service';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { UserService } from '../../../../services/user.service';
-import { NotificationType, Notification } from '../../../../interfaces/notification.interface';
+import { NotificationType } from '../../../../interfaces/notification.interface';
 import { NotificationService } from '../../../../services/notification.service';
-import { switchMap } from 'rxjs';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-user-item',

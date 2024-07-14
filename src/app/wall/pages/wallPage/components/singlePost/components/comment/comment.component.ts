@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, Input, InputSignal, OnInit, Output, computed, effect, inject, input, signal } from '@angular/core';
-import { Comment } from '../../../../../../interfaces/post.interface';
-import { PostService } from '../../../../../../services/post.service';
-import { AuthService } from '../../../../../../../auth/services/auth.service';
+import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, InputSignal, Output, computed, inject, input, signal } from '@angular/core';
 import { User } from '../../../../../../../auth/interfaces/user.interface';
+import { AuthService } from '../../../../../../../auth/services/auth.service';
 import { TimeAgoPipe } from '../../../../../../../shared/pipes/timeAgo.pipe';
+import { Comment } from '../../../../../../interfaces/post.interface';
 import { UserDataPipe } from "../../../../../../pipes/userData.pipe";
+import { PostService } from '../../../../../../services/post.service';
 
 
 export interface commentWithAvatar {
